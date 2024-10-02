@@ -2,3 +2,5 @@
 .idea/discord.xml
 *.xml
 TubesAlgeo.iml
+*.class
+src/matrix/test.java
