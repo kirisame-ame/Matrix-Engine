@@ -132,4 +132,19 @@ public class matrix {
             }
         }
     }
+
+    // -------------------------------------Determinant-------------------------------------------
+    public double determinant() {
+        // Determinant for 2x2 matrix
+        if (!isPersegi()) {
+            throw new UnsupportedOperationException("Determinant only supported for square matrices");
+        }
+        if (rows == 1) {
+            return data[0][0];
+        } else if (rows == 2) {
+            return data[0][0] * data[1][1] - data[0][1] * data[1][0];
+        }else{
+            throw new UnsupportedOperationException("Determinant only supported for 2x2 Matrix max");
+        }
+    }
 }
