@@ -135,7 +135,6 @@ public class matrix {
 
     // -------------------------------------Determinant-------------------------------------------
     public double determinant() {
-        // Determinant for 2x2 matrix
         if (!isPersegi()) {
             throw new UnsupportedOperationException("Determinant only supported for square matrices");
         }
@@ -143,8 +142,48 @@ public class matrix {
             return data[0][0];
         } else if (rows == 2) {
             return data[0][0] * data[1][1] - data[0][1] * data[1][0];
-        }else{
-            throw new UnsupportedOperationException("Determinant only supported for 2x2 Matrix max");
+        } else {
+            double res;
+            res = this.cofactor().determinant();
+            return res;
+        }
+    }
+    public matrix cofactor(){
+        if(!isPersegi() || rows == 1){
+            throw new UnsupportedOperationException("Cofactor only supported for square matrices");
+        }
+        matrix result = new matrix(rows-1,cols-1);
+        if (rows == 2) {
+            result.setElmt(0,0,this.determinant());
+            return result;
+        }
+        else if(rows==3){
+            for (int i =0;i<rows;i++){
+                for (int j=0;j<cols;j++){
+                    // Non-i,j matrix creation
+                    matrix curr_det = new matrix(2,2);
+                    int row_pos,col_pos;
+                    row_pos = 0;
+                    col_pos =0;
+                    for (int k=0;k<rows;k++){
+                        for (int l=0;l<cols;l++){
+                            System.out.println(row_pos);
+                            System.out.println(col_pos);
+                            if(k!=i && l!=j){
+                                curr_det.setElmt(row_pos,col_pos,this.getElmt(k,l));
+                                col_pos++;
+                            }
+                        }
+                        row_pos++;
+                        col_pos=0;
+                    }
+                    result.setElmt(i,j,Math.pow(-1,i+j)*curr_det.determinant());
+                }
+            }
+            return result;
+        }
+        else{
+            return result;
         }
     }
 }
