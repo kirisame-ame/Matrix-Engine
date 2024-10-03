@@ -206,16 +206,6 @@ public class Matrix {
         }
         return copy;
     }
-    
-    public void plusMinusRowWithAnother(int row1, int row2, boolean plus) { 
-        if (isRowIdxValid(row1) && isRowIdxValid(row2)) {
-            for (int j = 0; j < getCols(); j++) {
-                data[row1][j] = plus ? data[row1][j] + data[row2][j] : data[row1][j] - data[row2][j];
-            }
-        } else {
-            throw new IllegalArgumentException("Invalid row indices");
-        }
-    }
 
     public boolean isMatrixEqual(Matrix m2) {
         if (this.isMatrixSizeEqual(m2)) {
