@@ -322,7 +322,6 @@ public class matrix {
         return -1; // Tidak ada pivot (baris semua nol)
     }
 
-=======
     // -------------------------------------Determinant-------------------------------------------
     public double determinant() {
         if (!isPersegi()) {
@@ -369,7 +368,12 @@ public class matrix {
         matrix result = new matrix(rows,cols);
         for (int i =0;i<rows;i++){
             for (int j=0;j<cols;j++){
-                result.setElmt(i,j,Math.pow(-1,i+j)*(this.minor(i,j).determinant()));
+                if (this.getElmt(i,j) == 0){
+                    result.setElmt(i,j,0);
+                }
+                else {
+                    result.setElmt(i, j, Math.pow(-1, i + j) * (this.minor(i, j).determinant()));
+                }
             }
         }
         return result;
