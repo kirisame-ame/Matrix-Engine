@@ -174,7 +174,7 @@ public class Matrix {
         return res;
     }
 
-    public void multiplyMatrixConst(float constant) {
+    public void multiplyMatrixConst(double constant) {
         for (int i = 0; i < getRows(); i++) {
             for (int j = 0; j < getCols(); j++) {
                 this.data[i][j] *= constant;
@@ -398,7 +398,7 @@ public class Matrix {
         if (this.determinant() == 0){
             throw new UnsupportedOperationException("Determinant is zero, inverse does not exist");
         }
-        float mult = (float)(1/this.determinant());
+        double mult = (double)(1/this.determinant());
         this.multiplyMatrixConst(mult);
         return this.adjoint();
     }
