@@ -325,8 +325,8 @@ public class Matrix {
         return -1; // Tidak ada pivot (baris semua nol)
     }
     
+    // -------------------------------------Determinant-------------------------------------------
 
-        // -------------------------------------Determinant-------------------------------------------
     public double determinant() {
         if (!isSquare()) {
             throw new UnsupportedOperationException("Determinant only supported for square matrices");
