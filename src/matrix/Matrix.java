@@ -398,9 +398,9 @@ public class Matrix {
         if (this.determinant() == 0){
             throw new UnsupportedOperationException("Determinant is zero, inverse does not exist");
         }
-        double mult = (double)(1/this.determinant());
-        this.multiplyMatrixConst(mult);
-        return this.adjoint();
+        Matrix result = this.adjoint();
+        result.multiplyMatrixConst(1/this.determinant());
+        return result;
     }
 
     public static Matrix augmentedMatrix(Matrix m1, Matrix m2) {
