@@ -1,13 +1,13 @@
 package matrix;
 import java.util.Scanner;
 
-public class matrix {
+public class Matrix {
     private double[][] data;
     private int rows;
     private int cols;
 
     // ----------------------KONSTRUKTOR DAN SELEKTOR----------------------
-    public matrix(int rows, int cols) {
+    public Matrix(int rows, int cols) {
         this.rows = rows;
         this.cols = cols;
         this.data = new double[rows][cols];
@@ -22,6 +22,7 @@ public class matrix {
             }
         }
     }
+
     public void setElmt(int row, int col, double val) {
         if (isIdxValid(row, col)) {
             data[row][col] = val;
@@ -82,21 +83,25 @@ public class matrix {
             data[col1] = data[col2];
             data[col2] = temp;
         } else {
-            throw new IllegalArgumentException("Invalid row indices");
+            throw new IllegalArgumentException("Invalid column indices");
         }
     }
 
     //----------------------DISPLAY MATRIX----------------------
-    public void displaymatrix(){
+    public void displayMatrix(){
         for(int i = 0; i < getRows(); i++){
             for(int j = 0; j < getCols(); j++){
-                System.out.print(String.format("%.3f", this.getElmt(i, j) + " "));
+                System.out.print(String.format("%.2f", this.getElmt(i, j)));
+                if (j!= getCols() - 1) {
+                    System.out.print(" ");
+                }
             }
             System.out.println();
         }
     }
+
     //----------------------ERROR HANDLING (BOOL)----------------------
-    public boolean isPersegi() {
+    public boolean isSquare() {
         return rows == cols;
     }
 
@@ -117,7 +122,7 @@ public class matrix {
     }
 
     public boolean isMatrixIdentity() {
-        if (!isPersegi()) return false;
+        if (!isSquare()) return false;
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
                 if (i == j && data[i][j] != 1) return false;
@@ -127,23 +132,23 @@ public class matrix {
         return true;
     }
 
-    public boolean isMatrixSizeEqual(matrix m2) {
+    public boolean isMatrixSizeEqual(Matrix m2) {
         return this.rows == m2.rows && this.cols == m2.cols;
     }
 
     // ----------------------MATRIX MODIFICATION----------------------
-    public matrix transpose() {
-        matrix transposed = new matrix(cols, rows);
+    public Matrix transpose() {
+        Matrix transposed = new Matrix(cols, rows);
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                transposed.data[i][j] = this.data[j][i];
+                transposed.data[j][i] = this.data[i][j];
             }
         }
         return transposed;
     }
 
     public void transposeInPlace() {
-        if (rows!=cols) {
+        if (rows != cols) {
             throw new UnsupportedOperationException("In-place transpose only supported for square matrices");
         }
         for (int i = 0; i < rows; i++) {
@@ -155,48 +160,47 @@ public class matrix {
         }
     }
 
-    //----------------------ARITHMETIC APPLUCATION----------------------
-    public matrix addSubMatrix(matrix m2, boolean plus) {
-        matrix res = new matrix(this.rows, this.cols);
+    //----------------------ARITHMETIC APPLICATION----------------------
+    public Matrix addSubMatrix(Matrix m2, boolean plus) {
+        Matrix res = new Matrix(this.rows, this.cols);
         if (!isMatrixSizeEqual(m2)) {
-            throw new UnsupportedOperationException("add and sub matrices only for matrices that have same rows and cols");
+            throw new UnsupportedOperationException("Addition and subtraction only for matrices with the same dimensions");
         }
         for (int i = 0; i < getRows(); i++) {
             for (int j = 0; j < getCols(); j++) {
-                res.data[i][j] = plus ? m2.data[i][j] + this.data[i][j] : m2.data[i][j] - this.data[i][j];
+                res.data[i][j] = plus ? m2.data[i][j] + this.data[i][j] : this.data[i][j] - m2.data[i][j];
             }
         }
         return res;
     }
 
-
-    public void multiplyMatrixConst(float constanta) {
+    public void multiplyMatrixConst(float constant) {
         for (int i = 0; i < getRows(); i++) {
             for (int j = 0; j < getCols(); j++) {
-                this.data[i][j] *= constanta;
+                this.data[i][j] *= constant;
             }
         }
     }
 
-    public matrix multiplymatrix(matrix m2){
-        matrix copy = new matrix(this.rows, m2.cols);
-        int i,j,k;
-        for(i=0;i<getRows();i++){
-            for(j=0;j<getCols();j++){
-                m2.setElmt(i, j, 0);   
-                for(k=0;k<this.cols;k++){
-                    copy.data[i][j] +=  this.data[i][k] * m2.data[k][j];
+    public Matrix multiplyMatrix(Matrix m2) {
+        if (this.cols != m2.rows) {
+            throw new IllegalArgumentException("Matrix multiplication requires the number of columns of the first matrix to equal the number of rows of the second matrix.");
+        }
+        Matrix result = new Matrix(this.rows, m2.cols);
+        for (int i = 0; i < result.getRows(); i++) {
+            for (int j = 0; j < result.getCols(); j++) {
+                for (int k = 0; k < this.cols; k++) {
+                    result.data[i][j] += this.data[i][k] * m2.data[k][j];
                 }
             }
         }
-        return copy;
+        return result;
     }
 
-
-    public matrix copyMatrix(){
-        matrix copy = new matrix(this.rows, this.cols);
-        for(int i = 0; i < getRows(); i++){
-            for(int j = 0; j < getCols(); j++){
+    public Matrix copyMatrix() {
+        Matrix copy = new Matrix(this.rows, this.cols);
+        for (int i = 0; i < getRows(); i++) {
+            for (int j = 0; j < getCols(); j++) {
                 copy.data[i][j] = this.data[i][j];
             }
         }
@@ -206,25 +210,24 @@ public class matrix {
     public void plusMinusRowWithAnother(int row1, int row2, boolean plus) { 
         if (isRowIdxValid(row1) && isRowIdxValid(row2)) {
             for (int j = 0; j < getCols(); j++) {
-                data[row1][row2] = plus ? data[row1][j] + data[row2][j] : data[row1][j] - data[row2][j];
+                data[row1][j] = plus ? data[row1][j] + data[row2][j] : data[row1][j] - data[row2][j];
             }
         } else {
             throw new IllegalArgumentException("Invalid row indices");
         }
     }
 
-    public boolean isMatrixEqual(matrix m2){
-        if(this.isMatrixSizeEqual(m2)){
-            for(int i = 0; i < getRows(); i++){
-                for(int j = 0; j < getCols(); j++){
-                    if(this.data[i][j] != m2.data[i][j]){
+    public boolean isMatrixEqual(Matrix m2) {
+        if (this.isMatrixSizeEqual(m2)) {
+            for (int i = 0; i < getRows(); i++) {
+                for (int j = 0; j < getCols(); j++) {
+                    if (this.data[i][j] != m2.data[i][j]) {
                         return false;
                     }
                 }
             }
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -288,9 +291,16 @@ public class matrix {
             if (pivotCol == -1) break; // Matriks sudah dalam bentuk eselon baris
 
             ensureNonZeroPivot(pivotRow, pivotCol);
-            dividePivotRow(pivotRow, pivotCol);
-            subtractPivotRow(pivotRow, pivotCol);
+            System.out.println("Pivot row: " + pivotRow + ", pivot column: " + pivotCol);
+            this.displayMatrix();
 
+            dividePivotRow(pivotRow, pivotCol);
+            System.out.println("Pivot row divided: " + pivotRow + ", pivot column: " + pivotCol);
+            this.displayMatrix();
+
+            subtractPivotRow(pivotRow, pivotCol);
+            System.out.println("Pivot row subtracted: " + pivotRow + ", pivot column: " + pivotCol);    
+            this.displayMatrix();
             pivotRow++;
         }
     }
@@ -307,6 +317,9 @@ public class matrix {
                 double factor = data[i][pivotCol];
                 for (int j = pivotCol; j < getCols(); j++) {
                     data[i][j] -= factor * data[pivotRow][j];
+
+                    System.out.println("Row " + i + ", column " + j + " subtracted by " + factor + " * " + pivotCol + " = " + data[i][j]);
+                    this.displayMatrix();
                 }
             }
         }
@@ -321,11 +334,11 @@ public class matrix {
         }
         return -1; // Tidak ada pivot (baris semua nol)
     }
+    
 
-=======
-    // -------------------------------------Determinant-------------------------------------------
+        // -------------------------------------Determinant-------------------------------------------
     public double determinant() {
-        if (!isPersegi()) {
+        if (!isSquare()) {
             throw new UnsupportedOperationException("Determinant only supported for square matrices");
         }
         if (rows == 1) {
@@ -340,11 +353,11 @@ public class matrix {
             return result;
         }
     }
-    public matrix minor(int i,int j){
-        if(!isPersegi() || rows == 1){
+    public Matrix minor(int i,int j){
+        if(!isSquare() || rows == 1){
             throw new UnsupportedOperationException("Minor only supported for square matrices");
         }
-        matrix result = new matrix(rows-1,cols-1);
+        Matrix result = new Matrix(rows-1,cols-1);
         int row_pos,col_pos;
         row_pos = 0;
         col_pos = 0;
@@ -362,16 +375,63 @@ public class matrix {
         }
         return result;
     }
-    public matrix cofactor(){
-        if(!isPersegi() || rows == 1){
+    public Matrix cofactor(){
+        if(!isSquare() || rows == 1){
             throw new UnsupportedOperationException("Cofactor only supported for square matrices");
         }
-        matrix result = new matrix(rows,cols);
+        Matrix result = new Matrix(rows,cols);
         for (int i =0;i<rows;i++){
             for (int j=0;j<cols;j++){
-                result.setElmt(i,j,Math.pow(-1,i+j)*(this.minor(i,j).determinant()));
+                if (this.getElmt(i,j) == 0){
+                    result.setElmt(i,j,0);
+                }
+                else {
+                    result.setElmt(i, j, Math.pow(-1, i + j) * (this.minor(i, j).determinant()));
+                }
             }
         }
         return result;
     }
+    public static Matrix augmentedMatrix(Matrix m1, Matrix m2) {
+        if (m1.getRows() != m2.getRows()) {
+            throw new IllegalArgumentException("The number of rows in the matrices must be equal");
+        }
+        Matrix m = new Matrix(m1.getRows(), m1.getCols() + m2.getCols());
+        for (int i = 0; i < m1.getRows(); i++) {
+            for (int j = 0; j < m1.getCols(); j++) {
+                m.setElmt(i, j, m1.getElmt(i, j));
+            }
+            for (int j = 0; j < m2.getCols(); j++) {
+                m.setElmt(i, m1.getCols() + j, m2.getElmt(i, j));
+            }
+        }
+        return m;
+        
+    }
+
+    public static void splitAugmentedMatrix(Matrix m, Matrix m1, Matrix m2) {
+        if (m.getRows() != m1.getRows() + m2.getRows()) {
+            throw new IllegalArgumentException("The number of rows in the matrices must be equal");
+        }
+        if (m.getCols() != m1.getCols() + m2.getCols()) {
+            throw new IllegalArgumentException("The number of columns in the matrices must be equal");
+        }
+        for (int i = 0; i < m1.getRows(); i++) {
+            for (int j = 0; j < m1.getCols(); j++) {
+                m1.setElmt(i, j, m.getElmt(i, j));
+            }
+            for (int j = 0; j < m2.getCols(); j++) {
+                m2.setElmt(i, j, m.getElmt(i, m1.getCols() + j));
+            }
+        }
+    }
+
+    public Matrix createIdentityMatrix() {
+        Matrix identity = new Matrix(rows, cols);
+        for (int i = 0; i < rows; i++) {
+            identity.setElmt(i, i, 1);
+        }
+        return identity;
+    }
+    
 }
