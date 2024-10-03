@@ -22,7 +22,6 @@ public class matrix {
             }
         }
     }
-
     public void setElmt(int row, int col, double val) {
         if (isIdxValid(row, col)) {
             data[row][col] = val;
@@ -323,4 +322,56 @@ public class matrix {
         return -1; // Tidak ada pivot (baris semua nol)
     }
 
+=======
+    // -------------------------------------Determinant-------------------------------------------
+    public double determinant() {
+        if (!isPersegi()) {
+            throw new UnsupportedOperationException("Determinant only supported for square matrices");
+        }
+        if (rows == 1) {
+            return data[0][0];
+        } else if (rows == 2) {
+            return data[0][0] * data[1][1] - data[0][1] * data[1][0];
+        } else {
+            double result = 0;
+            for (int i = 0; i < rows; i++) {
+                result += Math.pow(-1, i) * data[i][0] * minor(i, 0).determinant();
+            }
+            return result;
+        }
+    }
+    public matrix minor(int i,int j){
+        if(!isPersegi() || rows == 1){
+            throw new UnsupportedOperationException("Minor only supported for square matrices");
+        }
+        matrix result = new matrix(rows-1,cols-1);
+        int row_pos,col_pos;
+        row_pos = 0;
+        col_pos = 0;
+        for (int k=0;k<rows;k++){
+            for (int l=0;l<cols;l++){
+                if(k!=i && l!=j){
+                    result.setElmt(row_pos,col_pos,this.getElmt(k,l));
+                    col_pos++;
+                }
+            }
+            if (k!=i) {
+                row_pos++;
+            }
+            col_pos=0;
+        }
+        return result;
+    }
+    public matrix cofactor(){
+        if(!isPersegi() || rows == 1){
+            throw new UnsupportedOperationException("Cofactor only supported for square matrices");
+        }
+        matrix result = new matrix(rows,cols);
+        for (int i =0;i<rows;i++){
+            for (int j=0;j<cols;j++){
+                result.setElmt(i,j,Math.pow(-1,i+j)*(this.minor(i,j).determinant()));
+            }
+        }
+        return result;
+    }
 }
