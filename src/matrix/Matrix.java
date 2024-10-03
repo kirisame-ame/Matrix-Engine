@@ -13,7 +13,7 @@ public class Matrix {
         this.data = new double[rows][cols];
     }
     
-    public void readMatrix() {
+    public void readMatrix() {  
         try (Scanner scanner = new Scanner(System.in)) {
             for (int i = 0; i < rows; i++) {
                 for (int j = 0; j < cols; j++) {
@@ -174,7 +174,7 @@ public class Matrix {
         return res;
     }
 
-    public void multiplyMatrixConst(float constant) {
+    public void multiplyMatrixConst(double constant) {
         for (int i = 0; i < getRows(); i++) {
             for (int j = 0; j < getCols(); j++) {
                 this.data[i][j] *= constant;
@@ -230,6 +230,8 @@ public class Matrix {
         }
         return true;
     }
+
+    // ----------------------ROW ELEMENTARY OPERATIONS----------------------
 
     // Fungsi baru untuk mencari kolom non-zero paling kiri
     private int findLeftmostNonZeroColumn(int startRow) {
@@ -343,6 +345,7 @@ public class Matrix {
             return result;
         }
     }
+
     public Matrix minor(int i,int j){
         if(!isSquare() || rows == 1){
             throw new UnsupportedOperationException("Minor only supported for square matrices");
@@ -365,6 +368,8 @@ public class Matrix {
         }
         return result;
     }
+
+    // Returns MATRIX COFACTOR not the individual cofactor of each element (not Mij)
     public Matrix cofactor(){
         if(!isSquare() || rows == 1){
             throw new UnsupportedOperationException("Cofactor only supported for square matrices");
@@ -382,6 +387,22 @@ public class Matrix {
         }
         return result;
     }
+
+    //Returns the adjoint of the matrix
+    public Matrix adjoint(){
+        return this.cofactor().transpose();
+    }
+
+    //Returns the inverse of the matrix
+    public Matrix inverse(){
+        if (this.determinant() == 0){
+            throw new UnsupportedOperationException("Determinant is zero, inverse does not exist");
+        }
+        double mult = (double)(1/this.determinant());
+        this.multiplyMatrixConst(mult);
+        return this.adjoint();
+    }
+
     public static Matrix augmentedMatrix(Matrix m1, Matrix m2) {
         if (m1.getRows() != m2.getRows()) {
             throw new IllegalArgumentException("The number of rows in the matrices must be equal");
