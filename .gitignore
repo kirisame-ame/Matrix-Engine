@@ -6,3 +6,6 @@ TubesAlgeo.iml
 src/matrix/test.java
 Visualizations/cofactor_call_stack.png
 src/matrix/test.class
+*.class
+*.pdf
+*.class

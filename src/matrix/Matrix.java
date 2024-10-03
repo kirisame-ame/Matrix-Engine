@@ -12,7 +12,6 @@ public class Matrix {
         this.cols = cols;
         this.data = new double[rows][cols];
     }
-    
     public void readMatrix() {  
         try (Scanner scanner = new Scanner(System.in)) {
             for (int i = 0; i < rows; i++) {
@@ -50,9 +49,49 @@ public class Matrix {
     public int getRows() {
         return this.rows;
     }
+    public double[] getRow(int row) {
+        if (isRowIdxValid(row)) {
+            double[] result = new double[cols];
+            for (int i = 0; i < cols; i++) {
+                result[i] = data[row][i];
+            }
+            return result;
+        } else {
+            throw new IllegalArgumentException("Invalid row index");
+        }
+    }
+    public void setRow(int row, double[] values) {
+        if (isRowIdxValid(row)) {
+            for (int i = 0; i < cols; i++) {
+                data[row][i] = values[i];
+            }
+        } else {
+            throw new IllegalArgumentException("Invalid row index");
+        }
+    }
 
     public int getCols() {
         return this.cols;
+    }
+    public double[] getCol(int col) {
+        if (isColIdxValid(col)) {
+            double[] result = new double[rows];
+            for (int i = 0; i < rows; i++) {
+                result[i] = data[i][col];
+            }
+            return result;
+        } else {
+            throw new IllegalArgumentException("Invalid col index");
+        }
+    }
+    public void setCol(int col, double[] values) {
+        if (isColIdxValid(col)) {
+            for (int i = 0; i < rows; i++) {
+                data[i][col] = values[i];
+            }
+        } else {
+            throw new IllegalArgumentException("Invalid col index");
+        }
     }
 
     public int getLastRowIdx() {
