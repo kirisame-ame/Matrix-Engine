@@ -1,5 +1,5 @@
 
-package Matrix;
+package matrix;
 
 
 import java.util.Scanner;
