@@ -1,4 +1,6 @@
+
 package Matrix;
+
 
 import java.util.Scanner;
 
@@ -13,7 +15,6 @@ public class Matrix {
         this.cols = cols;
         this.data = new double[rows][cols];
     }
-
     public void readMatrix(Scanner scanner) {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
@@ -22,6 +23,7 @@ public class Matrix {
                     scanner.next(); // membuang input yang tidak valid
                 }
                 this.setElmt(i, j, scanner.nextDouble());
+
             }
         }
     }
@@ -54,9 +56,52 @@ public class Matrix {
         return this.rows;
     }
 
+    public double[] getRow(int row) {
+        if (isRowIdxValid(row)) {
+            double[] result = new double[cols];
+            for (int i = 0; i < cols; i++) {
+                result[i] = data[row][i];
+            }
+            return result;
+        } else {
+            throw new IllegalArgumentException("Invalid row index");
+        }
+    }
+    public void setRow(int row, double[] values) {
+        if (isRowIdxValid(row)) {
+            for (int i = 0; i < cols; i++) {
+                data[row][i] = values[i];
+            }
+        } else {
+            throw new IllegalArgumentException("Invalid row index");
+        }
+    }
+
     public int getCols() {
         return this.cols;
     }
+
+    public double[] getCol(int col) {
+        if (isColIdxValid(col)) {
+            double[] result = new double[rows];
+            for (int i = 0; i < rows; i++) {
+                result[i] = data[i][col];
+            }
+            return result;
+        } else {
+            throw new IllegalArgumentException("Invalid col index");
+        }
+    }
+    public void setCol(int col, double[] values) {
+        if (isColIdxValid(col)) {
+            for (int i = 0; i < rows; i++) {
+                data[i][col] = values[i];
+            }
+        } else {
+            throw new IllegalArgumentException("Invalid col index");
+        }
+    }
+
 
     public int getLastRowIdx() {
         return this.rows - 1;
@@ -90,6 +135,7 @@ public class Matrix {
         }
     }
 
+
     // ----------------------DISPLAY MATRIX----------------------
     public void displayMatrix() {
         for (int i = 0; i < getRows(); i++) {
@@ -103,7 +149,9 @@ public class Matrix {
         }
     }
 
+
     // ----------------------ERROR HANDLING (BOOL)----------------------
+
     public boolean isSquare() {
         return rows == cols;
     }
@@ -142,6 +190,7 @@ public class Matrix {
         return this.rows == m2.rows && this.cols == m2.cols;
     }
 
+
     public boolean isInvertible(Matrix m2) {
         return m2.determinant() != 0;
     }
@@ -168,6 +217,7 @@ public class Matrix {
             }
         }
     }
+
 
     // ----------------------ARITHMETIC APPLICATION----------------------
     public Matrix addSubMatrix(Matrix m2, boolean plus) {
@@ -242,6 +292,7 @@ public class Matrix {
         return true;
     }
 
+    // ----------------------ROW ELEMENTARY OPERATIONS----------------------
     // Fungsi baru untuk mencari kolom non-zero paling kiri
     public int findLeftmostNonZeroColumn(int startRow) {
         for (int j = 0; j < getCols(); j++) {
@@ -265,6 +316,7 @@ public class Matrix {
     }
 
     // Fungsi baru untuk membagi baris dengan pivotnya
+
     public void dividePivotRow(int pivotRow, int pivotCol) {
         double pivot = data[pivotRow][pivotCol];
         for (int j = pivotCol; j < getCols(); j++) {
@@ -281,6 +333,7 @@ public class Matrix {
             }
         }
     }
+
 
     // Fungsi baru untuk mencari kolom pivot dalam suatu baris
     public int findPivotColumn(int row) {
@@ -311,11 +364,13 @@ public class Matrix {
 
     // Fungsi untuk mengubah matriks eselon baris menjadi bentuk eselon baris
     // tereduksi
+
     public void toReducedRowEchelonForm() {
         toRowEchelonForm(); // Pertama, ubah ke bentuk eselon baris
 
         for (int pivotRow = getRows() - 1; pivotRow >= 0; pivotRow--) {
             int pivotCol = findPivotColumn(pivotRow);
+
             if (pivotCol == -1)
                 continue; // Baris ini semua nol
 
@@ -369,6 +424,7 @@ public class Matrix {
         return result;
     }
 
+    // Returns MATRIX COFACTOR not the individual cofactor of each element (not Mij)
     public Matrix cofactor() {
         if (!isSquare() || rows == 1) {
             throw new UnsupportedOperationException("Cofactor only supported for square matrices");
@@ -383,6 +439,21 @@ public class Matrix {
                 }
             }
         }
+        return result;
+    }
+
+    //Returns the adjoint of the matrix
+    public Matrix adjoint(){
+        return this.cofactor().transpose();
+    }
+
+    //Returns the inverse of the matrix
+    public Matrix inverse(){
+        if (this.determinant() == 0){
+            throw new UnsupportedOperationException("Determinant is zero, inverse does not exist");
+        }
+        Matrix result = this.adjoint();
+        result.multiplyMatrixConst(1/this.determinant());
         return result;
     }
 
@@ -401,6 +472,7 @@ public class Matrix {
         }
         return m;
 
+
     }
 
     public void splitAugmentedMatrix(Matrix m, Matrix m1, Matrix m2) {
@@ -417,6 +489,7 @@ public class Matrix {
         }
     }
 
+
     public void splitForBackSubs(Matrix m, Matrix m1, double[] m2) {
         if (m.getCols() != m1.getCols() + 1) {
             throw new IllegalArgumentException("The number of columns in the matrices must be equal");
@@ -431,6 +504,7 @@ public class Matrix {
             m2[i] = m.getElmt(i, m.getCols() - 1);
         }
     }
+
     public Matrix createIdentityMatrix() {
         Matrix identity = new Matrix(rows, cols);
         for (int i = 0; i < rows; i++) {
@@ -438,6 +512,7 @@ public class Matrix {
         }
         return identity;
     }
+
 
     public double[] resFromReducedEselon(Matrix m) {
         double[] Y = new double[m.getRows()];
@@ -545,5 +620,4 @@ public class Matrix {
             throw new IllegalArgumentException("Invalid row indices");
         }
     }
-
 }
