@@ -56,15 +56,30 @@ public class LinearSystem extends Matrix {
 
     // menyelesaikan SPL dengan metode Cramer
     public Matrix CramerRule() {
+        if (!getFeatures().isSquare()) {
+            throw new IllegalArgumentException("Matriks is not square");
+        }
+        if (getFeatures().determinant() == 0) {
+            throw new IllegalArgumentException("Matrix has no unique solution");
+        }
         Matrix result = new Matrix(features.getRows(), 1);
         for (int i = 0; i < features.getRows(); i++) {
-            Matrix temp = features.copyMatrix();
+            Matrix temp = getFeatures().copyMatrix();
             temp.setCol(i, target.getCol(0));
             result.setElmt(i, 0, temp.determinant() / features.determinant());
         }
         return result;
     }
 
+    //get jawaban SPL dengan matriks inverse
+    //m merupakan matriks hasil split augmentasi kolom terakhir  
+    public double[] inverseMethodSPL(Matrix feature, Matrix target) {
+        Matrix matrixInverse;
+        matrixInverse = feature.inverse();
+        double[] solution = matrixInverse.multiplyMatrix(target).getCol(0);
+        return solution;
+    }
+    
     // mengecek tipe solusi SPL
     public String checkSolutionType() {
         Matrix augmentedMatrix = augmentedMatrix(features, target);
@@ -97,6 +112,8 @@ public class LinearSystem extends Matrix {
             solution = gaussJordan(features, target);
         } else if (method.equalsIgnoreCase("Cramer")) {
             solution = CramerRule().getCol(0);
+        } else if (method.equalsIgnoreCase("Inverse")) {
+            solution = inverseMethodSPL(features, target);
         } else {
             System.out.println("Metode tidak tersedia");
             return;

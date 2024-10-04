@@ -598,16 +598,8 @@ public class Matrix {
 
         return X;
     }
-    
-    //get jawaban SPL dengan matriks inverse
-    //m merupakan matriks hasil split augmentasi kolom terakhir  
-    public Matrix inverseMethodSPL(Matrix m, Matrix m1) {
-        return m.multiplyMatrix(m1);
-    }
-    
-    //cek SPL parametrik
-    //Hitung pivots untuk mencari rank
-    
+
+    //Hitung rank setelah matrix dibuat jadi matrix eselon baris 
     public int computeRank() {
         Matrix gauss = new Matrix(rows, cols);
         gauss = copyMatrix();
