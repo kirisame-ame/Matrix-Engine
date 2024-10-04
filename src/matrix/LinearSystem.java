@@ -56,9 +56,15 @@ public class LinearSystem extends Matrix {
 
     // menyelesaikan SPL dengan metode Cramer
     public Matrix CramerRule() {
+        if (!getFeatures().isSquare()) {
+            throw new IllegalArgumentException("Matriks is not square");
+        }
+        if (getFeatures().determinant() == 0) {
+            throw new IllegalArgumentException("Matrix has no unique solution");
+        }
         Matrix result = new Matrix(features.getRows(), 1);
         for (int i = 0; i < features.getRows(); i++) {
-            Matrix temp = features.copyMatrix();
+            Matrix temp = getFeatures().copyMatrix();
             temp.setCol(i, target.getCol(0));
             result.setElmt(i, 0, temp.determinant() / features.determinant());
         }
