@@ -607,81 +607,19 @@ public class Matrix {
     
     //cek SPL parametrik
     //Hitung pivots untuk mencari rank
-    public boolean isParametricSolution() {
-        int rank = 0;
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                if (data[i][j] != 0) {
-                    rank++;
-                    break;
-                }
-            }
-        }
-        return rank < cols;
-    }
-    
-    //cek SPL tanpa solusi
-    public boolean isNoSolution() {
-        for (int j = 0; j < cols - 1; j++) {
-            if (getElmt(rows - 1, j) != 0) {
-                return false;
-            }
-        }
-        if (getElmt(rows - 1, cols - 1) != 0) {
-            return true;
-        }
-        return false;
-    }
-  
     
     public int computeRank() {
-        Matrix copy = this.copyMatrix();
+        Matrix gauss = new Matrix(rows, cols);
+        gauss = copyMatrix();
+        gauss.toRowEchelonForm();
+
         int rank = 0;
-
-        for (int col = 0; col < copy.getCols() && rank < copy.getRows(); col++) {
-            int pivotRow = rank;
-            for (int row = rank + 1; row < copy.getRows(); row++) {
-                if (Math.abs(copy.getElmt(row, col)) > Math.abs(copy.getElmt(pivotRow, col))) {
-                    pivotRow = row;
-                }
-            }
-
-            if (copy.getElmt(pivotRow, col) != 0) {
-                copy.swapRows(rank, pivotRow);
-                copy.scaleRow(rank, 1.0 / copy.getElmt(rank, col));
-
-                for (int row = 0; row < copy.getRows(); row++) {
-                    if (row != rank) {
-                        copy.addScaledRow(row, rank, -copy.getElmt(row, col));
-                    }
-                }
-
-                rank++;
+        for (int i = 0; i < rows; i++) {
+            if (gauss.getElmt(i, cols - 1) != 0) {// cukup cek kolom yang terakhir
+                rank++; // karena kalau kolom terakhir 0, semua kolom pada baris ini 0
             }
         }
 
         return rank;
-    }
-
-    //baris dikali dengan scalar
-    public void scaleRow(int row, double scalar) {
-        if (isRowIdxValid(row)) {
-            for (int col = 0; col < getCols(); col++) {
-                data[row][col] *= scalar;
-            }
-        } else {
-            throw new IllegalArgumentException("Invalid row index");
-        }
-    }
-    
-    //OBE penambahan baris dengan baris terskalar 
-    public void addScaledRow(int targetRow, int sourceRow, double scalar) {
-        if (isRowIdxValid(targetRow) && isRowIdxValid(sourceRow)) {
-            for (int col = 0; col < getCols(); col++) {
-                data[targetRow][col] += scalar * data[sourceRow][col];
-            }
-        } else {
-            throw new IllegalArgumentException("Invalid row indices");
-        }
     }
 }
