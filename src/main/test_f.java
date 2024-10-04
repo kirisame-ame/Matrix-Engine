@@ -3,6 +3,7 @@ import matrix.Matrix;
 import matrix.LinearSystem;
 import java.util.Scanner;
 
+
 public class test_f {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -46,6 +47,13 @@ public class test_f {
 
         LinearSystem ls3 = new LinearSystem(m3);
         ls3.solveAndPrintSolutionType("Cramer");
+
+        Matrix m4 = new Matrix(rows, cols);
+        System.out.println("Masukkan elemen matriks ke-4: ");
+        m4.readMatrix(scanner);
+
+        LinearSystem ls4 = new LinearSystem(m4);
+        ls4.solveAndPrintSolutionType("Inverse");
         
         scanner.close();
     }

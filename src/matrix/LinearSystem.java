@@ -71,6 +71,15 @@ public class LinearSystem extends Matrix {
         return result;
     }
 
+    //get jawaban SPL dengan matriks inverse
+    //m merupakan matriks hasil split augmentasi kolom terakhir  
+    public double[] inverseMethodSPL(Matrix feature, Matrix target) {
+        Matrix matrixInverse;
+        matrixInverse = feature.inverse();
+        double[] solution = matrixInverse.multiplyMatrix(target).getCol(0);
+        return solution;
+    }
+    
     // mengecek tipe solusi SPL
     public String checkSolutionType() {
         Matrix augmentedMatrix = augmentedMatrix(features, target);
@@ -103,6 +112,8 @@ public class LinearSystem extends Matrix {
             solution = gaussJordan(features, target);
         } else if (method.equalsIgnoreCase("Cramer")) {
             solution = CramerRule().getCol(0);
+        } else if (method.equalsIgnoreCase("Inverse")) {
+            solution = inverseMethodSPL(features, target);
         } else {
             System.out.println("Metode tidak tersedia");
             return;
