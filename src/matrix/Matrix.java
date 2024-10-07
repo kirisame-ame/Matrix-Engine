@@ -17,7 +17,16 @@ public class Matrix {
         this.cols = cols;
         this.data = new double[rows][cols];
     }
-
+    //convert to matrix
+    public Matrix toMatrix(double[][] data) {
+        Matrix res = new Matrix(data.length, data[0].length);
+        for (int i = 0; i < data.length; i++) {
+            for (int j = 0; j < data[0].length; j++) {
+                res.setElmt(i, j, data[i][j]);
+            }
+        }
+        return res;
+    }
     //Input matriks dari user
     public void readMatrix(Scanner scanner) {
         for (int i = 0; i < rows; i++) {
@@ -593,7 +602,6 @@ public class Matrix {
                 X[i] -= U[i][j] * X[j];
             }
         }
-
         return X;
     }
 
