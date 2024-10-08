@@ -17,8 +17,16 @@ public class Matrix {
         this.cols = cols;
         this.data = new double[rows][cols];
     }
-
-
+    //convert to matrix
+    public Matrix toMatrix(double[][] data) {
+        Matrix res = new Matrix(data.length, data[0].length);
+        for (int i = 0; i < data.length; i++) {
+            for (int j = 0; j < data[0].length; j++) {
+                res.setElmt(i, j, data[i][j]);
+            }
+        }
+        return res;
+    }
     //Input matriks dari user
     public void readMatrix(Scanner scanner) {
         for (int i = 0; i < rows; i++) {
@@ -263,33 +271,6 @@ public class Matrix {
         return m2.determinant() != 0;
     }
 
-    // ----------------------MATRIX MODIFICATION----------------------
-    
-    //get transpose matriks ukuran rows x cols
-    public Matrix transpose() {
-        Matrix transposed = new Matrix(cols, rows);
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                transposed.data[j][i] = this.data[i][j];
-            }
-        }
-        return transposed;
-    }
-
-    //get transpose matriks persegi, ukuran non-persegi tidak valid
-    public void transposeInPlace() {
-        if (rows != cols) {
-            throw new UnsupportedOperationException("In-place transpose only supported for square matrices");
-        }
-        for (int i = 0; i < rows; i++) {
-            for (int j = i + 1; j < cols; j++) {
-                double temp = data[i][j];
-                data[i][j] = data[j][i];
-                data[j][i] = temp;
-            }
-        }
-    }
-
     //----------------------ARITHMETIC APPLICATION----------------------
 
     //tambah atau kurang matriks dengan matriks m2
@@ -334,105 +315,80 @@ public class Matrix {
         return result;
     }
 
-    // ----------------------ROW ELEMENTARY OPERATIONS----------------------
-
-    //cek apakah baris row nol semua
-    //untuk operasi baris elementer solusi parametrik
-    public boolean isRowAllZero(int row) {
-        for (int j = 0; j < getCols(); j++) {
-            if (data[row][j] != 0) {
-                return false;
+    // ----------------------MATRIX MODIFICATION----------------------
+    
+    //get transpose matriks ukuran rows x cols
+    public Matrix transpose() {
+        Matrix transposed = new Matrix(cols, rows);
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                transposed.data[j][i] = this.data[i][j];
             }
         }
-        return true;
+        return transposed;
+    }
+
+    //get transpose matriks persegi, ukuran non-persegi tidak valid
+    public void transposeInPlace() {
+        if (rows != cols) {
+            throw new UnsupportedOperationException("In-place transpose only supported for square matrices");
+        }
+        for (int i = 0; i < rows; i++) {
+            for (int j = i + 1; j < cols; j++) {
+                double temp = data[i][j];
+                data[i][j] = data[j][i];
+                data[j][i] = temp;
+            }
+        }
+    }
+
+    //get matriks adjoint
+    public Matrix adjoint(){
+        return this.cofactor().transpose();
+    }
+
+    //get matriks inverse
+    public Matrix inverse(){
+        if (this.determinant() == 0){
+            throw new UnsupportedOperationException("Determinant is zero, inverse does not exist");
+        }
+        Matrix result = this.adjoint();
+        result.multiplyMatrixConst(1/this.determinant());
+        return result;
     }
               
-    // Fungsi baru untuk mencari kolom non-zero paling kiri
-    public int findLeftmostNonZeroColumn(int startRow) {
-        for (int j = 0; j < getCols(); j++) {
-            for (int i = startRow; i < getRows(); i++) {
-                if (Math.abs(data[i][j]) > 1e-10) { // Menggunakan toleransi untuk floating-point
-                    return j;
-                }
+    //get augmented matriks dari matriks m1 dan m2
+    //return matriks baru
+    public static Matrix augmentedMatrix(Matrix m1, Matrix m2) {
+        if (m1.getRows() != m2.getRows()) {
+            throw new IllegalArgumentException("The number of rows in the matrices must be equal");
+        }
+        Matrix m = new Matrix(m1.getRows(), m1.getCols() + m2.getCols());
+        for (int i = 0; i < m1.getRows(); i++) {
+            for (int j = 0; j < m1.getCols(); j++) {
+                m.setElmt(i, j, m1.getElmt(i, j));
+            }
+            for (int j = 0; j < m2.getCols(); j++) {
+                m.setElmt(i, m1.getCols() + j, m2.getElmt(i, j));
             }
         }
-        return -1; // Jika semua kolom nol
+        return m;
+
+
     }
 
-    // Fungsi baru untuk menukar baris jika elemen pivot adalah nol
-    public void ensureNonZeroPivot(int pivotRow, int pivotCol) {
-        for (int i = pivotRow + 1; i < getRows(); i++) {
-            if (Math.abs(data[i][pivotCol]) > 1e-10) {
-                swapRows(pivotRow, i);
-                return;
+    //split augmented matriks menjadi matriks m1 dan m2
+    //tidak return matriks, langsung set m1 dan m2
+    public static void splitAugmentedMatrix(Matrix m, Matrix m1, Matrix m2) {
+        if (m.getRows() != m1.getRows() + m2.getRows()) {
+            throw new IllegalArgumentException("The number of rows in the matrices must be equal");
+        }
+        for (int i = 0; i < m1.getRows(); i++) {
+            for (int j = 0; j < m1.getCols(); j++) {
+                m1.setElmt(i, j, m.getElmt(i, j));
             }
-        }
-    }
-
-    // Fungsi baru untuk membagi baris dengan pivotnya
-
-    public void dividePivotRow(int pivotRow, int pivotCol) {
-        double pivot = data[pivotRow][pivotCol];
-        for (int j = pivotCol; j < getCols(); j++) {
-            data[pivotRow][j] /= pivot;
-        }
-    }
-
-    // Fungsi baru untuk mengurangkan baris pivot dari baris-baris di bawahnya
-    public void subtractPivotRow(int pivotRow, int pivotCol) {
-        for (int i = pivotRow + 1; i < getRows(); i++) {
-            double factor = data[i][pivotCol];
-            for (int j = pivotCol; j < getCols(); j++) {
-                data[i][j] -= factor * data[pivotRow][j];
-            }
-        }
-    }
-
-
-    // Fungsi baru untuk mencari kolom pivot dalam suatu baris
-    public int findPivotColumn(int row) {
-        for (int j = 0; j < getCols(); j++) {
-            if (Math.abs(data[row][j] - 1.0) < 1e-10) {
-                return j;
-            }
-        }
-        return -1; // Tidak ada pivot (baris semua nol)
-    }
-    // Fungsi utama untuk mengubah matriks menjadi bentuk eselon baris
-    public void toRowEchelonForm() {
-        int pivotRow = 0;
-        int pivotCol;
-
-        while (pivotRow < getRows()) {
-            pivotCol = findLeftmostNonZeroColumn(pivotRow);
-            if (pivotCol == -1)
-                break; // Matriks sudah dalam bentuk eselon baris
-
-            ensureNonZeroPivot(pivotRow, pivotCol);
-            dividePivotRow(pivotRow, pivotCol);
-            subtractPivotRow(pivotRow, pivotCol);
-
-            pivotRow++;
-        }
-    }
-
-    // Fungsi untuk mengubah matriks eselon baris menjadi bentuk eselon baris
-    // tereduksi
-
-    public void toReducedRowEchelonForm() {
-        toRowEchelonForm(); // Pertama, ubah ke bentuk eselon baris
-
-        for (int pivotRow = getRows() - 1; pivotRow >= 0; pivotRow--) {
-            int pivotCol = findPivotColumn(pivotRow);
-
-            if (pivotCol == -1)
-                continue; // Baris ini semua nol
-
-            for (int i = pivotRow - 1; i >= 0; i--) {
-                double factor = data[i][pivotCol];
-                for (int j = pivotCol; j < getCols(); j++) {
-                    data[i][j] -= factor * data[pivotRow][j];
-                }
+            for (int j = 0; j < m2.getCols(); j++) {
+                m2.setElmt(i, j, m.getElmt(i, m1.getCols() + j));
             }
         }
     }
@@ -501,54 +457,105 @@ public class Matrix {
         return result;
     }
 
-    //get matriks adjoint
-    public Matrix adjoint(){
-        return this.cofactor().transpose();
-    }
+    // ----------------------ROW ELEMENTARY OPERATIONS----------------------
 
-    //get matriks inverse
-    public Matrix inverse(){
-        if (this.determinant() == 0){
-            throw new UnsupportedOperationException("Determinant is zero, inverse does not exist");
+    //cek apakah baris row nol semua
+    //untuk operasi baris elementer solusi parametrik
+    public boolean isRowAllZero(int row) {
+        for (int j = 0; j < getCols(); j++) {
+            if (data[row][j] != 0) {
+                return false;
+            }
         }
-        Matrix result = this.adjoint();
-        result.multiplyMatrixConst(1/this.determinant());
-        return result;
+        return true;
     }
               
-    //get augmented matriks dari matriks m1 dan m2
-    //return matriks baru
-    public static Matrix augmentedMatrix(Matrix m1, Matrix m2) {
-        if (m1.getRows() != m2.getRows()) {
-            throw new IllegalArgumentException("The number of rows in the matrices must be equal");
-        }
-        Matrix m = new Matrix(m1.getRows(), m1.getCols() + m2.getCols());
-        for (int i = 0; i < m1.getRows(); i++) {
-            for (int j = 0; j < m1.getCols(); j++) {
-                m.setElmt(i, j, m1.getElmt(i, j));
-            }
-            for (int j = 0; j < m2.getCols(); j++) {
-                m.setElmt(i, m1.getCols() + j, m2.getElmt(i, j));
+    // Fungsi baru untuk mencari kolom non-zero paling kiri
+    public int findLeftmostNonZeroColumn(int startRow) {
+        for (int j = 0; j < getCols(); j++) {
+            for (int i = startRow; i < getRows(); i++) {
+                if (Math.abs(data[i][j]) > 1e-10) { // Menggunakan toleransi untuk floating-point
+                    return j;
+                }
             }
         }
-        return m;
+        return -1; // Jika semua kolom nol
+    }
 
+    // Fungsi baru untuk menukar baris jika elemen pivot adalah nol
+    public void ensureNonZeroPivot(int pivotRow, int pivotCol) {
+        for (int i = pivotRow + 1; i < getRows(); i++) {
+            if (Math.abs(data[i][pivotCol]) > 1e-10) {
+                swapRows(pivotRow, i);
+                return;
+            }
+        }
+    }
 
+    // Fungsi baru untuk membagi baris dengan pivotnya
+    public void dividePivotRow(int pivotRow, int pivotCol) {
+        double pivot = data[pivotRow][pivotCol];
+        for (int j = pivotCol; j < getCols(); j++) {
+            data[pivotRow][j] /= pivot;
+        }
+    }
+
+    // Fungsi baru untuk mengurangkan baris pivot dari baris-baris di bawahnya
+    public void subtractPivotRow(int pivotRow, int pivotCol) {
+        for (int i = pivotRow + 1; i < getRows(); i++) {
+            double factor = data[i][pivotCol];
+            for (int j = pivotCol; j < getCols(); j++) {
+                data[i][j] -= factor * data[pivotRow][j];
+            }
+        }
     }
 
 
-    //split augmented matriks menjadi matriks m1 dan m2
-    //tidak return matriks, langsung set m1 dan m2
-    public static void splitAugmentedMatrix(Matrix m, Matrix m1, Matrix m2) {
-        if (m.getRows() != m1.getRows() + m2.getRows()) {
-            throw new IllegalArgumentException("The number of rows in the matrices must be equal");
-        }
-        for (int i = 0; i < m1.getRows(); i++) {
-            for (int j = 0; j < m1.getCols(); j++) {
-                m1.setElmt(i, j, m.getElmt(i, j));
+    // Fungsi baru untuk mencari kolom pivot dalam suatu baris
+    public int findPivotColumn(int row) {
+        for (int j = 0; j < getCols(); j++) {
+            if (Math.abs(data[row][j] - 1.0) < 1e-10) {
+                return j;
             }
-            for (int j = 0; j < m2.getCols(); j++) {
-                m2.setElmt(i, j, m.getElmt(i, m1.getCols() + j));
+        }
+        return -1; // Tidak ada pivot (baris semua nol)
+    }
+
+    // Fungsi utama untuk mengubah matriks menjadi bentuk eselon baris
+    public void toRowEchelonForm() {
+        int pivotRow = 0;
+        int pivotCol;
+
+        while (pivotRow < getRows()) {
+            pivotCol = findLeftmostNonZeroColumn(pivotRow);
+            if (pivotCol == -1)
+                break; // Matriks sudah dalam bentuk eselon baris
+
+            ensureNonZeroPivot(pivotRow, pivotCol);
+            dividePivotRow(pivotRow, pivotCol);
+            subtractPivotRow(pivotRow, pivotCol);
+
+            pivotRow++;
+        }
+    }
+
+    // Fungsi untuk mengubah matriks eselon baris menjadi bentuk eselon baris
+    // tereduksi
+
+    public void toReducedRowEchelonForm() {
+        toRowEchelonForm(); // Pertama, ubah ke bentuk eselon baris
+
+        for (int pivotRow = getRows() - 1; pivotRow >= 0; pivotRow--) {
+            int pivotCol = findPivotColumn(pivotRow);
+
+            if (pivotCol == -1)
+                continue; // Baris ini semua nol
+
+            for (int i = pivotRow - 1; i >= 0; i--) {
+                double factor = data[i][pivotCol];
+                for (int j = pivotCol; j < getCols(); j++) {
+                    data[i][j] -= factor * data[pivotRow][j];
+                }
             }
         }
     }
@@ -595,7 +602,6 @@ public class Matrix {
                 X[i] -= U[i][j] * X[j];
             }
         }
-
         return X;
     }
 
@@ -611,7 +617,6 @@ public class Matrix {
                 rank++; // karena kalau kolom terakhir 0, semua kolom pada baris ini 0
             }
         }
-
         return rank;
     }
 }

@@ -47,8 +47,8 @@ public class LinearSystem extends Matrix {
     }
 
     // menggunakan metode Gauss
-    // Metode baru untuk menyelesaikan sistem persamaan linear menggunakan metode
-    // Gauss
+
+
     public double[] gauss() {
         Matrix augmented = augmentedMatrix(features, target);
         augmented.toRowEchelonForm();
@@ -64,7 +64,7 @@ public class LinearSystem extends Matrix {
     }
 
     // gunakan metode Gauss-Jordan
-    public double[] gaussJordan(Matrix features, Matrix target) {
+    public double[] gaussJordan() {
         features = getFeatures();
         target = getTarget();
         Matrix gaussJordanMatrix = augmentedMatrix(features, target);
@@ -94,8 +94,7 @@ public class LinearSystem extends Matrix {
     public double[] inverseMethodSPL(Matrix feature, Matrix target) {
         Matrix matrixInverse;
         matrixInverse = feature.inverse();
-        double[] solution = matrixInverse.multiplyMatrix(target).getCol(0);
-        return solution;
+        return matrixInverse.multiplyMatrix(target).getCol(0);
     }
 
     // mengecek tipe solusi SPL
@@ -127,7 +126,7 @@ public class LinearSystem extends Matrix {
         if (method.equalsIgnoreCase("Gauss")) {
             solution = gauss();
         } else if (method.equalsIgnoreCase("Gauss-Jordan")) {
-            solution = gaussJordan(features, target);
+            solution = gaussJordan();
         } else if (method.equalsIgnoreCase("Cramer")) {
             solution = CramerRule().getCol(0);
         } else if (method.equalsIgnoreCase("Inverse")) {
