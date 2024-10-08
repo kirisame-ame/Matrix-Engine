@@ -36,13 +36,31 @@ public class LinearSystem extends Matrix {
         target.displayMatrix();
     }
 
+    // New method to extract matrix data
+    public void extractMatrixData(double[][] sourceData, double[][] U, double[] Y, int rows, int cols) {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols - 1; j++) {
+                U[i][j] = sourceData[i][j];
+            }
+            Y[i] = sourceData[i][cols - 1];
+        }
+    }
+
     // menggunakan metode Gauss
+    // Metode baru untuk menyelesaikan sistem persamaan linear menggunakan metode
+    // Gauss
     public double[] gauss(Matrix features, Matrix target) {
-        features = getFeatures();
-        target = getTarget();
-        Matrix gaussMatrix = augmentedMatrix(features, target);
-        gaussMatrix.toRowEchelonForm();
-        return backwardSubstitution(gaussMatrix.getData(), target.getCol(0));
+        Matrix augmented = augmentedMatrix(features, target);
+        augmented.toRowEchelonForm();
+        int rows = augmented.getRows();
+        int cols = augmented.getCols();
+        double[][] augmentedData = augmented.getData();
+        double[][] U = new double[rows][cols - 1];
+        double[] Y = new double[rows];
+
+        extractMatrixData(augmentedData, U, Y, rows, cols);
+
+        return backwardSubstitution(U, Y);
     }
 
     // gunakan metode Gauss-Jordan
@@ -71,15 +89,15 @@ public class LinearSystem extends Matrix {
         return result;
     }
 
-    //get jawaban SPL dengan matriks inverse
-    //m merupakan matriks hasil split augmentasi kolom terakhir  
+    // get jawaban SPL dengan matriks inverse
+    // m merupakan matriks hasil split augmentasi kolom terakhir
     public double[] inverseMethodSPL(Matrix feature, Matrix target) {
         Matrix matrixInverse;
         matrixInverse = feature.inverse();
         double[] solution = matrixInverse.multiplyMatrix(target).getCol(0);
         return solution;
     }
-    
+
     // mengecek tipe solusi SPL
     public String checkSolutionType() {
         Matrix augmentedMatrix = augmentedMatrix(features, target);
@@ -118,7 +136,7 @@ public class LinearSystem extends Matrix {
             System.out.println("Metode tidak tersedia");
             return;
         }
-        
+
         if (solutionType.equals("Unik")) {
             System.out.println("Solusi unik menggunakan metode " + method + ":");
             for (int i = 0; i < solution.length; i++) {
