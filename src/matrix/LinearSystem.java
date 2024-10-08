@@ -49,7 +49,7 @@ public class LinearSystem extends Matrix {
     // menggunakan metode Gauss
     // Metode baru untuk menyelesaikan sistem persamaan linear menggunakan metode
     // Gauss
-    public double[] gauss(Matrix features, Matrix target) {
+    public double[] gauss() {
         Matrix augmented = augmentedMatrix(features, target);
         augmented.toRowEchelonForm();
         int rows = augmented.getRows();
@@ -125,7 +125,7 @@ public class LinearSystem extends Matrix {
 
         double[] solution;
         if (method.equalsIgnoreCase("Gauss")) {
-            solution = gauss(features, target);
+            solution = gauss();
         } else if (method.equalsIgnoreCase("Gauss-Jordan")) {
             solution = gaussJordan(features, target);
         } else if (method.equalsIgnoreCase("Cramer")) {
