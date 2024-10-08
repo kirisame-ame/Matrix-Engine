@@ -47,6 +47,8 @@ public class LinearSystem extends Matrix {
     }
 
     // menggunakan metode Gauss
+
+
     public double[] gauss() {
         Matrix augmented = augmentedMatrix(features, target);
         augmented.toRowEchelonForm();
