@@ -29,7 +29,7 @@ public class test_w {
 
 
         System.out.println("Masukkan elemen matriks ke-2: ");
-        Matrix X_test = new Matrix(rows,cols-1);
+        Matrix X_test = new Matrix(2,cols-1);
         X_test.readMatrix(scanner);
         System.out.println("Matriks yang diinput: ");
         X_test.displayMatrix();
@@ -37,7 +37,7 @@ public class test_w {
         LinearRegressor lr = new LinearRegressor();
         lr.fit(ls.getFeatures(), ls.getTarget());
         System.out.println("Matriks model: ");
-        lr.getModel().displayMatrix();
+        lr.printModel();
         Matrix X_preds = lr.predict(X_test);
         System.out.println("Matriks prediksi: ");
         X_preds.displayMatrix();
