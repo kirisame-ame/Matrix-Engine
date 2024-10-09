@@ -3,6 +3,7 @@ import java.util.Scanner;
 
 import matrix.Matrix;
 import matrix.LinearSystem;
+import matrix.LinearRegression;
 
 public class test_w {
     public static void main(String[] args) {
@@ -24,8 +25,8 @@ public class test_w {
         ls.printFeatures();
         System.out.println("Matriks target: ");
         ls.printTarget();
-        Matrix result = ls.CramerRule();
-        System.out.println("Hasil dari Cramer Rule: ");
+        Matrix result;
+        result = LinearRegression.linearRegression(ls.getFeatures(), ls.getTarget());
         result.displayMatrix();
     }
 }
