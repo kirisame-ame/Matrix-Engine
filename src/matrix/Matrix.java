@@ -163,7 +163,13 @@ public class Matrix {
     public double[][] getData() {
         return this.data;
     }
-
+    public void fillMatrix(double value) {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                data[i][j] = value;
+            }
+        }
+    }
     //swap baris row1 dan row2
     public void swapRows(int row1, int row2) {
         if (isRowIdxValid(row1) && isRowIdxValid(row2)) {
