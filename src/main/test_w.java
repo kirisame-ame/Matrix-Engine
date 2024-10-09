@@ -1,9 +1,10 @@
 package main;
 import java.util.Scanner;
 
+import matrix.LinearRegressor;
 import matrix.Matrix;
 import matrix.LinearSystem;
-import matrix.Regression;
+
 
 public class test_w {
     public static void main(String[] args) {
@@ -25,8 +26,9 @@ public class test_w {
         ls.printFeatures();
         System.out.println("Matriks target: ");
         ls.printTarget();
-        Matrix result;
-        result = Regression.linearRegression(ls.getFeatures(), ls.getTarget());
-        result.displayMatrix();
+
+        LinearRegressor lr = new LinearRegressor();
+        lr.fit(ls.getFeatures(), ls.getTarget());
+
     }
 }
