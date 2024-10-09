@@ -27,8 +27,19 @@ public class test_w {
         System.out.println("Matriks target: ");
         ls.printTarget();
 
+
+        System.out.println("Masukkan elemen matriks ke-2: ");
+        Matrix X_test = new Matrix(rows,cols-1);
+        X_test.readMatrix(scanner);
+        System.out.println("Matriks yang diinput: ");
+        X_test.displayMatrix();
+
         LinearRegressor lr = new LinearRegressor();
         lr.fit(ls.getFeatures(), ls.getTarget());
-
+        System.out.println("Matriks model: ");
+        lr.getModel().displayMatrix();
+        Matrix X_preds = lr.predict(X_test);
+        System.out.println("Matriks prediksi: ");
+        X_preds.displayMatrix();
     }
 }
