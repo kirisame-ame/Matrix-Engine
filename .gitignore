@@ -9,3 +9,5 @@ src/matrix/test.class
 *.class
 *.pdf
 *.class
+.vscode/c_cpp_properties.json
+.vscode/launch.json
