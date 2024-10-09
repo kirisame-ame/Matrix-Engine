@@ -397,11 +397,9 @@ public class Matrix {
         if (!isSquare()) {
             throw new UnsupportedOperationException("Determinant only supported for square matrices");
         }
-        if (rows == 1) {
-            return data[0][0];
-        } else if (rows == 2) {
-            return data[0][0] * data[1][1] - data[0][1] * data[1][0];
-        } else {
+        if (rows == 1)  return data[0][0];
+        else if (rows == 2) return data[0][0] * data[1][1] - data[0][1] * data[1][0];
+        else {
             double result = 0;
             for (int i = 0; i < rows; i++) {
                 result += Math.pow(-1, i) * data[i][0] * minor(i, 0).determinant();
@@ -410,10 +408,43 @@ public class Matrix {
         }
     }
 
+    public double determinantRedRow() {
+        if (!isSquare()) {
+            throw new UnsupportedOperationException("Determinant only supported for square matrices");
+        }
+        
+        Matrix m = this.copyMatrix();
+        int n = m.getRows();
+        double det = 1.0;
+
+        // Kasus khusus untuk matriks 1x1 dan 2x2
+        if (n == 1) return getElmt(0, 0);
+        if (n == 2) return getElmt(0, 0) * getElmt(1, 1) - getElmt(0, 1) * getElmt(1, 0);
+
+        for (int pivotRow = 0; pivotRow < n; pivotRow++) {
+            int pivotCol = m.findLeftmostNonZeroColumn(pivotRow);
+            
+            if (pivotCol == -1) return 0; // Matrixnya singular
+            
+            if (pivotRow != pivotCol) {
+                m.swapRows(pivotRow, pivotCol);
+                det *= -1; //mengalikan determinan dengan -1 karena ada swap row
+            }
+            
+            m.ensureNonZeroPivot(pivotRow, pivotCol);
+            det *= m.getElmt(pivotRow, pivotCol);
+
+            m.dividePivotRow(pivotRow, pivotCol);
+            m.subtractPivotRow(pivotRow, pivotCol);
+        }
+
+        return det; 
+    }
+
+
     //get minor matriks pada baris i dan kolom j
     public Matrix minor(int i,int j){
         if(!isSquare() || rows == 1){
-
             throw new UnsupportedOperationException("Minor only supported for square matrices");
         }
         Matrix result = new Matrix(rows - 1, cols - 1);
@@ -469,44 +500,48 @@ public class Matrix {
               
     // Fungsi baru untuk mencari kolom non-zero paling kiri
     public int findLeftmostNonZeroColumn(int startRow) {
-        for (int j = 0; j < getCols(); j++) {
-            for (int i = startRow; i < getRows(); i++) {
-                if (Math.abs(data[i][j]) > 1e-10) { // Menggunakan toleransi untuk floating-point
+        for (int j = startRow; j < getCols(); j++) {
+                if (Math.abs(data[startRow][j]) > 1e-10) { // Menggunakan toleransi untuk floating-point
                     return j;
                 }
-            }
         }
         return -1; // Jika semua kolom nol
     }
 
     // Fungsi baru untuk menukar baris jika elemen pivot adalah nol
     public void ensureNonZeroPivot(int pivotRow, int pivotCol) {
-        for (int i = pivotRow + 1; i < getRows(); i++) {
-            if (Math.abs(data[i][pivotCol]) > 1e-10) {
-                swapRows(pivotRow, i);
-                return;
+        if (Math.abs(data[pivotRow][pivotCol]) < 1e-10) {
+            for (int i = pivotRow + 1; i < getRows(); i++) {
+                if (Math.abs(data[i][pivotCol]) > 1e-10) {
+                    swapRows(pivotRow, i);
+                    return;
+                }
+            }
+
+        }
+    }
+
+     // Fungsi untuk membagi baris dengan pivotnya
+    public void dividePivotRow(int pivotRow, int pivotCol) {
+        double pivot = data[pivotRow][pivotCol];
+        if (Math.abs(pivot - 1.0) > 1e-10) {
+            for (int j = pivotCol; j < getCols(); j++) {
+                data[pivotRow][j] /= pivot;
             }
         }
     }
 
-    // Fungsi baru untuk membagi baris dengan pivotnya
-    public void dividePivotRow(int pivotRow, int pivotCol) {
-        double pivot = data[pivotRow][pivotCol];
-        for (int j = pivotCol; j < getCols(); j++) {
-            data[pivotRow][j] /= pivot;
-        }
-    }
-
-    // Fungsi baru untuk mengurangkan baris pivot dari baris-baris di bawahnya
+    // Fungsi untuk mengurangkan baris pivot dari baris-baris di bawahnya
     public void subtractPivotRow(int pivotRow, int pivotCol) {
         for (int i = pivotRow + 1; i < getRows(); i++) {
             double factor = data[i][pivotCol];
-            for (int j = pivotCol; j < getCols(); j++) {
-                data[i][j] -= factor * data[pivotRow][j];
+            if (Math.abs(factor) > 1e-10) {
+                for (int j = pivotCol; j < getCols(); j++) {
+                    data[i][j] -= factor * data[pivotRow][j];
+                }
             }
         }
     }
-
 
     // Fungsi baru untuk mencari kolom pivot dalam suatu baris
     public int findPivotColumn(int row) {
@@ -531,7 +566,6 @@ public class Matrix {
             ensureNonZeroPivot(pivotRow, pivotCol);
             dividePivotRow(pivotRow, pivotCol);
             subtractPivotRow(pivotRow, pivotCol);
-
             pivotRow++;
         }
     }
@@ -601,3 +635,4 @@ public class Matrix {
         return rank;
     }
 }
+

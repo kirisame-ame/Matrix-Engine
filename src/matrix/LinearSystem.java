@@ -46,7 +46,6 @@ public class LinearSystem extends Matrix {
         Matrix Y = new Matrix(rows, 1);
 
         Matrix.splitAugmentedMatrix(augmented, U, Y);        
-
         return backwardSubstitution(U.getData(), Y.getCol(0));
     }
 
