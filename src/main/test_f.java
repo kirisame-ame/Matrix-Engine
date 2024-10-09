@@ -22,7 +22,8 @@ public class test_f {
         // // Input elemen matriks
         // System.out.println("Masukkan elemen matriks: ");
         // m.readMatrix(scanner);
-
+        // m.toRowEchelonForm();
+        // m.displayMatrix();
         // LinearSystem ls = new LinearSystem(m);
         // ls.solveAndPrintSolutionType("Gauss");
 
@@ -33,7 +34,8 @@ public class test_f {
         LinearSystem ls2 = new LinearSystem(matrix2);
         ls2.solveAndPrintSolutionType("Gauss-Jordan");
 
-        
+        double det = matrix2.determinantRedRow();
+        System.out.println("det:" + det);
         // System.out.println("Masukkan elemen matriks ke-3: ");
         // m3.readMatrix(scanner);
 
@@ -65,3 +67,17 @@ public class test_f {
         scanner.close();
     }
 }
+
+/*
+1 2 3 4
+4 9 7 6
+3 5 2 1
+7 5 6 2
+
+1 2 3
+4 9 7
+6 4 2
+
+1 2
+3 4
+*/
