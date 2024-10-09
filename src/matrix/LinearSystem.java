@@ -36,31 +36,18 @@ public class LinearSystem extends Matrix {
         target.displayMatrix();
     }
 
-    // New method to extract matrix data
-    public void extractMatrixData(double[][] sourceData, double[][] U, double[] Y, int rows, int cols) {
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols - 1; j++) {
-                U[i][j] = sourceData[i][j];
-            }
-            Y[i] = sourceData[i][cols - 1];
-        }
-    }
-
-    // menggunakan metode Gauss
-
-
+    // menyelesaikan SPL menggunakan metode Gauss
     public double[] gauss() {
         Matrix augmented = augmentedMatrix(features, target);
         augmented.toRowEchelonForm();
         int rows = augmented.getRows();
         int cols = augmented.getCols();
-        double[][] augmentedData = augmented.getData();
-        double[][] U = new double[rows][cols - 1];
-        double[] Y = new double[rows];
+        Matrix U = new Matrix(rows, cols - 1);
+        Matrix Y = new Matrix(rows, 1);
 
-        extractMatrixData(augmentedData, U, Y, rows, cols);
+        Matrix.splitAugmentedMatrix(augmented, U, Y);        
 
-        return backwardSubstitution(U, Y);
+        return backwardSubstitution(U.getData(), Y.getCol(0));
     }
 
     // gunakan metode Gauss-Jordan

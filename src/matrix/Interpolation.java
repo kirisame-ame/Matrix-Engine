@@ -1,7 +1,7 @@
 package matrix;
 
 public class Interpolation {
-    private Matrix coefficients;
+    private double[] coefficients;
     private double[] x;
     private double[] y;
     private int n;
@@ -12,6 +12,7 @@ public class Interpolation {
         this.n = x.length;
         calculateCoefficients();
     }
+
 
     private void calculateCoefficients() {
         Matrix A = new Matrix(n, n);
@@ -25,22 +26,17 @@ public class Interpolation {
         }
 
         LinearSystem system = new LinearSystem(Matrix.augmentedMatrix(A, b));
-        double[] solution = system.gauss();
-        
-        coefficients = new Matrix(n, 1);
-        for (int i = 0; i < n; i++) {
-            coefficients.setElmt(i, 0, solution[i]);
-        }
+        coefficients = system.gauss();
     }
 
     public double[] getPolynomial() {
-        return coefficients.getCol(0);
+        return coefficients;
     }
 
     public double interpolate(double x) {
         double result = 0;
         for (int i = 0; i < n; i++) {
-            result += coefficients.getElmt(i, 0) * Math.pow(x, i);
+            result += coefficients[i] * Math.pow(x, i);
         }
         return result;
     }

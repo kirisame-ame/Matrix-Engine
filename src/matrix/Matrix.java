@@ -380,9 +380,6 @@ public class Matrix {
     //split augmented matriks menjadi matriks m1 dan m2
     //tidak return matriks, langsung set m1 dan m2
     public static void splitAugmentedMatrix(Matrix m, Matrix m1, Matrix m2) {
-        if (m.getRows() != m1.getRows() + m2.getRows()) {
-            throw new IllegalArgumentException("The number of rows in the matrices must be equal");
-        }
         for (int i = 0; i < m1.getRows(); i++) {
             for (int j = 0; j < m1.getCols(); j++) {
                 m1.setElmt(i, j, m.getElmt(i, j));
@@ -557,22 +554,6 @@ public class Matrix {
                     data[i][j] -= factor * data[pivotRow][j];
                 }
             }
-        }
-    }
-    
-    //split matriks menjadi matriks m1 dan array 1 dimensi m2
-    public void splitForBackSubs(Matrix m, Matrix m1, double[] m2) {
-        if (m.getCols() != m1.getCols() + 1) {
-            throw new IllegalArgumentException("The number of columns in the matrices must be equal");
-        }
-        for (int i = 0; i < m1.getRows(); i++) {
-            for (int j = 0; j < m1.getCols(); j++) {
-                m1.setElmt(i, j, m.getElmt(i, j));
-            }
-        }
-        
-        for (int i = 0; i < m1.getRows(); i++) {
-            m2[i] = m.getElmt(i, m.getCols() - 1);
         }
     }
     
