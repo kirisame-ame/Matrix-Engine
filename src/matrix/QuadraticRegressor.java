@@ -77,7 +77,7 @@ public class QuadraticRegressor {
         System.out.println();
     }
     public Matrix predict(Matrix features) {
-        // Adds the 1 bias multiplier to every row
-        return biasedMatrix(features).multiplyMatrix(this.model);
+        // Expands the matrix first before transforming
+        return expandedMatrix(features).multiplyMatrix(this.model);
     }
 }
