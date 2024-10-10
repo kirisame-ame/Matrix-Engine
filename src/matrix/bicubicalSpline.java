@@ -22,71 +22,66 @@ public class bicubicalSpline {
 
         int x = 0;
         int y = 0;
-        int row = 0;
-        int col = 0;
+        int i = 0;
+        int j = 0;
         int mode = 0;
-        int val = 0;
+        double val = 0;
 
-        while (x < 2 && y < 2 && mode < 4 && col < 16 && row < 16){
-            for (int i = 0; i < X.getCols(); i++){
-                for (int j = 0; j < X.getRows(); j++){
-                    switch (mode){
 
-                        case 0:
-                        
-                        val = (int) (Math.pow(x, i) * Math.pow(y, j));
-
-                        break;
-
-                        case 1:
-
-                        val = (int) (i * Math.pow(x, i-1) * Math.pow(y, j));
-
-                        break;
-
-                        case 2:
-
-                        val = (int) (j * Math.pow(x, i) * Math.pow(y, j-1));
-
-                        break;
-
-                        case 3:
-
-                        val = (int) (i * j * Math.pow(x, i-1) * Math.pow(y, j-1));
-
-                        break;
-
-                    }
-
-                    X.setElmt(row, col, val);
-
-                    if (x == 0 && y == 0){
-                        x++;
-                    } 
-                    else if (x == 1 && y == 0){
-                        x = 0;
-                        y++;
-                    } 
-                    else if (x == 0 && y == 1){
-                        x++;
-                    } 
-                    else if (x == 1 && y == 1){
-                        x = 0;
-                        y = 0;
-                        mode++;
-                    }
-
-                    if (col == 15){
-                        col = 0;
-                        row++;
-                    } 
-                    else {
-                        col++;
-                    }
-
+        for (int row = 0; row < 16; row++){
+            for (int col = 0; col < 16; col++){
+                val = 0;
+                System.out.println("Row: " + row + " Col: " + col + " i: " + i + " j: " + j + " x: " + x + " y: " + y + " mode: " + mode);
+                if (mode == 0){
+                    val = Math.pow(x, i) * Math.pow(y, j);
+                } 
+                else if (mode == 1){
+                    val = i * Math.pow(x, i-1) * Math.pow(y, j);
+                } 
+                else if (mode == 2){
+                    val = j * Math.pow(x, i) * Math.pow(y, j-1);
+                } 
+                else if (mode == 3){
+                    val = i * j * Math.pow(x, i-1) * Math.pow(y, j-1);
                 }
+
+                if (Double.isNaN(val)){
+                    val = 0;
+                }
+
+                if (i < 3){
+                    i++;
+                }
+                else if (i == 3 && j < 3){
+                    i = 0;
+                    j++;    
+                }
+                else if(i == 3 && j == 3){
+                    i = 0;
+                    j = 0;
+                }
+
+                X.setElmt(row, col, val);
             }
+
+            if (x == 0 && y == 0){
+                x++;
+            }
+            else if (x == 1 && y == 0){
+                x = 0;
+                y++;
+            }
+            else if (x == 0 && y == 1){
+                x++;
+            }
+            else if (x == 1 && y == 1){
+                x = 0;
+                y = 0;
+                mode++;
+            }
+
         }
+        
 
         return X;
     }
@@ -121,9 +116,14 @@ public class bicubicalSpline {
         y = resizeY(y); 
 
         // calculate result
-        this.result = X.inverse().multiplyMatrix(y);
+        System.out.println("Getting inverse of result...");
+        X = X.inverse();
+        System.out.println("Inverse acquired");
+        X.displayMatrix();
 
-        // display matrix
+        System.out.println("Multiplying X and y...");
+        this.result = X.multiplyMatrix(y);
+        System.out.println("Multiplication completed");
         this.result.displayMatrix();
 
     }
@@ -132,7 +132,7 @@ public class bicubicalSpline {
         return this.result;
     }
 
-    public double predict(int x, int y){
+    public double predict(double x, double y){
             
             // Formula:
             // f(x,y) = Σ (j = [0:3]) Σ (i = [0:3]) aij . x^i . y^j
