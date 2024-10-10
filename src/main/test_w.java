@@ -4,6 +4,7 @@ import java.util.Scanner;
 import matrix.LinearRegressor;
 import matrix.Matrix;
 import matrix.LinearSystem;
+import matrix.QuadraticRegressor;
 
 
 public class test_w {
@@ -34,12 +35,22 @@ public class test_w {
         System.out.println("Matriks yang diinput: ");
         X_test.displayMatrix();
 
-        LinearRegressor lr = new LinearRegressor();
-        lr.fit(ls.getFeatures(), ls.getTarget());
+//        LinearRegressor lr = new LinearRegressor();
+//        lr.fit(ls.getFeatures(), ls.getTarget());
+//        System.out.println("Matriks model: ");
+//        lr.printModel();
+//        Matrix X_preds = lr.predict(X_test);
+//        System.out.println("Matriks prediksi: ");
+//        X_preds.displayMatrix();
+
+        QuadraticRegressor qr = new QuadraticRegressor();
+        qr.fit(ls.getFeatures(), ls.getTarget());
         System.out.println("Matriks model: ");
-        lr.printModel();
-        Matrix X_preds = lr.predict(X_test);
+        qr.getModel().displayMatrix();
+        System.out.println("Hasil regresi: ");
+        qr.printModel();
+        Matrix X_preds2 = qr.predict(X_test);
         System.out.println("Matriks prediksi: ");
-        X_preds.displayMatrix();
+        X_preds2.displayMatrix();
     }
 }
