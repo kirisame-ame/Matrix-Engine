@@ -362,6 +362,34 @@ public class Matrix {
         result.multiplyMatrixConst(1/this.determinant());
         return result;
     }
+
+    //get matriks inverse dengan matriks eselon tereduksi
+    public Matrix inverseRedRow(){
+        
+        //create empty matrix as output
+        Matrix inverse = new Matrix(this.rows, this.cols);
+
+        Matrix identity = createIdentityMatrix();
+
+        // identity.displayMatrix();
+        // System.out.println("--------------------------------------------------------------------------------------------------------------------------");
+        // this.displayMatrix();
+        // System.out.println("--------------------------------------------------------------------------------------------------------------------------");
+        Matrix combine = augmentedMatrix(this, identity);
+
+        // Matrix combine2 = combine;
+        // combine2.toRowEchelonForm();
+        // combine2.displayMatrix();
+        // System.out.println("--------------------------------------------------------------------------------------------------------------------------");
+        combine.toReducedRowEchelonForm();
+
+        // combine.displayMatrix();
+        // System.out.println("--------------------------------------------------------------------------------------------------------------------------");
+
+        splitAugmentedMatrix(combine, identity, inverse);
+
+        return inverse;
+    }
               
     //get augmented matriks dari matriks m1 dan m2
     //return matriks baru
