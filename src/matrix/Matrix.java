@@ -8,7 +8,7 @@ public class Matrix {
     private double[][] data;
     private int rows;
     private int cols;
-
+    private static final double EPSILON = 1e-10;
     // ----------------------KONSTRUKTOR DAN SELEKTOR----------------------
     
     //Konstruktor matriks dengan ukuran tertentu
@@ -323,7 +323,7 @@ public class Matrix {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
                 transposed.data[j][i] = this.data[i][j];
-            }
+            } 
         }
         return transposed;
     }
@@ -393,6 +393,7 @@ public class Matrix {
     // -------------------------------------Determinant-------------------------------------------
 
     //get determinant matriks, hanya matriks square
+    // menggunakan metode kofaktor
     public double determinant() {
         if (!isSquare()) {
             throw new UnsupportedOperationException("Determinant only supported for square matrices");
@@ -408,6 +409,7 @@ public class Matrix {
         }
     }
 
+    // menggunakan metode reduction row
     public double determinantRedRow() {
         if (!isSquare()) {
             throw new UnsupportedOperationException("Determinant only supported for square matrices");
@@ -438,7 +440,7 @@ public class Matrix {
             m.subtractPivotRow(pivotRow, pivotCol);
         }
 
-        return det; 
+        return Math.round(det); 
     }
 
 
@@ -497,96 +499,95 @@ public class Matrix {
         }
         return true;
     }
-              
+    // Fungsi utama untuk mengubah matriks menjadi bentuk eselon baris
+    public void toRowEchelonForm() {
+        int lead = 0;
+        for (int r = 0; r < rows; r++) {
+            if (lead >= cols) return;
+            int i = findLeftmostNonZeroColumn(r);
+            if (i != r) swapRows(i, r);
+            ensureNonZeroPivot(r, lead);
+            dividePivotRow(r, lead);
+            subtractPivotRow(r, lead);
+            lead++;
+        }
+    }
     // Fungsi baru untuk mencari kolom non-zero paling kiri
     public int findLeftmostNonZeroColumn(int startRow) {
-        for (int j = startRow; j < getCols(); j++) {
-                if (Math.abs(data[startRow][j]) > 1e-10) { // Menggunakan toleransi untuk floating-point
-                    return j;
+        for (int j = startRow; j < cols; j++) {
+            for (int i = startRow; i < rows; i++) {
+                if (Math.abs(data[i][j]) > EPSILON) { // Menggunakan toleransi untuk floating-point
+                    return i;
                 }
+            }
         }
-        return -1; // Jika semua kolom nol
+        return startRow;
     }
-
-    // Fungsi baru untuk menukar baris jika elemen pivot adalah nol
+     // Fungsi baru untuk menukar baris jika elemen pivot adalah nol
     public void ensureNonZeroPivot(int pivotRow, int pivotCol) {
-        if (Math.abs(data[pivotRow][pivotCol]) < 1e-10) {
-            for (int i = pivotRow + 1; i < getRows(); i++) {
-                if (Math.abs(data[i][pivotCol]) > 1e-10) {
+        if (Math.abs(data[pivotRow][pivotCol]) < EPSILON) {
+            for (int i = pivotRow + 1; i < rows; i++) {
+                if (Math.abs(data[i][pivotCol]) > EPSILON) {
                     swapRows(pivotRow, i);
                     return;
                 }
             }
-
         }
     }
-
-     // Fungsi untuk membagi baris dengan pivotnya
+    // Fungsi untuk membagi baris dengan pivotnya
     public void dividePivotRow(int pivotRow, int pivotCol) {
         double pivot = data[pivotRow][pivotCol];
-        if (Math.abs(pivot - 1.0) > 1e-10) {
-            for (int j = pivotCol; j < getCols(); j++) {
+        if (Math.abs(pivot) > EPSILON) {
+            for (int j = pivotCol; j < cols; j++) {
                 data[pivotRow][j] /= pivot;
             }
         }
     }
-
-    // Fungsi untuk mengurangkan baris pivot dari baris-baris di bawahnya
+    // Fungsi untuk mengurangkan baris pivot dari baris-baris di bawahnya  
     public void subtractPivotRow(int pivotRow, int pivotCol) {
-        for (int i = pivotRow + 1; i < getRows(); i++) {
+        for (int i = pivotRow + 1; i < rows; i++) {
             double factor = data[i][pivotCol];
-            if (Math.abs(factor) > 1e-10) {
-                for (int j = pivotCol; j < getCols(); j++) {
-                    data[i][j] -= factor * data[pivotRow][j];
-                }
+            for (int j = pivotCol; j < cols; j++) {
+                data[i][j] -= factor * data[pivotRow][j];
             }
-        }
-    }
-
-    // Fungsi baru untuk mencari kolom pivot dalam suatu baris
-    public int findPivotColumn(int row) {
-        for (int j = 0; j < getCols(); j++) {
-            if (Math.abs(data[row][j] - 1.0) < 1e-10) {
-                return j;
-            }
-        }
-        return -1; // Tidak ada pivot (baris semua nol)
-    }
-
-    // Fungsi utama untuk mengubah matriks menjadi bentuk eselon baris
-    public void toRowEchelonForm() {
-        int pivotRow = 0;
-        int pivotCol;
-
-        while (pivotRow < getRows()) {
-            pivotCol = findLeftmostNonZeroColumn(pivotRow);
-            if (pivotCol == -1)
-                break; // Matriks sudah dalam bentuk eselon baris
-
-            ensureNonZeroPivot(pivotRow, pivotCol);
-            dividePivotRow(pivotRow, pivotCol);
-            subtractPivotRow(pivotRow, pivotCol);
-            pivotRow++;
         }
     }
 
     // Fungsi untuk mengubah matriks eselon baris menjadi bentuk eselon baris
     // tereduksi
-
     public void toReducedRowEchelonForm() {
-        toRowEchelonForm(); // Pertama, ubah ke bentuk eselon baris
-
-        for (int pivotRow = getRows() - 1; pivotRow >= 0; pivotRow--) {
-            int pivotCol = findPivotColumn(pivotRow);
-
-            if (pivotCol == -1)
-                continue; // Baris ini semua nol
-
-            for (int i = pivotRow - 1; i >= 0; i--) {
-                double factor = data[i][pivotCol];
-                for (int j = pivotCol; j < getCols(); j++) {
-                    data[i][j] -= factor * data[pivotRow][j];
-                }
+        toRowEchelonForm();
+        for (int r = rows - 1; r >= 0; r--) {
+            int lead = findPivotColumn(r);
+            if (lead != -1) {
+                eliminateAbovePivot(r, lead);
+            }
+        }
+        roundToZero();
+    }
+    // Fungsi baru untuk mencari kolom pivot dalam suatu baris
+    public int findPivotColumn(int row) {
+        for (int j = 0; j < cols; j++) {
+            if (Math.abs(data[row][j] - 1.0) < EPSILON) {
+                return j;
+            }
+        }
+        return -1; // Tidak ada pivot (baris semua nol)
+    }
+    // Fungsi untuk mengurangkan baris pivot dari baris-baris di bawahnya
+    private void eliminateAbovePivot(int pivotRow, int pivotCol) {
+        for (int i = pivotRow - 1; i >= 0; i--) {
+            double factor = data[i][pivotCol];
+            for (int j = pivotCol; j < cols; j++) {
+                data[i][j] -= factor * data[pivotRow][j];
+            }
+        }
+    }
+    // Fungsi untuk membulatkan elemen bernilai sangat kecil ke nol
+    private void roundToZero() {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (Math.abs(data[i][j]) < EPSILON) data[i][j] = 0;
             }
         }
     }

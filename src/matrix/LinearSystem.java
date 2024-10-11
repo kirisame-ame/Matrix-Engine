@@ -1,5 +1,5 @@
 package matrix;
-
+// import matrix.Matrix;
 public class LinearSystem extends Matrix {
 
     private Matrix features; // A in Ax=b
@@ -108,35 +108,94 @@ public class LinearSystem extends Matrix {
             return;
         }
 
-        double[] solution;
-        if (method.equalsIgnoreCase("Gauss")) {
-            solution = gauss();
-        } else if (method.equalsIgnoreCase("Gauss-Jordan")) {
-            solution = gaussJordan();
-        } else if (method.equalsIgnoreCase("Cramer")) {
-            solution = CramerRule().getCol(0);
-        } else if (method.equalsIgnoreCase("Inverse")) {
-            solution = inverseMethodSPL(features, target);
-        } else {
-            System.out.println("Metode tidak tersedia");
-            return;
-        }
+        Matrix augmented = augmentedMatrix(features, target);
+        augmented.toRowEchelonForm();
 
         if (solutionType.equals("Unik")) {
-            System.out.println("Solusi unik menggunakan metode " + method + ":");
-            for (int i = 0; i < solution.length; i++) {
-                System.out.println("X" + (i + 1) + " = " + solution[i]);
-            }
+            printUniqueSolution(method);
         } else if (solutionType.equals("Parametrik")) {
-            System.out.println("SPL memiliki solusi parametrik.");
-            System.out.println("Bentuk umum solusi (menggunakan metode " + method + "):");
-            for (int i = 0; i < solution.length; i++) {
-                if (Math.abs(solution[i]) < 1e-6) {
-                    System.out.println("X" + (i + 1) + " = t" + (i + 1) + " (parameter bebas)");
-                } else {
-                    System.out.println("X" + (i + 1) + " = " + solution[i] + " + c * t" + (i + 1));
+            printConciseParametricSolution(augmented);
+        }
+    }
+
+    // print solusi SPL unik
+    private void printUniqueSolution(String method) {
+        double[] solution = getSolutionByMethod(method);
+        if (solution == null) return;
+
+        System.out.println("Solusi unik menggunakan metode " + method + ":");
+        for (int i = 0; i < solution.length; i++) {
+            System.out.println("X" + (i + 1) + " = " + solution[i]);
+        }
+    }
+    // get solusi SPL menggunakan metode tertentu
+    private double[] getSolutionByMethod(String method) {
+        switch (method.toLowerCase()) {
+            case "gauss":
+                return gauss();
+            case "gauss-jordan":
+                return gaussJordan();
+            case "cramer":
+                return CramerRule().getCol(0);
+            case "inverse":
+                return inverseMethodSPL(features, target);
+            default:
+                System.out.println("Metode tidak tersedia");
+                return null;
+        }
+    }
+    // print solusi SPL parametrik
+    // m merupakan matriks split augmentasi kolom terakhir
+    private void printConciseParametricSolution(Matrix augmented) {
+        System.out.println("SPL memiliki solusi parametrik.");
+        System.out.println("Bentuk umum solusi:");
+
+        int paramCount = 1; // Variabel parametrik
+        boolean[] isFreeVariable = new boolean[augmented.getCols() - 1]; // Variabel bebas 
+        // Cetak solusi parametrik
+        for (int i = 0; i < augmented.getRows(); i++) {
+            if (!augmented.isRowAllZero(i)) { // Jika bukan baris semua nol maka cetak solusi
+                int pivotCol = augmented.findPivotColumn(i); // Cari pivot col
+                if (pivotCol != -1) { // Jika pivot col ditemukan maka cetak solusi
+                    printPivotVariableSolution(augmented, i, pivotCol, isFreeVariable);
                 }
             }
         }
+        // Cetak variabel bebas
+        for (int j = 0; j < augmented.getCols() - 1; j++) {
+            if (!isFreeVariable[j]) { // Jika bukan variabel bebas maka cetak solusi
+                System.out.println("X" + (j + 1) + " = t" + paramCount + " (parameter bebas)");
+                paramCount++;
+            }
+        }
     }
+    // print pivot variable solution
+    private void printPivotVariableSolution(Matrix augmented, int row, int pivotCol, boolean[] isFreeVariable) {
+        System.out.print("X" + (pivotCol + 1) + " = ");
+        isFreeVariable[pivotCol] = true;
+        // Cetak koefisien terbesar
+        double constant = augmented.getElmt(row, augmented.getCols() - 1);
+        if (Math.abs(constant) > 1e-10) {
+            System.out.print(String.format("%.2f", constant));
+        }
+        // Cetak koefisien terkecil
+        boolean firstTerm = true;
+        for (int j = pivotCol + 1; j < augmented.getCols() - 1; j++) {
+            double coeff = -augmented.getElmt(row, j); // Negasi koefisien untuk pindah ruas
+            if (Math.abs(coeff) > 1e-10) {
+                if (firstTerm && constant == 0) { 
+                    System.out.print(coeff < 0 ? "-" : "");
+                } else { 
+                    System.out.print(coeff > 0 ? " + " : " - ");
+                }
+                if (Math.abs(coeff) != 1) { // Jika koefisien bukan 1 atau -1 maka cetak koefisien
+                    System.out.print(String.format("%.2f", Math.abs(coeff)));
+                }
+                System.out.print("X" + (j + 1));
+                firstTerm = false;
+            }
+        }
+        System.out.println();
+    }
+
 }
