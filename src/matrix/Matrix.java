@@ -163,7 +163,13 @@ public class Matrix {
     public double[][] getData() {
         return this.data;
     }
-
+    public void fillMatrix(double value) {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                data[i][j] = value;
+            }
+        }
+    }
     //swap baris row1 dan row2
     public void swapRows(int row1, int row2) {
         if (isRowIdxValid(row1) && isRowIdxValid(row2)) {
@@ -355,6 +361,34 @@ public class Matrix {
         Matrix result = this.adjoint();
         result.multiplyMatrixConst(1/this.determinant());
         return result;
+    }
+
+    //get matriks inverse dengan matriks eselon tereduksi
+    public Matrix inverseRedRow(){
+        
+        //create empty matrix as output
+        Matrix inverse = new Matrix(this.rows, this.cols);
+
+        Matrix identity = createIdentityMatrix();
+
+        // identity.displayMatrix();
+        // System.out.println("--------------------------------------------------------------------------------------------------------------------------");
+        // this.displayMatrix();
+        // System.out.println("--------------------------------------------------------------------------------------------------------------------------");
+        Matrix combine = augmentedMatrix(this, identity);
+
+        // Matrix combine2 = combine;
+        // combine2.toRowEchelonForm();
+        // combine2.displayMatrix();
+        // System.out.println("--------------------------------------------------------------------------------------------------------------------------");
+        combine.toReducedRowEchelonForm();
+
+        // combine.displayMatrix();
+        // System.out.println("--------------------------------------------------------------------------------------------------------------------------");
+
+        splitAugmentedMatrix(combine, identity, inverse);
+
+        return inverse;
     }
               
     //get augmented matriks dari matriks m1 dan m2
