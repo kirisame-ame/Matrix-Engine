@@ -1,10 +1,10 @@
 package matrix;
 
-public class bicubicalSpline {
+public class BicubicalSpline {
 
     private Matrix result;
     
-    public bicubicalSpline(){
+    public BicubicalSpline(){
         
     }
     
@@ -116,16 +116,9 @@ public class bicubicalSpline {
         y = resizeY(y); 
 
         // calculate result
-        System.out.println("Getting inverse of result...");
-        X = X.inverse();
-        System.out.println("Inverse acquired");
-        X.displayMatrix();
+        X = X.inverseRedRow();
 
-        System.out.println("Multiplying X and y...");
         this.result = X.multiplyMatrix(y);
-        System.out.println("Multiplication completed");
-        this.result.displayMatrix();
-
     }
 
     public Matrix getResult(){
