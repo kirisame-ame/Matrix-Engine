@@ -125,22 +125,29 @@ public class BicubicalSpline {
         return this.result;
     }
 
-    public double predict(double x, double y){
+    public Matrix predict(Matrix xy){
             
             // Formula:
             // f(x,y) = Σ (j = [0:3]) Σ (i = [0:3]) aij . x^i . y^j
+
+            // Matrix xy untuk setiap baris i menyimpan (xi, yi)
             
-            int row = 0;
-            double val = 0;
-    
-            for (int j = 0; j < 4; j++){
-                for (int i = 0; i < 4; i++){
-                    val += this.result.getElmt(row, 0) * Math.pow(x, i) * Math.pow(y, j);
-                    row++;
+            Matrix result = new Matrix(xy.getRows(), 1);
+
+            for (int k = 0; k < xy.getRows(); k++){
+                double val = 0;
+                double x = xy.getElmt(k, 0);
+                double y = xy.getElmt(k, 1);
+                for (int j = 0; j < 4; j++){
+                    for (int i = 0; i < 4; i++){
+                        val += this.result.getElmt(i , j) * Math.pow(x, i) * Math.pow(y, j);
+                    }
                 }
+                result.setElmt(k, 0, val);
             }
 
-            return val;
+            return result;
+
     }
 
 }
