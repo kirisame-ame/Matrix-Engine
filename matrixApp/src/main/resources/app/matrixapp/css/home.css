@@ -1,0 +1,12 @@
+.home{
+    -fx-background-color: #0d0d1a;
+}
+
+.side-bar{
+    -fx-background-color: #141420;
+    -fx-border-width:1;
+    -fx-border-color:#262630;
+}
+.button{
+    -fx-background-color: #6645eb;
+}

@@ -1,17 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.Glow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" prefHeight="298.0" prefWidth="302.0" spacing="20.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23" fx:controller="app.matrixapp.HelloController">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-    </padding>
-
-    <Label fx:id="welcomeText" />
-    <Button onAction="#onHelloButtonClick" text="Hello!" />
-   <Button fx:id="counterButton" mnemonicParsing="false" onAction="#onCounterButtonClick" text="Click Me!" />
-   <Label fx:id="counterLabel" alignment="CENTER" prefHeight="22.0" prefWidth="112.0" text="Click Count : 0" textAlignment="CENTER" />
-</VBox>
+<HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="home" stylesheets="@css/home.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1">
+   <AnchorPane fx:id="side_bar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="100.0" styleClass="side-bar" stylesheets="@css/home.css">
+      <children>
+         <ImageView fitHeight="70.0" fitWidth="70.0" layoutX="15.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+               <Image url="@images/arona_icon.png" />
+            </image>
+         </ImageView>
+         <Button layoutX="24.0" layoutY="152.0" mnemonicParsing="false" text="Button" />
+      </children>
+   </AnchorPane>
+   <VBox prefHeight="200.0" prefWidth="700.0">
+      <children>
+         <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="100.0" prefWidth="700.0" text="The Matrix Engine" textAlignment="CENTER" textFill="#fdfdfd">
+            <font>
+               <Font name="Futurist Fixed-width" size="36.0" />
+            </font>
+            <effect>
+               <Glow />
+            </effect>
+         </Label>
+      </children>
+   </VBox>
+</HBox>
