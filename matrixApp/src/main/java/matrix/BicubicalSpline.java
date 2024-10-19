@@ -31,7 +31,7 @@ public class BicubicalSpline {
         for (int row = 0; row < 16; row++){
             for (int col = 0; col < 16; col++){
                 val = 0;
-                System.out.println("Row: " + row + " Col: " + col + " i: " + i + " j: " + j + " x: " + x + " y: " + y + " mode: " + mode);
+                // System.out.println("Row: " + row + " Col: " + col + " i: " + i + " j: " + j + " x: " + x + " y: " + y + " mode: " + mode);
                 if (mode == 0){
                     val = Math.pow(x, i) * Math.pow(y, j);
                 } 
@@ -132,21 +132,25 @@ public class BicubicalSpline {
 
             // Matrix xy untuk setiap baris i menyimpan (xi, yi)
             
-            Matrix result = new Matrix(xy.getRows(), 1);
+            Matrix output = new Matrix(xy.getRows(), 2);
 
             for (int k = 0; k < xy.getRows(); k++){
                 double val = 0;
                 double x = xy.getElmt(k, 0);
                 double y = xy.getElmt(k, 1);
-                for (int j = 0; j < 4; j++){
-                    for (int i = 0; i < 4; i++){
-                        val += this.result.getElmt(i , j) * Math.pow(x, i) * Math.pow(y, j);
+                
+                int l = 0;
+
+                for (double j = 0; j < 4; j++){
+                    for (double i = 0; i < 4; i++){
+                        val += this.result.getElmt(l, 0) * Math.pow(x, i) * Math.pow(y, j);
+                        l++;
                     }
                 }
-                result.setElmt(k, 0, val);
+                output.setElmt(k, 0, val);
             }
 
-            return result;
+            return output;
 
     }
 
