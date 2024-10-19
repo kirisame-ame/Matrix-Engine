@@ -13,7 +13,7 @@ public class HelloApplication extends Application {
         try {
         System.out.println("Resource URL: " + HelloApplication.class.getResource("/app/matrixapp/hello-view.fxml"));
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/app/matrixapp/hello-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+        Scene scene = new Scene(fxmlLoader.load(), 1024, 720);
         stage.setTitle("Hello!");
         stage.setScene(scene);
         stage.show();
