@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="app.matrixapp.Controller"
+            prefHeight="400.0" prefWidth="600.0">
+    <top>
+        <MenuBar>
+            <Menu text="Menu">
+                <MenuItem text="Sistem Persamaan Linier" onAction="#handleMainMenu('SPL')"/>
+                <MenuItem text="Determinan" onAction="#handleMainMenu('Determinan')"/>
+                <MenuItem text="Matriks balikan" onAction="#handleMainMenu('MatriksBalikan')"/>
+                <MenuItem text="Interpolasi Polinom" onAction="#handleMainMenu('InterpolasiPolinom')"/>
+                <MenuItem text="Interpolasi Bicubic Spline" onAction="#handleMainMenu('InterpolasiBicubicSpline')"/>
+                <MenuItem text="Regresi linier berganda" onAction="#handleMainMenu('RegresiLinierBerganda')"/>
+                <MenuItem text="Interpolasi Gambar (Bonus)" onAction="#handleMainMenu('InterpolasiGambar')"/>
+                <MenuItem text="Keluar" onAction="#handleMainMenu('Keluar')"/>
+            </Menu>
+        </MenuBar>
+    </top>
+    <center>
+        <VBox alignment="CENTER" spacing="10">
+            <TextArea fx:id="inputArea" promptText="Masukkan matriks di sini..." />
+            <HBox alignment="CENTER" spacing="10">
+                <Button text="Hitung" onAction="#handleCalculate"/>
+                <Button text="Baca dari File" onAction="#handleReadFile"/>
+            </HBox>
+            <TextArea fx:id="outputArea" editable="false" promptText="Hasil akan ditampilkan di sini..." />
+        </VBox>
+    </center>
+    <bottom>
+        <Label text="Kelompok 5" />
+    </bottom>
+</BorderPane>
