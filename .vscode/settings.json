@@ -6,7 +6,7 @@
     "java.project.outputPath": "bin",
     "java.project.referencedLibraries": [
         "lib/**/*.jar",
-        "javafx-sdk-23/lib/*.jar",
+        "javafx-sdk-23/lib/*.jar"
     ],
     "java.project.sourcePaths": ["src"],
     "java.completion.filteredTypes": [
@@ -21,6 +21,6 @@
         "name": "JavaSE-23",
         "path": "C:/Program Files/Java/jdk-23",
         "default": true
-    },
+    }
 ]
 }

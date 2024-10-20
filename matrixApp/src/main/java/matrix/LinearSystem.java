@@ -79,6 +79,12 @@ public class LinearSystem extends Matrix {
     // get jawaban SPL dengan matriks inverse
     // m merupakan matriks hasil split augmentasi kolom terakhir
     public double[] inverseMethodSPL(Matrix feature, Matrix target) {
+        if (!getFeatures().isSquare()) {
+            throw new IllegalArgumentException("Matriks is not square");
+        }
+        if (getFeatures().determinant() == 0) {
+            throw new IllegalArgumentException("Matrix has no unique solution");
+        }
         Matrix matrixInverse;
         matrixInverse = feature.inverse();
         return matrixInverse.multiplyMatrix(target).getCol(0);

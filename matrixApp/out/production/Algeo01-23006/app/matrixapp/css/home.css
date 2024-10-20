@@ -1,0 +1,38 @@
+/* resources/app/matrixapp/css/home.css */
+.home{
+    -fx-background-color: #0d0d0d;
+}
+
+.side-bar{
+    -fx-background-color: #1C1C1C;
+    -fx-border-width:1;
+    -fx-border-color:#262630;
+}
+.button{
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius:10;
+}
+.title{
+    -fx-font-size:5em;
+    -fx-font-family:"monospace";
+}
+.subtitle{
+    -fx-font-size:4em;
+    -fx-font-family:"monospace";
+}
+.options_box_tl{
+    -fx-background-color: #EEB8C4;
+    -fx-background-radius:30;
+}
+.options_box_tr{
+    -fx-background-color: #D0574E;
+    -fx-background-radius:30;
+}
+.options_box_bl{
+    -fx-background-color: #1C1C6C;
+    -fx-background-radius:30;
+}
+.options_box_br{
+    -fx-background-color: #E6D47B;
+    -fx-background-radius:30;
+}

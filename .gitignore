@@ -11,3 +11,4 @@ src/matrix/test.class
 *.class
 .vscode/c_cpp_properties.json
 javafx-sdk-23
+controlsfx-11.2.0
