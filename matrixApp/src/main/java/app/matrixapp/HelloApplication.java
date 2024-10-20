@@ -11,10 +11,10 @@ public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) {
         try {
-        System.out.println("Resource URL: " + HelloApplication.class.getResource("/app/matrixapp/hello-view.fxml"));
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/app/matrixapp/hello-view.fxml"));
+        System.out.println("Resource URL: " + HelloApplication.class.getResource("/app/matrixapp/homeView.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/app/matrixapp/homeView.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1024, 720);
-        stage.setTitle("Hello!");
+        stage.setTitle("The Matrix Engine");
         stage.setScene(scene);
         stage.show();
         } catch (Exception e) {

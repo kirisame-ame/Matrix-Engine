@@ -25,7 +25,7 @@ public class Main extends Application {
             stage.setScene(scene);
             stage.show();
 
-            Controller controller = loader.getController();
+            BaseOpsController controller = loader.getController();
             if (controller != null) {
                 controller.init();
             } else {

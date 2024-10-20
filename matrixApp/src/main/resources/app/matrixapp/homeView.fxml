@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox fx:id="main_box" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1024.0" styleClass="home" stylesheets="@css/home.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1">
+<HBox fx:id="main_box" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1024.0" styleClass="home" stylesheets="@css/home.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.matrixapp.HelloController">
    <VBox fx:id="dashboard_box" alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1024.0" stylesheets="@css/home.css" HBox.hgrow="ALWAYS">
       <children>
          <HBox fx:id="header_box" alignment="CENTER" prefHeight="200.0" prefWidth="200.0" styleClass="header_box" stylesheets="@css/home.css">
@@ -42,7 +42,7 @@
                            <Image url="@images/resized_fuuka.png" />
                         </image>
                      </ImageView>
-                     <Button mnemonicParsing="false" text="Button">
+                     <Button fx:id="baseOpsButton" mnemonicParsing="false" onAction="#onBaseOpsButtonClick" text="Linear System and Base Operations">
                         <VBox.margin>
                            <Insets top="10.0" />
                         </VBox.margin>
@@ -56,7 +56,7 @@
                            <Image url="@images/resized_fuuka.png" />
                         </image>
                      </ImageView>
-                     <Button mnemonicParsing="false" text="Button">
+                     <Button fx:id="interpolationButton" mnemonicParsing="false" onAction="#onInterpolationButtonClick" text="Interpolation">
                         <VBox.margin>
                            <Insets top="10.0" />
                         </VBox.margin>
@@ -70,7 +70,7 @@
                            <Image url="@images/resized_fuuka.png" />
                         </image>
                      </ImageView>
-                     <Button mnemonicParsing="false" text="Button">
+                     <Button fx:id="regressionButton" mnemonicParsing="false" onAction="#onRegressionButtonClick" text="Regression">
                         <VBox.margin>
                            <Insets top="10.0" />
                         </VBox.margin>
@@ -84,7 +84,7 @@
                            <Image url="@images/resized_fuuka.png" />
                         </image>
                      </ImageView>
-                     <Button mnemonicParsing="false" text="Button">
+                     <Button fx:id="imageStretchingButton" mnemonicParsing="false" onAction="#onImageStretchingButtonClick" text="Image Stretching">
                         <VBox.margin>
                            <Insets top="10.0" />
                         </VBox.margin>
