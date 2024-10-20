@@ -1,3 +1,4 @@
+
 package app.matrixapp;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -277,6 +278,7 @@ public class Controller {
 //                return "Invalid regression type selected.";
 //        }
 //    }
+
 
     private String interpolateImage(Matrix matrix) {
         // Implement image interpolation logic
