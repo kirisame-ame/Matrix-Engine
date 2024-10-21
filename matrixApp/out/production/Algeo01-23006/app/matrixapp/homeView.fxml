@@ -3,52 +3,28 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.effect.Glow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox fx:id="main_box" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="home" stylesheets="@css/home.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1">
-   <AnchorPane fx:id="side_bar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="100.0" styleClass="side-bar" stylesheets="@css/home.css">
+<HBox fx:id="main_box" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1024.0" styleClass="home" stylesheets="@css/home.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.matrixapp.HelloController">
+   <VBox fx:id="dashboard_box" alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1024.0" stylesheets="@css/home.css" HBox.hgrow="ALWAYS">
       <children>
-         <ImageView fx:id="app_icon" fitHeight="70.0" fitWidth="70.0" layoutX="15.0" layoutY="14.0" pickOnBounds="true" smooth="false">
-            <image>
-               <Image url="@images/arona_icon.png" />
-            </image>
-         </ImageView>
-         <Button layoutX="24.0" layoutY="152.0" mnemonicParsing="false" stylesheets="@css/home.css" text="Button" />
-      </children>
-   </AnchorPane>
-   <VBox fx:id="dashboard_box" alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="700.0" stylesheets="@css/home.css" HBox.hgrow="ALWAYS">
-      <children>
-         <VBox fx:id="header_box" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="100.0" stylesheets="@css/home.css">
+         <HBox fx:id="header_box" alignment="CENTER" prefHeight="200.0" prefWidth="200.0" styleClass="header_box" stylesheets="@css/home.css">
             <children>
-               <Label fx:id="title" alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="700.0" styleClass="title" stylesheets="@css/home.css" text="The Matrix Engine" textAlignment="CENTER" textFill="WHITESMOKE">
-                  <font>
-                     
-                  </font>
-                  <effect>
-                     <Glow />
-                  </effect>
-               </Label>
-               <Label fx:id="subtitle" styleClass="subtitle" stylesheets="@css/home.css" text="Multifunctional Matrix Calculator" textAlignment="CENTER" textFill="SILVER">
-                  <font>
-
-                  </font>
-                  <effect>
-                     <Glow />
-                  </effect>
-                  <VBox.margin>
-                     <Insets left="10.0" />
-                  </VBox.margin>
-               </Label>
+               <VBox alignment="CENTER" prefWidth="1024.0" HBox.hgrow="ALWAYS">
+                  <children>
+                     <Label alignment="CENTER" styleClass="title" stylesheets="@css/home.css" text="The Matrix Engine" />
+                     <Label alignment="TOP_CENTER" styleClass="subtitle" stylesheets="@css/home.css" text="Multipurpose Matrix Calculator" />
+                  </children></VBox>
             </children>
-         </VBox>
+            <VBox.margin>
+               <Insets />
+            </VBox.margin></HBox>
          <GridPane fx:id="options_grid" hgap="30.0" prefHeight="400.0" prefWidth="700.0" vgap="30.0" VBox.vgrow="ALWAYS">
            <columnConstraints>
              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -64,11 +40,13 @@
                      <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" smooth="false">
                         <image>
                            <Image url="@images/resized_fuuka.png" />
-                        </image></ImageView>
-                     <Button mnemonicParsing="false" text="Button">
+                        </image>
+                     </ImageView>
+                     <Button fx:id="baseOpsButton" mnemonicParsing="false" onAction="#onBaseOpsButtonClick" text="Linear System and Base Operations">
                         <VBox.margin>
                            <Insets top="10.0" />
-                        </VBox.margin></Button>
+                        </VBox.margin>
+                     </Button>
                   </children>
                </VBox>
                <VBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" styleClass="options_box_tr" stylesheets="@css/home.css" GridPane.columnIndex="1">
@@ -78,7 +56,7 @@
                            <Image url="@images/resized_fuuka.png" />
                         </image>
                      </ImageView>
-                     <Button mnemonicParsing="false" text="Button">
+                     <Button fx:id="interpolationButton" mnemonicParsing="false" onAction="#onInterpolationButtonClick" text="Interpolation">
                         <VBox.margin>
                            <Insets top="10.0" />
                         </VBox.margin>
@@ -92,7 +70,7 @@
                            <Image url="@images/resized_fuuka.png" />
                         </image>
                      </ImageView>
-                     <Button mnemonicParsing="false" text="Button">
+                     <Button fx:id="regressionButton" mnemonicParsing="false" onAction="#onRegressionButtonClick" text="Regression">
                         <VBox.margin>
                            <Insets top="10.0" />
                         </VBox.margin>
@@ -106,7 +84,7 @@
                            <Image url="@images/resized_fuuka.png" />
                         </image>
                      </ImageView>
-                     <Button mnemonicParsing="false" text="Button">
+                     <Button fx:id="imageStretchingButton" mnemonicParsing="false" onAction="#onImageStretchingButtonClick" text="Image Stretching">
                         <VBox.margin>
                            <Insets top="10.0" />
                         </VBox.margin>
