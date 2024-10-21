@@ -4,8 +4,10 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.scene.image.Image;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class HelloApplication extends Application {
     @Override
@@ -16,6 +18,7 @@ public class HelloApplication extends Application {
         Scene scene = new Scene(fxmlLoader.load(), 1024, 720);
         stage.setTitle("The Matrix Engine");
         stage.setScene(scene);
+        stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/app/matrixapp/images/arona_icon.png"))));
         stage.show();
         } catch (Exception e) {
             e.printStackTrace();

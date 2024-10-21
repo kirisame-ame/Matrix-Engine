@@ -77,6 +77,29 @@ public class QuadraticRegressor {
         }
         System.out.println();
     }
+    public String toStringModel() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format("Model: %.2f",this.model.getElmt(0,0)));
+        for(int i = 1; i <= this.vars; i++) {
+            sb.append(String.format(" + %.2fx_%d",this.model.getElmt(i,0),i));
+        }
+        int idx,pivot;
+        idx = 0;
+        pivot =0;
+        for (int j= this.vars+1; j < this.model.getRows(); j++) {
+            if (idx==0){
+                sb.append(String.format(" + %.2fx_%d^2",this.model.getElmt(j,0),pivot+1));
+            } else {
+                sb.append(String.format(" + %.2fx_%dx_%d",this.model.getElmt(j,0),pivot,idx));
+            }
+            idx++;
+            if (idx >= this.vars) {
+                pivot++;
+                idx = pivot;
+            }
+        }
+        return sb.toString();
+    }
     public Matrix predict(Matrix features) {
         // Expands the matrix first before transforming
         return expandedMatrix(features).multiplyMatrix(this.model);
