@@ -11,15 +11,15 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import matrix.Interpolation;
+import matrix.Matrix;
+import matrix.BicubicalSpline;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Objects;
-
-public class InterpolationController {
+import java.util.Arrays;
+public class BicubicController {
     private Scene scene;
     private Stage stage;
     private Parent root;
@@ -32,7 +32,7 @@ public class InterpolationController {
 
     @FXML
     private void onBackButtonClick(ActionEvent event) throws IOException {
-        root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/app/matrixapp/menuInterpolationView.fxml")));
+        root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/app/matrixapp/homeView.fxml")));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         double previousWidth = stage.getWidth();
         double previousHeight = stage.getHeight();
@@ -53,46 +53,40 @@ public class InterpolationController {
 
         try {
             String[] lines = input.split("\n");
-            List<Double> xList = new ArrayList<>();
-            List<Double> yList = new ArrayList<>();
-
-            for (int i = 0; i < lines.length - 1; i++) {
-                String[] point = lines[i].trim().split("\\s+");
-                if (point.length != 2) {
-                    throw new IllegalArgumentException("Each line (except the last) should contain exactly two numbers.");
-                }
-                xList.add(Double.parseDouble(point[0]));
-                yList.add(Double.parseDouble(point[1]));
+            if (lines.length != 5) {
+                throw new IllegalArgumentException("Input should contain 5 lines: 4x4 matrix and a,b values.");
             }
 
-            double xToInterpolate = Double.parseDouble(lines[lines.length - 1].trim());
-
-            double[] x = xList.stream().mapToDouble(Double::doubleValue).toArray();
-            double[] y = yList.stream().mapToDouble(Double::doubleValue).toArray();
-
-            Interpolation interpolation = new Interpolation(x, y);
-            double[] coefficients = interpolation.getPolynomial();
-            double interpolatedValue = interpolation.interpolate(xToInterpolate);
-
-            StringBuilder result = new StringBuilder();
-            result.append("Interpolation polynomial:\n");
-            result.append("f(x) = ");
-            for (int i = coefficients.length - 1; i >= 0; i--) {
-                if (i < coefficients.length - 1) {
-                    result.append(coefficients[i] >= 0 ? " + " : " - ");
+            Matrix ymatrix = new Matrix(4, 4);
+            for (String line : Arrays.copyOfRange(lines, 0, 4)) {
+                String[] values = line.trim().split("\\s+");
+                if (values.length != 4) {
+                    throw new IllegalArgumentException("Each row of the matrix should contain 4 values.");
                 }
-                result.append(String.format("%.4f", Math.abs(coefficients[i])));
-                if (i > 0) {
-                    result.append("x");
-                    if (i > 1) {
-                        result.append("^").append(i);
-                    }
+                for (int j = 0; j < 4; j++) {
+                    ymatrix.setElmt(j, j, Double.parseDouble(values[j]));
                 }
             }
-            result.append("\n\n");
-            result.append(String.format("f(%.2f) = %.4f", xToInterpolate, interpolatedValue));
 
-            outputArea.setText(result.toString());
+            String[] abValues = lines[4].trim().split("\\s+");
+            if (abValues.length != 2) {
+                throw new IllegalArgumentException("The last line should contain 2 values: a and b.");
+            }
+            double a = Double.parseDouble(abValues[0]);
+            double b = Double.parseDouble(abValues[1]);
+
+            BicubicalSpline model = new BicubicalSpline();
+            model.fit(ymatrix);
+
+            Matrix xy = new Matrix(1, 2);
+            xy.setElmt(0, 0, a);
+            xy.setElmt(0, 1, b);
+
+            Matrix resMatrix = model.predict(xy);
+
+            String result = String.format("f(%.2f, %.2f) = %.6f", a, b, resMatrix.getElmt(0, 0));
+            outputArea.setText(result);
+
         } catch (Exception e) {
             showAlert("Calculation Error", "An error occurred during calculation: " + e.getMessage());
         }

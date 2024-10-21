@@ -1,6 +1,7 @@
-package matrix;
+package main;
 import java.util.*;
-
+import matrix.Matrix;
+import matrix.BicubicalSpline;
 public class test {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);

@@ -18,8 +18,8 @@ public class LinearRegressor {
         Matrix x_matrix = biasedMatrix(features);
         LinearSystem ls = new LinearSystem(
                 Matrix.augmentedMatrix(
-                x_matrix.transpose().multiplyMatrix(x_matrix),
-                x_matrix.transpose().multiplyMatrix(target))
+                        x_matrix.transpose().multiplyMatrix(x_matrix),
+                        x_matrix.transpose().multiplyMatrix(target))
         );
 
         this.model = new Matrix(features.getCols()+1, 1);
@@ -34,6 +34,14 @@ public class LinearRegressor {
             System.out.printf(" + %.2fx_%d",this.model.getElmt(i,0),i);
         }
         System.out.println();
+    }
+    public String toStringModel() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format("Model: %.2f",this.model.getElmt(0,0)));
+        for(int i = 1; i < this.model.getRows(); i++) {
+            sb.append(String.format(" + %.2fx_%d",this.model.getElmt(i,0),i));
+        }
+        return sb.toString();
     }
     public Matrix predict(Matrix features) {
         // Adds the 1 bias multiplier to every row
