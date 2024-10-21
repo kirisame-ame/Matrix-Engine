@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<HBox fx:id="main_box" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1024.0" styleClass="home" stylesheets="@css/home.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1">
+    <VBox fx:id="dashboard_box" alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1024.0" stylesheets="@css/home.css" HBox.hgrow="ALWAYS">
+        <children>
+            <HBox fx:id="header_box" alignment="CENTER" prefHeight="200.0" prefWidth="200.0" styleClass="header_box" stylesheets="@css/home.css">
+                <children>
+                    <VBox alignment="CENTER" prefWidth="1024.0" HBox.hgrow="ALWAYS">
+                        <children>
+                            <Label alignment="CENTER" styleClass="title" stylesheets="@css/home.css" text="The Matrix Engine" />
+                            <Label alignment="TOP_CENTER" styleClass="subtitle" stylesheets="@css/home.css" text="Multipurpose Matrix Calculator" />
+                        </children></VBox>
+                </children>
+                <VBox.margin>
+                    <Insets />
+                </VBox.margin></HBox>
+        </children>
+    </VBox>
+</HBox>

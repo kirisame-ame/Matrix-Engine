@@ -13,11 +13,13 @@
     -fx-background-radius:10;
 }
 .title{
+    -fx-text-fill: #FCFCFC;
     -fx-font-size:5em;
     -fx-font-family:"monospace";
 }
 .subtitle{
-    -fx-font-size:4em;
+    -fx-text-fill: #C0C0C0;
+    -fx-font-size:3em;
     -fx-font-family:"monospace";
 }
 .options_box_tl{
@@ -35,4 +37,41 @@
 .options_box_br{
     -fx-background-color: #E6D47B;
     -fx-background-radius:30;
+}
+.header_box{
+  -fx-background-image: url("../images/resized_fuuka.png");
+  -fx-background-repeat : no-repeat;
+  -fx-background-position : 30px;
+}
+.label_text{
+    -fx-text-fill: #FCFCFC;
+    -fx-font-size:12px;
+    -fx-font-family:"system";
+}
+.menu_bar{
+    -fx-background-color:#1C1C1C;
+}
+.menu_bar .label  {
+    -fx-text-fill : #ffffff;
+}
+.menu-item{
+    -fx-background-color:#1C1C1C;
+    -fx-border-color : #1C1C1C;
+}
+.menu:hover, .menu:showing{
+    -fx-background-color: #FF0000;
+}
+.menu-item:focused {
+    -fx-background-color: #FF0000;
+ }
+.input_box{
+    -fx-control-inner-background:#1C1C1C;
+    -fx-prompt-text-fill : #FFFFFF;
+    -fx-text-box-border : #1C1C1C;
+}
+.context-menu {
+    -fx-background-color: #1C1C1C;
+    -fx-background-insets: 0, 1, 2;
+    -fx-background-radius: 0 6 6 6, 0 5 5 5, 0 4 4 4;
+    -fx-padding: 0.333333em 0.083333em 0.666667em 0.083333em; /* 4 1 8 1 */
 }
