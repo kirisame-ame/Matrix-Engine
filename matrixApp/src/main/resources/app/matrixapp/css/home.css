@@ -12,6 +12,16 @@
     -fx-background-color: #FFFFFF;
     -fx-background-radius:10;
 }
+.back_button{
+    -fx-background-color : #FF0000;
+    -fx-background-radius: 10;
+    -fx-text-fill: #FCFCFC;
+}
+.calculate_button{
+    -fx-background-color : #1C1CFC;
+    -fx-background-radius: 10;
+    -fx-text-fill: #FCFCFC;
+}
 .title{
     -fx-text-fill: #FCFCFC;
     -fx-font-size:5em;
