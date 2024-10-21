@@ -1,11 +1,13 @@
 package matrix;
 
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class ImageScalling {
+
 
     private Matrix D;
     private Matrix X;
@@ -132,7 +134,6 @@ public class ImageScalling {
         }
 
         return D;
-
     };
 
     public void placeD(){
@@ -140,7 +141,9 @@ public class ImageScalling {
     }
 
     public void placeX(){
+
         BicubicalSpline method = new BicubicalSpline();
+
         this.X = method.setX();
     }
 
@@ -167,7 +170,6 @@ public class ImageScalling {
 
         return result;
     }
-
     public int interpolate (double x, double y, Matrix a){
         double res = 0;
         int iterate = 0;
@@ -184,6 +186,7 @@ public class ImageScalling {
     }
 
     public void stretch(double factorx, double factory)
+
             throws IOException
     {
         BufferedImage img = null;
@@ -202,6 +205,7 @@ public class ImageScalling {
         // get image width and height
         int width = img.getWidth();
         int height = img.getHeight();
+
         int widthf = (int)(width*factorx);
         int heightf = (int)(height*factory);
 
@@ -209,9 +213,11 @@ public class ImageScalling {
         BufferedImage newimg = new BufferedImage(widthf, heightf, BufferedImage.TYPE_INT_ARGB);
         for (int y = 0; y < heightf; y++) {
             for (int x = 0; x < widthf; x++) {
+
                 newimg.setRGB(x, y, 0x0);
             }
         }
+
 
 
         //stretch image without interpolation
@@ -233,9 +239,11 @@ public class ImageScalling {
         for (int y = 0; y < heightf; y += factorx) {
             for (int x = 0; x < widthf; x += factory) {
 
+
                 //get int "original" point
                 int xorg = (int)(x / factorx);
                 int yorg = (int)(y / factory);
+
 
                 //bicubic interpolation on pivot point
                 if (x % factorx == 0 && y % factory == 0){
@@ -253,7 +261,9 @@ public class ImageScalling {
                             int clampedJ = Math.max(0, Math.min(j, height - 1));
                             p = img.getRGB(clampedI, clampedJ);
 
+
                             I.setElmt(i - xorg + 1, j - yorg + 1, p);
+
 
                             int alpha = (p >> 24) & 0xff;
                             int red = (p >> 16) & 0xff;
@@ -265,6 +275,8 @@ public class ImageScalling {
                             b.setElmt(i - xorg + 1, j - yorg + 1, blue);
                         }
                     }
+
+
 
                     // Scale the I matrix and perform interpolation
                     Matrix Yi = scaleY(I);
@@ -287,9 +299,11 @@ public class ImageScalling {
                         int newX = x + bx;
                         int newY = y + by;
 
+
                         if (newX < widthf && newY < heightf) {
                             double xorgd = ((double) newX / factorx) - xorg;
                             double yorgd = ((double) newY / factory) - yorg;
+
 
                             // Perform interpolation and get final pixel values
                             int alpha = Math.max(0, Math.min(255, interpolate(xorgd, yorgd, fitA)));
@@ -297,8 +311,10 @@ public class ImageScalling {
                             int green = Math.max(0, Math.min(255, interpolate(xorgd, yorgd, fitG)));
                             int blue = Math.max(0, Math.min(255, interpolate(xorgd, yorgd, fitB)));
 
+
                             // Combine ARGB values
                             int p = (alpha << 24) | (red << 16) | (green << 8) | blue;
+
 
                             // Set pixel value to the new image
                             newimg.setRGB(newX, newY, p);
@@ -307,6 +323,7 @@ public class ImageScalling {
                 }
             }
         }
+
 
         // write image
         try {
@@ -319,3 +336,4 @@ public class ImageScalling {
     }
 
 }
+

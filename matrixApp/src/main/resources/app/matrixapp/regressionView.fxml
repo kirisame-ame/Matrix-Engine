@@ -40,6 +40,7 @@
                 <Button fx:id="calculateButton" onAction="#handleCalculate" styleClass="calculate_button" stylesheets="@css/home.css" text="Calculate" />
                 <Button fx:id="matrixInputButton" onAction="#handleReadFile" text="Read File" />
                 <Button fx:id="backButton" mnemonicParsing="false" onAction="#onBackButtonClick" styleClass="back_button" stylesheets="@css/home.css" text="Back" />
+
                 <VBox.margin>
                     <Insets bottom="10.0" top="10.0" />
                 </VBox.margin>
@@ -78,6 +79,7 @@
                     </VBox>
                 </children>
             </HBox>
+
             <VBox.margin>
                 <Insets left="30.0" right="30.0" />
             </VBox.margin>

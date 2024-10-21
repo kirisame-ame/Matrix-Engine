@@ -25,6 +25,7 @@
                 <Insets />
             </VBox.margin></HBox>
         <MenuBar prefWidth="1024.0" styleClass="menu_bar" stylesheets="@css/home.css">
+
             <Menu text="Operation Menu">
                 <MenuItem onAction="#handleMainMenu" text="Sistem Persamaan Linier" />
                 <MenuItem onAction="#handleMainMenu" text="Determinan" />
@@ -48,5 +49,6 @@
                 <Insets left="30.0" right="30.0" />
             </VBox.margin>
         </VBox>
+
     </VBox>
 </HBox>
