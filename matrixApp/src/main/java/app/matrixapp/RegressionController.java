@@ -45,6 +45,8 @@ public class RegressionController {
 
     private String currentOperation = "";
     private String currentSubOperation = "";
+    private LinearRegressor lr = new LinearRegressor();
+    private QuadraticRegressor qr = new QuadraticRegressor();
 
     @FXML
     private void onBackButtonClick(ActionEvent event) throws IOException {
@@ -116,22 +118,60 @@ public class RegressionController {
         outputArea.setText(result);
     }
 
+    @FXML
+    private void handlePredict() {
+        String input = predInput.getText();
+        String subOperation = currentSubOperation;
+        if (input.isEmpty()) {
+            showAlert("Invalid Input", "Please enter data in the input area.");
+            return;
+        }
+        if (subOperation == null && !subOperationComboBox.isDisabled()) {
+            showAlert("Invalid Input", "Please select a sub-operation.");
+            return;
+        }
+        Matrix matrix;
+        try {
+            matrix = parseMatrix(input);
+        } catch (IllegalArgumentException e) {
+            showAlert("Invalid Input", "Unable to parse input as a matrix. Please check your input format.");
+            return;
+        }
+
+        String result = "";
+        try {
+            result = predictRegression(matrix,subOperation);
+        } catch (Exception e) {
+            showAlert("Calculation Error", "An error occurred during calculation: " + e.getMessage());
+            return;
+        }
+        predOutput.setText(result);
+    }
     private String solveRegression(Matrix matrix, String subOperation) {
         LinearSystem ls = new LinearSystem(matrix);
         System.out.println(subOperation);
         switch (subOperation) {
             case "Quadratic Regression":
-                QuadraticRegressor qr = new QuadraticRegressor();
                 qr.fit(ls.getFeatures(), ls.getTarget());
+                currentSubOperation = subOperation;
                 return qr.toStringModel();
             case "Linear Regression":
-                LinearRegressor lr = new LinearRegressor();
                 lr.fit(ls.getFeatures(), ls.getTarget());
+                currentSubOperation = subOperation;
                 lr.printModel();
                 return lr.toStringModel();
             default:
                 return "Invalid regression type selected.";
         }
+    }
+    private String predictRegression(Matrix matrix, String subOperation) {
+        System.out.println(subOperation);
+        lr.printModel();
+        return switch (subOperation) {
+            case "Quadratic Regression" -> matrixToString(qr.predict(matrix));
+            case "Linear Regression" -> matrixToString(lr.predict(matrix));
+            default -> "Invalid regression type selected.";
+        };
     }
     private Matrix parseMatrix(String input) {
         String[] lines = input.split("\n");
@@ -181,6 +221,7 @@ public class RegressionController {
             }
         }
     }
+    @FXML
     private void handleReadFeatureFile() {
         FileChooser fileChooser = new FileChooser();
         File file = fileChooser.showOpenDialog(null);
