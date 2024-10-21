@@ -230,14 +230,13 @@ public class ImageScalling {
         Matrix fitB = new Matrix(16, 1);
         int img_count = 0;
 
-        for (int y = 0; y < heightf; y++){
-            for (int x = 0; x < widthf; x++){
-                
+        for (int y = 0; y < heightf; y += factorx) {
+            for (int x = 0; x < widthf; x += factory) {
                 
                 //get int "original" point
-                int xorg = (int)(x/factorx);
-                int yorg = (int)(y/factory);
-
+                int xorg = (int)(x / factorx);
+                int yorg = (int)(y / factory);
+        
                 //bicubic interpolation on pivot point
                 if (x % factorx == 0 && y % factory == 0){
                     Matrix I = new Matrix(4, 4);
@@ -245,75 +244,69 @@ public class ImageScalling {
                     Matrix r = new Matrix(4, 4);
                     Matrix g = new Matrix(4, 4);
                     Matrix b = new Matrix(4, 4);
-
-
-                    // output image of surrounding pixels
-                    // BufferedImage surrImg = new BufferedImage(4, 4, BufferedImage.TYPE_INT_ARGB);
-
+        
                     //getting the 4 x 4 matrix (16 surrounding pixels)
-                    for (int j = yorg-1; j < yorg+3; j++){
-                        for (int i = xorg-1; i < xorg+3; i++){
+                    for (int j = yorg - 1; j < yorg + 3; j++) {
+                        for (int i = xorg - 1; i < xorg + 3; i++) {
                             int p = 0;
-                            if (i >= 0 && i < width && j >= 0 && j < height){
+                            if (i >= 0 && i < width && j >= 0 && j < height) {
                                 p = img.getRGB(i, j);
+                            } else {
+                                p = -1;  // handle out-of-bounds pixels
                             }
-                            else{
-                                p = -1;
-                            }
-
-                            I.setElmt(i-xorg+1, j-yorg+1, p);
-                            
-                            //set surrounding pixels
-                            // surrImg.setRGB(i-xorg+1, j-yorg+1, p);
-
-                            int alpha = (p>>24) & 0xff;
-                            int red = (p>>16) & 0xff;
-                            int green = (p>>8) & 0xff;
+        
+                            I.setElmt(i - xorg + 1, j - yorg + 1, p);
+        
+                            int alpha = (p >> 24) & 0xff;
+                            int red = (p >> 16) & 0xff;
+                            int green = (p >> 8) & 0xff;
                             int blue = p & 0xff;
-                            a.setElmt(i-xorg+1, j-yorg+1, alpha);
-                            r.setElmt(i-xorg+1, j-yorg+1, red);
-                            g.setElmt(i-xorg+1, j-yorg+1, green);
-                            b.setElmt(i-xorg+1, j-yorg+1, blue);
+                            a.setElmt(i - xorg + 1, j - yorg + 1, alpha);
+                            r.setElmt(i - xorg + 1, j - yorg + 1, red);
+                            g.setElmt(i - xorg + 1, j - yorg + 1, green);
+                            b.setElmt(i - xorg + 1, j - yorg + 1, blue);
                         }
                     }
-
-                    //writing surrImg
-                    // File outputfile = new File("matrix/output"+img_count+".png"); 
-                    // img_count++;
-                    // ImageIO.write(surrImg, "png", outputfile); 
-
-                    // scale I to y
-                    // prepare interpolation matrix
-                    Matrix Yi = new Matrix(16, 1);
-                    Matrix Ya = new Matrix(16, 1);
-                    Matrix Yr = new Matrix(16, 1);
-                    Matrix Yg = new Matrix(16, 1);
-                    Matrix Yb = new Matrix(16, 1);
-
-                    Yi = scaleY(I);
-                    Ya = scaleY(a);
-                    Yr = scaleY(r);
-                    Yg = scaleY(g);
-                    Yb = scaleY(b);
-
-                    // fit interpolation
+        
+                    // Scale the I matrix and perform interpolation
+                    Matrix Yi = scaleY(I);
+                    Matrix Ya = scaleY(a);
+                    Matrix Yr = scaleY(r);
+                    Matrix Yg = scaleY(g);
+                    Matrix Yb = scaleY(b);
+        
+                    // Perform fitting
                     fitI = fit(Yi);
                     fitA = fit(Ya);
                     fitR = fit(Yr);
                     fitG = fit(Yg);
                     fitB = fit(Yb);
                 }
-
-                //interpolate
-                double xorgd = (double)(x)/factorx - xorg;
-                double yorgd = (double)(y)/factory - yorg;
-                // System.out.println("xorgd: "+xorgd+", yorgd: "+yorgd);
-                int alpha = Math.max(0, Math.min(255, interpolate(xorgd, yorgd, fitA)));
-                int red = Math.max(0, Math.min(255, interpolate(xorgd, yorgd, fitR)));
-                int green = Math.max(0, Math.min(255, interpolate(xorgd, yorgd, fitG)));
-                int blue = Math.max(0, Math.min(255, interpolate(xorgd, yorgd, fitB)));
-                int p = (alpha<<24) | (red<<16) | (green<<8) | blue;
-                newimg.setRGB(x, y, p);
+        
+                // Loop over the factor x factor block and apply interpolation
+                for (int by = 0; by < factorx; by++) {
+                    for (int bx = 0; bx < factory; bx++) {
+                        int newX = x + bx;
+                        int newY = y + by;
+        
+                        if (newX < widthf && newY < heightf) {
+                            double xorgd = ((double) newX / factorx) - xorg;
+                            double yorgd = ((double) newY / factory) - yorg;
+        
+                            // Perform interpolation and get final pixel values
+                            int alpha = Math.max(0, Math.min(255, interpolate(xorgd, yorgd, fitA)));
+                            int red = Math.max(0, Math.min(255, interpolate(xorgd, yorgd, fitR)));
+                            int green = Math.max(0, Math.min(255, interpolate(xorgd, yorgd, fitG)));
+                            int blue = Math.max(0, Math.min(255, interpolate(xorgd, yorgd, fitB)));
+                            
+                            // Combine ARGB values
+                            int p = (alpha << 24) | (red << 16) | (green << 8) | blue;
+                            
+                            // Set pixel value to the new image
+                            newimg.setRGB(newX, newY, p);
+                        }
+                    }
+                }
             }
         }
           
