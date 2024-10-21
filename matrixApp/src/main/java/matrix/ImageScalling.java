@@ -249,11 +249,9 @@ public class ImageScalling {
                     for (int j = yorg - 1; j < yorg + 3; j++) {
                         for (int i = xorg - 1; i < xorg + 3; i++) {
                             int p = 0;
-                            if (i >= 0 && i < width && j >= 0 && j < height) {
-                                p = img.getRGB(i, j);
-                            } else {
-                                p = -1;  // handle out-of-bounds pixels
-                            }
+                            int clampedI = Math.max(0, Math.min(i, width - 1));
+                            int clampedJ = Math.max(0, Math.min(j, height - 1));
+                            p = img.getRGB(clampedI, clampedJ);
         
                             I.setElmt(i - xorg + 1, j - yorg + 1, p);
         
