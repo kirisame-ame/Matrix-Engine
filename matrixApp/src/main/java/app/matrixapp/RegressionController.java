@@ -125,6 +125,7 @@ public class RegressionController {
             case "Linear Regression":
                 LinearRegressor lr = new LinearRegressor();
                 lr.fit(ls.getFeatures(), ls.getTarget());
+                lr.printModel();
                 return lr.toStringModel();
             default:
                 return "Invalid regression type selected.";
