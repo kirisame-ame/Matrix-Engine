@@ -26,6 +26,8 @@ import javafx.scene.control.*;
 import matrix.QuadraticRegressor;
 
 public class RegressionController {
+    public TextArea predInput;
+    public TextArea predOutput;
     private Scene scene;
     private Stage stage;
     private Parent root;
@@ -174,6 +176,18 @@ public class RegressionController {
             try {
                 List<String> lines = Files.readAllLines(file.toPath());
                 inputArea.setText(String.join("\n", lines));
+            } catch (IOException e) {
+                showAlert("File Read Error", "Error reading file: " + e.getMessage());
+            }
+        }
+    }
+    private void handleReadFeatureFile() {
+        FileChooser fileChooser = new FileChooser();
+        File file = fileChooser.showOpenDialog(null);
+        if (file != null) {
+            try {
+                List<String> lines = Files.readAllLines(file.toPath());
+                predInput.setText(String.join("\n", lines));
             } catch (IOException e) {
                 showAlert("File Read Error", "Error reading file: " + e.getMessage());
             }
