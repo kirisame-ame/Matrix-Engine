@@ -18,8 +18,8 @@ public class LinearRegressor {
         Matrix x_matrix = biasedMatrix(features);
         LinearSystem ls = new LinearSystem(
                 Matrix.augmentedMatrix(
-                x_matrix.transpose().multiplyMatrix(x_matrix),
-                x_matrix.transpose().multiplyMatrix(target))
+                        x_matrix.transpose().multiplyMatrix(x_matrix),
+                        x_matrix.transpose().multiplyMatrix(target))
         );
 
         this.model = new Matrix(features.getCols()+1, 1);

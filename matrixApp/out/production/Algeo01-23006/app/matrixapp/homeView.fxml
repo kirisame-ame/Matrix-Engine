@@ -56,7 +56,7 @@
                            <Image url="@images/resized_fuuka.png" />
                         </image>
                      </ImageView>
-                     <Button fx:id="interpolationButton" mnemonicParsing="false" onAction="#onInterpolationButtonClick" text="Interpolation">
+                     <Button fx:id="menuInterpolationButton" mnemonicParsing="false" onAction="#onMenuInterpolationButtonClick" text="Interpolation">
                         <VBox.margin>
                            <Insets top="10.0" />
                         </VBox.margin>

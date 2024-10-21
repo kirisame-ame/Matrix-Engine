@@ -14,7 +14,7 @@ import matrix.*;
 import java.io.IOException;
 import java.util.Objects;
 
-public class HelloController {
+public class MenuInterpolationController {
     private Scene scene;
     private Stage stage;
     private Parent root;
@@ -29,9 +29,9 @@ public class HelloController {
     private Button imageStretchingButton;
 
     @FXML
-    protected void onBaseOpsButtonClick(ActionEvent event) throws IOException {
+    protected void onBicubicButtonClick(ActionEvent event) throws IOException {
 
-        root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/app/matrixapp/baseOpsView.fxml")));
+        root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/app/matrixapp/bicubicView.fxml")));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         double previousWidth = stage.getWidth();
         double previousHeight = stage.getHeight();
@@ -42,9 +42,9 @@ public class HelloController {
         stage.show();
     }
     @FXML
-    protected void onMenuInterpolationButtonClick(ActionEvent event) throws IOException {
+    protected void onInterpolationButtonClick(ActionEvent event) throws IOException {
 
-        root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/app/matrixapp/menuInterpolationView.fxml")));
+        root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/app/matrixapp/interpolationView.fxml")));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         double previousWidth = stage.getWidth();
         double previousHeight = stage.getHeight();
@@ -55,9 +55,8 @@ public class HelloController {
         stage.show();
     }
     @FXML
-    protected void onRegressionButtonClick(ActionEvent event) throws IOException {
-
-        root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/app/matrixapp/regressionView.fxml")));
+    private void onBackButtonClick(ActionEvent event) throws IOException {
+        root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/app/matrixapp/homeView.fxml")));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         double previousWidth = stage.getWidth();
         double previousHeight = stage.getHeight();
@@ -67,20 +66,5 @@ public class HelloController {
         stage.setHeight(previousHeight);
         stage.show();
     }
-    @FXML
-    protected void onImageStretchingButtonClick(ActionEvent event) throws IOException {
-
-        root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/app/matrixapp/imageStretchView.fxml")));
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        double previousWidth = stage.getWidth();
-        double previousHeight = stage.getHeight();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.setWidth(previousWidth);
-        stage.setHeight(previousHeight);
-        stage.show();
-    }
-
-
 
 }

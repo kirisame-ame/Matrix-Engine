@@ -40,44 +40,46 @@
                 <Button fx:id="calculateButton" onAction="#handleCalculate" styleClass="calculate_button" stylesheets="@css/home.css" text="Calculate" />
                 <Button fx:id="matrixInputButton" onAction="#handleReadFile" text="Read File" />
                 <Button fx:id="backButton" mnemonicParsing="false" onAction="#onBackButtonClick" styleClass="back_button" stylesheets="@css/home.css" text="Back" />
-            <VBox.margin>
-               <Insets bottom="10.0" top="10.0" />
-            </VBox.margin>
+
+                <VBox.margin>
+                    <Insets bottom="10.0" top="10.0" />
+                </VBox.margin>
             </HBox>
-         <HBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
-            <children>
-                  <TextArea fx:id="outputArea" editable="false" promptText="The model will be displayed here" styleClass="input_box" stylesheets="@css/home.css" />
-               <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
-                  <children>
-                     <TextArea fx:id="predInput" prefHeight="200.0" promptText="Input your feature variables" styleClass="input_box" stylesheets="@css/home.css">
-                        <VBox.margin>
-                           <Insets />
-                        </VBox.margin>
-                     </TextArea>
-                     <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+            <HBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                <children>
+                    <TextArea fx:id="outputArea" editable="false" promptText="The model will be displayed here" styleClass="input_box" stylesheets="@css/home.css" />
+                    <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
                         <children>
-                           <Button fx:id="predCalcButton" mnemonicParsing="false" onAction="#handlePredict" styleClass="calculate_button" stylesheets="@css/home.css" text="Predict" />
-                           <Button fx:id="featureReadButton" mnemonicParsing="false" onAction="#handleReadFeatureFile" text="Read File" />
+                            <TextArea fx:id="predInput" prefHeight="200.0" promptText="Input your feature variables" styleClass="input_box" stylesheets="@css/home.css">
+                                <VBox.margin>
+                                    <Insets />
+                                </VBox.margin>
+                            </TextArea>
+                            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                                <children>
+                                    <Button fx:id="predCalcButton" mnemonicParsing="false" onAction="#handlePredict" styleClass="calculate_button" stylesheets="@css/home.css" text="Predict" />
+                                    <Button fx:id="featureReadButton" mnemonicParsing="false" onAction="#handleReadFeatureFile" text="Read File" />
+                                </children>
+                                <opaqueInsets>
+                                    <Insets />
+                                </opaqueInsets>
+                                <VBox.margin>
+                                    <Insets bottom="10.0" top="10.0" />
+                                </VBox.margin>
+                            </HBox>
+                            <TextArea fx:id="predOutput" editable="false" prefHeight="200.0" promptText="The predictions will be displayed here" styleClass="input_box" stylesheets="@css/home.css">
+                                <VBox.margin>
+                                    <Insets />
+                                </VBox.margin>
+                            </TextArea>
                         </children>
-                        <opaqueInsets>
-                           <Insets />
-                        </opaqueInsets>
-                        <VBox.margin>
-                           <Insets bottom="10.0" top="10.0" />
-                        </VBox.margin>
-                     </HBox>
-                     <TextArea fx:id="predOutput" editable="false" prefHeight="200.0" promptText="The predictions will be displayed here" styleClass="input_box" stylesheets="@css/home.css">
-                        <VBox.margin>
-                           <Insets />
-                        </VBox.margin>
-                     </TextArea>
-                  </children>
-                  <HBox.margin>
-                     <Insets left="30.0" />
-                  </HBox.margin>
-               </VBox>
-            </children>
-         </HBox>
+                        <HBox.margin>
+                            <Insets left="30.0" />
+                        </HBox.margin>
+                    </VBox>
+                </children>
+            </HBox>
+
             <VBox.margin>
                 <Insets left="30.0" right="30.0" />
             </VBox.margin>

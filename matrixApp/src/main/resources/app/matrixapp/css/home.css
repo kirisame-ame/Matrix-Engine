@@ -49,9 +49,9 @@
     -fx-background-radius:30;
 }
 .header_box{
-  -fx-background-image: url("../images/resized_fuuka.png");
-  -fx-background-repeat : no-repeat;
-  -fx-background-position : 30px;
+    -fx-background-image: url("../images/resized_fuuka.png");
+    -fx-background-repeat : no-repeat;
+    -fx-background-position : 30px;
 }
 .label_text{
     -fx-text-fill: #FCFCFC;
@@ -73,7 +73,7 @@
 }
 .menu-item:focused {
     -fx-background-color: #FF0000;
- }
+}
 .input_box{
     -fx-control-inner-background:#1C1C1C;
     -fx-prompt-text-fill : #FFFFFF;

@@ -251,4 +251,6 @@ public class RegressionController {
         subOperationComboBox.getItems().clear();
         subOperationComboBox.setDisable(true);
     }
+
 }
+
