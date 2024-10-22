@@ -15,10 +15,10 @@ public class ImageScaling {
     public ImageScaling() {
         placeD();
         placeX();
-    }
+    };
 
     public Matrix setD(){
-        System.out.println("Setting D");
+
         double[][] I = new double[16][2];
         int travArr = 0;
         for (int j = -1; j < 3; j++){
@@ -132,8 +132,9 @@ public class ImageScaling {
                 y = 0;
             }
         }
+
         return D;
-    }
+    };
 
     public void placeD(){
         this.D = setD();
@@ -161,7 +162,9 @@ public class ImageScaling {
 
     public Matrix fit(Matrix y){
         Matrix result = new Matrix(16, 1);
+
         Matrix Xinverse = this.X.inverseRedRow();
+
         result = Xinverse.multiplyMatrix(this.D);
         result = result.multiplyMatrix(y);
 
@@ -182,7 +185,7 @@ public class ImageScaling {
         return (int)res;
     }
 
-    public void stretch(File input,int newWidth, int newHeight)
+    public void stretch( File f, int newWidth, int newHeight)
 
             throws IOException
     {
@@ -190,7 +193,8 @@ public class ImageScaling {
 
         // read image
         try {
-            img = ImageIO.read(input);
+
+            img = ImageIO.read(f);
         }
         catch (IOException e) {
             System.out.println(e);
@@ -199,12 +203,11 @@ public class ImageScaling {
         // get image width and height
         int width = img.getWidth();
         int height = img.getHeight();
-        
-        double factorX = (double) newWidth /width;
-        double factorY = (double) newHeight /height;
 
+        double factorY = (double)newHeight / height;
+        double factorX = (double)newWidth / width;
 
-
+        System.out.println(factorX + "xy"+factorY);
         // empty image declaration
         BufferedImage newimg = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
         for (int y = 0; y < newHeight; y++) {
@@ -231,8 +234,8 @@ public class ImageScaling {
         Matrix fitB = new Matrix(16, 1);
         int img_count = 0;
 
-        for (double y = 0; y < newHeight; y += factorX) {
-            for (double x = 0; x < newWidth; x += factorY) {
+        for (int y = 0; y < newHeight; y += factorX) {
+            for (int x = 0; x < newWidth; x += factorY) {
 
 
                 //get int "original" point
@@ -280,20 +283,19 @@ public class ImageScaling {
                     Matrix Yg = scaleY(g);
                     Matrix Yb = scaleY(b);
 
-
                     // Perform fitting
-
+                    fitI = fit(Yi);
                     fitA = fit(Ya);
-
                     fitR = fit(Yr);
                     fitG = fit(Yg);
                     fitB = fit(Yb);
                 }
+
                 // Loop over the factor x factor block and apply interpolation
-                for (double by = 0; by < factorX; by+=factorX) {
-                    for (double bx = 0; bx < factorY; bx+=factorY) {
-                        int newX = (int)(x + bx);
-                        int newY = (int)(y + by);
+                for (int by = 0; by < factorX; by++) {
+                    for (int bx = 0; bx < factorY; bx++) {
+                        int newX = x + bx;
+                        int newY = y + by;
 
 
                         if (newX < newWidth && newY < newHeight) {
@@ -323,7 +325,7 @@ public class ImageScaling {
 
         // write image
         try {
-            File outputfile = new File("output.png");
+            File outputfile = new File("src/main/resources/app/matrixapp/temp/output.png");
             ImageIO.write(newimg, "png", outputfile);
         }
         catch (IOException e) {

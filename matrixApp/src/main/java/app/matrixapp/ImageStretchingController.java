@@ -1,5 +1,6 @@
 
 package app.matrixapp;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,12 +21,15 @@ import javafx.scene.control.ComboBox;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Arrays;
 import java.util.Objects;
 
 import javafx.scene.control.*;
 import matrix.ImageScaling;
+
+import javax.imageio.ImageIO;
 
 public class ImageStretchingController {
     public ImageView beforeImage;
@@ -39,6 +43,8 @@ public class ImageStretchingController {
     private Stage stage;
     private Parent root;
     private File input;
+    private Image result;
+
     @FXML
     public Button backButton;
     @FXML
@@ -69,7 +75,7 @@ public class ImageStretchingController {
 
         ImageScaling imageScaling = new ImageScaling();
         imageScaling.stretch(input, width, height);
-        Image result = new Image("output.png");
+        result = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/app/matrixapp/temp/output.png")));
         afterImage.setImage(result);
     }
 
@@ -82,7 +88,17 @@ public class ImageStretchingController {
             beforeImage.setImage(inputImage);
         }
     }
+    @FXML
+    private void handleSaveFile() throws IOException {
+        FileChooser fileChooser = new FileChooser();
 
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("PNG files (*.png)", "*.png");
+        fileChooser.getExtensionFilters().add(extFilter);
+        File output = fileChooser.showSaveDialog(null);
+        if (output != null) {
+            ImageIO.write(SwingFXUtils.fromFXImage(result, null), "png", output);
+        }
+    }
     private void showAlert(String title, String content) {
         Alert alert = new Alert(AlertType.ERROR);
         alert.setTitle(title);

@@ -37,8 +37,8 @@
                <children>
                   <HBox prefWidth="200.0" spacing="20.0">
                      <children>
+                         <TextField fx:id="widthField" promptText="Width (px)" />
                         <TextField fx:id="heightField" promptText="Height (px)" />
-                        <TextField fx:id="widthField" promptText="Width (px)" />
                      </children>
                   </HBox>
                   <Button fx:id="rescaleButton" mnemonicParsing="false" onAction="#handleCalculate" styleClass="calculate_button" stylesheets="@css/home.css" text="Rescale">
@@ -56,7 +56,7 @@
                <children>
                   <Label styleClass="title" stylesheets="@css/home.css" text="After" />
                   <ImageView fx:id="afterImage" fitHeight="300.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true" />
-                  <Button fx:id="saveImageButton" mnemonicParsing="false" text="Save Image" />
+                  <Button fx:id="saveImageButton" mnemonicParsing="false" onAction="#handleSaveFile" text="Save Image" />
                </children>
             </VBox>
          </children>
