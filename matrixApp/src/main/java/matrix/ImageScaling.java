@@ -15,10 +15,10 @@ public class ImageScaling {
     public ImageScaling() {
         placeD();
         placeX();
-    };
+    }
 
     public Matrix setD(){
-
+        System.out.println("Setting D");
         double[][] I = new double[16][2];
         int travArr = 0;
         for (int j = -1; j < 3; j++){
@@ -132,9 +132,8 @@ public class ImageScaling {
                 y = 0;
             }
         }
-
         return D;
-    };
+    }
 
     public void placeD(){
         this.D = setD();
@@ -162,9 +161,10 @@ public class ImageScaling {
 
     public Matrix fit(Matrix y){
         Matrix result = new Matrix(16, 1);
-
+        this.D.displayMatrix();
+        System.out.println("ok");
         Matrix Xinverse = this.X.inverseRedRow();
-
+        this.D.displayMatrix();
         result = Xinverse.multiplyMatrix(this.D);
         result = result.multiplyMatrix(y);
 
@@ -185,18 +185,15 @@ public class ImageScaling {
         return (int)res;
     }
 
-    public void stretch(double factorx, double factory)
+    public void stretch(File input,int newWidth, int newHeight)
 
             throws IOException
     {
         BufferedImage img = null;
-        File f = null;
 
         // read image
         try {
-            f = new File(
-                    "matrix/test3.png");
-            img = ImageIO.read(f);
+            img = ImageIO.read(input);
         }
         catch (IOException e) {
             System.out.println(e);
@@ -205,14 +202,16 @@ public class ImageScaling {
         // get image width and height
         int width = img.getWidth();
         int height = img.getHeight();
+        
+        double factorX = (double) newWidth /width;
+        double factorY = (double) newHeight /height;
 
-        int widthf = (int)(width*factorx);
-        int heightf = (int)(height*factory);
+        System.out.println(factorX + "& " + factorY);
 
         // empty image declaration
-        BufferedImage newimg = new BufferedImage(widthf, heightf, BufferedImage.TYPE_INT_ARGB);
-        for (int y = 0; y < heightf; y++) {
-            for (int x = 0; x < widthf; x++) {
+        BufferedImage newimg = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
+        for (int y = 0; y < newHeight; y++) {
+            for (int x = 0; x < newWidth; x++) {
 
                 newimg.setRGB(x, y, 0x0);
             }
@@ -224,7 +223,7 @@ public class ImageScaling {
         for (int y = 0; y < height; y++){
             for (int x = 0; x < width; x++){
                 int p = img.getRGB(x, y);
-                newimg.setRGB((int)(x*factorx), (int)(y*factory), p);
+                newimg.setRGB((int)(x*factorX), (int)(y*factorY), p);
             }
         }
 
@@ -236,17 +235,17 @@ public class ImageScaling {
         Matrix fitB = new Matrix(16, 1);
         int img_count = 0;
 
-        for (int y = 0; y < heightf; y += factorx) {
-            for (int x = 0; x < widthf; x += factory) {
-
+        for (double y = 0; y < newHeight; y += factorX) {
+            for (double x = 0; x < newWidth; x += factorY) {
+                System.out.println(x + " " + y);
 
                 //get int "original" point
-                int xorg = (int)(x / factorx);
-                int yorg = (int)(y / factory);
+                int xorg = (int)(x / factorX);
+                int yorg = (int)(y / factorY);
 
 
                 //bicubic interpolation on pivot point
-                if (x % factorx == 0 && y % factory == 0){
+                if (x % factorX == 0 && y % factorY == 0){
                     Matrix I = new Matrix(4, 4);
                     Matrix a = new Matrix(4, 4);
                     Matrix r = new Matrix(4, 4);
@@ -256,6 +255,7 @@ public class ImageScaling {
                     //getting the 4 x 4 matrix (16 surrounding pixels)
                     for (int j = yorg - 1; j < yorg + 3; j++) {
                         for (int i = xorg - 1; i < xorg + 3; i++) {
+                            System.out.println(i + "ij " + j);
                             int p = 0;
                             int clampedI = Math.max(0, Math.min(i, width - 1));
                             int clampedJ = Math.max(0, Math.min(j, height - 1));
@@ -285,24 +285,26 @@ public class ImageScaling {
                     Matrix Yg = scaleY(g);
                     Matrix Yb = scaleY(b);
 
+
                     // Perform fitting
-                    fitI = fit(Yi);
+
                     fitA = fit(Ya);
+
                     fitR = fit(Yr);
                     fitG = fit(Yg);
                     fitB = fit(Yb);
                 }
-
                 // Loop over the factor x factor block and apply interpolation
-                for (int by = 0; by < factorx; by++) {
-                    for (int bx = 0; bx < factory; bx++) {
-                        int newX = x + bx;
-                        int newY = y + by;
+                for (double by = 0; by < factorX; by+=factorX) {
+                    for (double bx = 0; bx < factorY; bx+=factorY) {
+                        System.out.println(bx + "bxby " + by);
+                        int newX = (int)(x + bx);
+                        int newY = (int)(y + by);
 
 
-                        if (newX < widthf && newY < heightf) {
-                            double xorgd = ((double) newX / factorx) - xorg;
-                            double yorgd = ((double) newY / factory) - yorg;
+                        if (newX < newWidth && newY < newHeight) {
+                            double xorgd = ((double) newX / factorX) - xorg;
+                            double yorgd = ((double) newY / factorY) - yorg;
 
 
                             // Perform interpolation and get final pixel values
@@ -327,7 +329,7 @@ public class ImageScaling {
 
         // write image
         try {
-            File outputfile = new File("matrix/output.png");
+            File outputfile = new File("temp/output.png");
             ImageIO.write(newimg, "png", outputfile);
         }
         catch (IOException e) {

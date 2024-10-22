@@ -24,6 +24,7 @@ import java.util.Objects;
 import javafx.scene.control.*;
 
 public class BaseOpsController {
+
     private Scene scene;
     private Stage stage;
     private Parent root;
