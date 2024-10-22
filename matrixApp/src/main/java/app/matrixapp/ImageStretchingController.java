@@ -39,6 +39,8 @@ public class ImageStretchingController {
     public Button rescaleButton;
     public ImageView afterImage;
     public Button saveImageButton;
+    public Label afterSize;
+    public Label beforeSize;
     private Scene scene;
     private Stage stage;
     private Parent root;
@@ -76,6 +78,7 @@ public class ImageStretchingController {
         ImageScaling imageScaling = new ImageScaling();
         result = imageScaling.stretch(input, width, height);
         afterImage.setImage(result);
+        afterSize.setText(String.format("%dx%d", (int) result.getWidth(), (int) result.getHeight()));
     }
 
     @FXML
@@ -85,6 +88,7 @@ public class ImageStretchingController {
         if (input != null) {
             Image inputImage = new Image(input.toURI().toString());
             beforeImage.setImage(inputImage);
+            beforeSize.setText(String.format("%dx%d", (int) inputImage.getWidth(), (int) inputImage.getHeight()));
         }
     }
     @FXML

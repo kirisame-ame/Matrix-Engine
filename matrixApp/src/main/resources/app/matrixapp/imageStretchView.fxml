@@ -26,6 +26,7 @@
             <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
                <children>
                   <Label styleClass="title" stylesheets="@css/home.css" text="Before" />
+                  <Label fx:id="beforeSize" styleClass="subtitle" stylesheets="@css/home.css" />
                   <ImageView fx:id="beforeImage" fitHeight="300.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true" />
                   <Button fx:id="loadImageButton" mnemonicParsing="false" onAction="#handleReadFile" text="Load Image">
                      <VBox.margin>
@@ -55,6 +56,7 @@
             <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
                <children>
                   <Label styleClass="title" stylesheets="@css/home.css" text="After" />
+                  <Label fx:id="afterSize" styleClass="subtitle" stylesheets="@css/home.css" />
                   <ImageView fx:id="afterImage" fitHeight="300.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true" />
                   <Button fx:id="saveImageButton" mnemonicParsing="false" onAction="#handleSaveFile" text="Save Image">
                      <VBox.margin>
