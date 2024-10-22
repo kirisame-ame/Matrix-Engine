@@ -69,7 +69,7 @@ public class ImageStretchingController {
 
         ImageScaling imageScaling = new ImageScaling();
         imageScaling.stretch(input, width, height);
-        Image result = new Image("temp/output.png");
+        Image result = new Image("output.png");
         afterImage.setImage(result);
     }
 

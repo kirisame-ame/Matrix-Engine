@@ -161,10 +161,7 @@ public class ImageScaling {
 
     public Matrix fit(Matrix y){
         Matrix result = new Matrix(16, 1);
-        this.D.displayMatrix();
-        System.out.println("ok");
         Matrix Xinverse = this.X.inverseRedRow();
-        this.D.displayMatrix();
         result = Xinverse.multiplyMatrix(this.D);
         result = result.multiplyMatrix(y);
 
@@ -206,13 +203,12 @@ public class ImageScaling {
         double factorX = (double) newWidth /width;
         double factorY = (double) newHeight /height;
 
-        System.out.println(factorX + "& " + factorY);
+
 
         // empty image declaration
         BufferedImage newimg = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
         for (int y = 0; y < newHeight; y++) {
             for (int x = 0; x < newWidth; x++) {
-
                 newimg.setRGB(x, y, 0x0);
             }
         }
@@ -237,7 +233,7 @@ public class ImageScaling {
 
         for (double y = 0; y < newHeight; y += factorX) {
             for (double x = 0; x < newWidth; x += factorY) {
-                System.out.println(x + " " + y);
+
 
                 //get int "original" point
                 int xorg = (int)(x / factorX);
@@ -255,7 +251,6 @@ public class ImageScaling {
                     //getting the 4 x 4 matrix (16 surrounding pixels)
                     for (int j = yorg - 1; j < yorg + 3; j++) {
                         for (int i = xorg - 1; i < xorg + 3; i++) {
-                            System.out.println(i + "ij " + j);
                             int p = 0;
                             int clampedI = Math.max(0, Math.min(i, width - 1));
                             int clampedJ = Math.max(0, Math.min(j, height - 1));
@@ -297,7 +292,6 @@ public class ImageScaling {
                 // Loop over the factor x factor block and apply interpolation
                 for (double by = 0; by < factorX; by+=factorX) {
                     for (double bx = 0; bx < factorY; bx+=factorY) {
-                        System.out.println(bx + "bxby " + by);
                         int newX = (int)(x + bx);
                         int newY = (int)(y + by);
 
@@ -329,7 +323,7 @@ public class ImageScaling {
 
         // write image
         try {
-            File outputfile = new File("temp/output.png");
+            File outputfile = new File("output.png");
             ImageIO.write(newimg, "png", outputfile);
         }
         catch (IOException e) {
