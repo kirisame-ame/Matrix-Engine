@@ -8,7 +8,7 @@ module app.matrixapp {
 //    requires net.synedra.validatorfx;
 //    requires org.kordamp.bootstrapfx.core;
 //    requires eu.hansolo.tilesfx;
-    requires java.desktop;
+    requires javafx.swing;
     opens app.matrixapp to javafx.fxml;
     exports app.matrixapp;
 }

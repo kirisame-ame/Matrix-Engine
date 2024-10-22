@@ -1,6 +1,10 @@
 package matrix;
 
 
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.Image;
+
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -185,17 +189,15 @@ public class ImageScaling {
         return (int)res;
     }
 
-    public void stretch(double factorx, double factory)
+    public Image stretch(File f, int newWidth, int newHeight)
 
             throws IOException
     {
         BufferedImage img = null;
-        File f = null;
 
         // read image
         try {
-            f = new File(
-                    "matrix/test3.png");
+
             img = ImageIO.read(f);
         }
         catch (IOException e) {
@@ -206,14 +208,14 @@ public class ImageScaling {
         int width = img.getWidth();
         int height = img.getHeight();
 
-        int widthf = (int)(width*factorx);
-        int heightf = (int)(height*factory);
+        double factorY = (double)newHeight / height;
+        double factorX = (double)newWidth / width;
 
+        System.out.println(factorX + "xy"+factorY);
         // empty image declaration
-        BufferedImage newimg = new BufferedImage(widthf, heightf, BufferedImage.TYPE_INT_ARGB);
-        for (int y = 0; y < heightf; y++) {
-            for (int x = 0; x < widthf; x++) {
-
+        BufferedImage newimg = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
+        for (int y = 0; y < newHeight; y++) {
+            for (int x = 0; x < newWidth; x++) {
                 newimg.setRGB(x, y, 0x0);
             }
         }
@@ -224,7 +226,7 @@ public class ImageScaling {
         for (int y = 0; y < height; y++){
             for (int x = 0; x < width; x++){
                 int p = img.getRGB(x, y);
-                newimg.setRGB((int)(x*factorx), (int)(y*factory), p);
+                newimg.setRGB((int)(x*factorX), (int)(y*factorY), p);
             }
         }
 
@@ -236,17 +238,17 @@ public class ImageScaling {
         Matrix fitB = new Matrix(16, 1);
         int img_count = 0;
 
-        for (int y = 0; y < heightf; y += factorx) {
-            for (int x = 0; x < widthf; x += factory) {
+        for (int y = 0; y < newHeight; y += factorX) {
+            for (int x = 0; x < newWidth; x += factorY) {
 
 
                 //get int "original" point
-                int xorg = (int)(x / factorx);
-                int yorg = (int)(y / factory);
+                int xorg = (int)(x / factorX);
+                int yorg = (int)(y / factorY);
 
 
                 //bicubic interpolation on pivot point
-                if (x % factorx == 0 && y % factory == 0){
+                if (x % factorX == 0 && y % factorY == 0){
                     Matrix I = new Matrix(4, 4);
                     Matrix a = new Matrix(4, 4);
                     Matrix r = new Matrix(4, 4);
@@ -294,15 +296,15 @@ public class ImageScaling {
                 }
 
                 // Loop over the factor x factor block and apply interpolation
-                for (int by = 0; by < factorx; by++) {
-                    for (int bx = 0; bx < factory; bx++) {
+                for (int by = 0; by < factorX; by++) {
+                    for (int bx = 0; bx < factorY; bx++) {
                         int newX = x + bx;
                         int newY = y + by;
 
 
-                        if (newX < widthf && newY < heightf) {
-                            double xorgd = ((double) newX / factorx) - xorg;
-                            double yorgd = ((double) newY / factory) - yorg;
+                        if (newX < newWidth && newY < newHeight) {
+                            double xorgd = ((double) newX / factorX) - xorg;
+                            double yorgd = ((double) newY / factorY) - yorg;
 
 
                             // Perform interpolation and get final pixel values
@@ -326,13 +328,9 @@ public class ImageScaling {
 
 
         // write image
-        try {
-            File outputfile = new File("matrix/output.png");
-            ImageIO.write(newimg, "png", outputfile);
-        }
-        catch (IOException e) {
-            System.out.println(e);
-        }
+        return SwingFXUtils.toFXImage(newimg, null);
+
+
     }
 
 }

@@ -365,9 +365,10 @@ public class Matrix {
 
     //get matriks inverse dengan matriks eselon tereduksi
     public Matrix inverseRedRow(){
-        if (this.determinant() == 0){
-            throw new UnsupportedOperationException("Determinant is zero, inverse does not exist");
-        }
+        //testing skip
+//        if (this.determinantRedRow() == 0){
+//            throw new UnsupportedOperationException("Determinant is zero, inverse does not exist");
+//        }
         //create empty matrix as output
         Matrix inverse = new Matrix(this.rows, this.cols);
 
