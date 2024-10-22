@@ -1,6 +1,10 @@
 package matrix;
 
 
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.Image;
+
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -185,7 +189,7 @@ public class ImageScaling {
         return (int)res;
     }
 
-    public void stretch( File f, int newWidth, int newHeight)
+    public Image stretch(File f, int newWidth, int newHeight)
 
             throws IOException
     {
@@ -324,13 +328,9 @@ public class ImageScaling {
 
 
         // write image
-        try {
-            File outputfile = new File("src/main/resources/app/matrixapp/temp/output.png");
-            ImageIO.write(newimg, "png", outputfile);
-        }
-        catch (IOException e) {
-            System.out.println(e);
-        }
+        return SwingFXUtils.toFXImage(newimg, null);
+
+
     }
 
 }

@@ -56,7 +56,10 @@
                <children>
                   <Label styleClass="title" stylesheets="@css/home.css" text="After" />
                   <ImageView fx:id="afterImage" fitHeight="300.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true" />
-                  <Button fx:id="saveImageButton" mnemonicParsing="false" onAction="#handleSaveFile" text="Save Image" />
+                  <Button fx:id="saveImageButton" mnemonicParsing="false" onAction="#handleSaveFile" text="Save Image">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin></Button>
                </children>
             </VBox>
          </children>

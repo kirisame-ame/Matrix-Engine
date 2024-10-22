@@ -74,8 +74,7 @@ public class ImageStretchingController {
         int width = Integer.parseInt(widthField.getText());
 
         ImageScaling imageScaling = new ImageScaling();
-        imageScaling.stretch(input, width, height);
-        result = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/app/matrixapp/temp/output.png")));
+        result = imageScaling.stretch(input, width, height);
         afterImage.setImage(result);
     }
 
