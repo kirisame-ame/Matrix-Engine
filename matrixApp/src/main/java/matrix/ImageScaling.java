@@ -1,8 +1,8 @@
 package matrix;
 
 
-import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.image.Image;
+// import javafx.embed.swing.SwingFXUtils;
+// import javafx.scene.image.Image;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -174,6 +174,7 @@ public class ImageScaling {
 
         return result;
     }
+
     public int interpolate (double x, double y, Matrix a){
         double res = 0;
         int iterate = 0;
@@ -211,7 +212,7 @@ public class ImageScaling {
         double factorY = (double)newHeight / height;
         double factorX = (double)newWidth / width;
 
-        System.out.println(factorX + "xy"+factorY);
+        // System.out.println(factorX + "xy"+factorY);
         // empty image declaration
         BufferedImage newimg = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
         for (int y = 0; y < newHeight; y++) {
@@ -238,8 +239,9 @@ public class ImageScaling {
         Matrix fitB = new Matrix(16, 1);
         int img_count = 0;
 
-        for (int y = 0; y < newHeight; y += factorX) {
-            for (int x = 0; x < newWidth; x += factorY) {
+        //begin interpolation process
+        for (int y = 0; y < newHeight; y += factorX < 1 ? 1 : (int)factorX) {
+            for (int x = 0; x < newWidth; x += factorY < 1 ? 1 : (int)factorY) {
 
 
                 //get int "original" point
@@ -330,6 +332,9 @@ public class ImageScaling {
         // write image
         return SwingFXUtils.toFXImage(newimg, null);
 
+        //CHANGE TO Image AFTER TESTING
+
+        // return newimg;
 
     }
 
