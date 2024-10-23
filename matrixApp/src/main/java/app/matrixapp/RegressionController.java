@@ -44,7 +44,7 @@ public class RegressionController {
     @FXML
     private ComboBox<String> subOperationComboBox;
 
-    private String currentOperation = "";
+    private String currentOperation = "Multiple Regression";
     private String currentSubOperation = "";
     private LinearRegressor lr = new LinearRegressor();
     private QuadraticRegressor qr = new QuadraticRegressor();
@@ -64,7 +64,8 @@ public class RegressionController {
     @FXML
     private void handleMainMenu(ActionEvent event) {
         String operation = ((MenuItem) event.getSource()).getText();
-        currentOperation = operation;
+
+        operation = "Multiple Regression";
         operationLabel.setText(currentOperation);
         currentSubOperation = "";
         subOperationComboBox.getItems().clear();
@@ -264,8 +265,7 @@ public class RegressionController {
         inputArea.setText("");
         outputArea.setText("");
         operationLabel.setText("");
-        subOperationComboBox.getItems().clear();
-        subOperationComboBox.setDisable(true);
+
     }
 
 }

@@ -81,16 +81,28 @@ public class QuadraticRegressor {
         StringBuilder sb = new StringBuilder();
         sb.append(String.format("Model: %.2f",this.model.getElmt(0,0)));
         for(int i = 1; i <= this.vars; i++) {
-            sb.append(String.format(" + %.2fx_%d",this.model.getElmt(i,0),i));
+            if (this.model.getElmt(i, 0) > 0) {
+                sb.append(String.format(" + %.2fx_%d",this.model.getElmt(i,0),i));
+            } else if (this.model.getElmt(i, 0) < -0.0f) {
+                sb.append(String.format("  %.2fx_%d",this.model.getElmt(i,0),i));
+            }
         }
         int idx,pivot;
         idx = 0;
         pivot =0;
         for (int j= this.vars+1; j < this.model.getRows(); j++) {
-            if (idx==0){
-                sb.append(String.format(" + %.2fx_%d^2",this.model.getElmt(j,0),pivot+1));
+            if (idx==0 || idx == pivot){
+                if (this.model.getElmt(j, 0) > 0){
+                    sb.append(String.format(" + %.2fx_%d^2",this.model.getElmt(j,0),pivot+1));
+                }else if(this.model.getElmt(j,0) < -0.0f) {
+                    sb.append(String.format(" %.2fx_%d^2",this.model.getElmt(j,0),pivot+1));
+                }
             } else {
-                sb.append(String.format(" + %.2fx_%dx_%d", this.model.getElmt(j, 0), pivot + 1, idx + 1));
+                if (this.model.getElmt(j, 0) > 0) {
+                    sb.append(String.format(" + %.2fx_%dx_%d", this.model.getElmt(j, 0), pivot + 1, idx + 1));
+                } else if (this.model.getElmt(j, 0) < -0.0f) {
+                    sb.append(String.format(" %.2fx_%dx_%d", this.model.getElmt(j, 0), pivot + 1, idx + 1));
+                }
             }
             idx++;
             if (idx >= this.vars) {
