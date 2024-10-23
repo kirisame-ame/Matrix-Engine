@@ -155,6 +155,7 @@ public class RegressionController {
             case "Quadratic Regression":
                 qr.fit(ls.getFeatures(), ls.getTarget());
                 currentSubOperation = subOperation;
+                qr.printModel();
                 return qr.toStringModel();
             case "Linear Regression":
                 lr.fit(ls.getFeatures(), ls.getTarget());
@@ -167,7 +168,6 @@ public class RegressionController {
     }
     private String predictRegression(Matrix matrix, String subOperation) {
         System.out.println(subOperation);
-        lr.printModel();
         return switch (subOperation) {
             case "Quadratic Regression" -> matrixToString(qr.predict(matrix));
             case "Linear Regression" -> matrixToString(lr.predict(matrix));

@@ -67,7 +67,7 @@ public class QuadraticRegressor {
             if (idx==0){
                 System.out.printf(" + %.2fx_%d^2",this.model.getElmt(j,0),pivot+1);
             } else {
-                System.out.printf(" + %.2fx_%dx_%d",this.model.getElmt(j,0),pivot,idx);
+                System.out.printf(" + %.2fx_%dx_%d",this.model.getElmt(j,0),pivot+1,idx+1);
             }
             idx++;
             if (idx >= this.vars) {
@@ -90,7 +90,7 @@ public class QuadraticRegressor {
             if (idx==0){
                 sb.append(String.format(" + %.2fx_%d^2",this.model.getElmt(j,0),pivot+1));
             } else {
-                sb.append(String.format(" + %.2fx_%dx_%d",this.model.getElmt(j,0),pivot,idx));
+                sb.append(String.format(" + %.2fx_%dx_%d", this.model.getElmt(j, 0), pivot + 1, idx + 1));
             }
             idx++;
             if (idx >= this.vars) {
