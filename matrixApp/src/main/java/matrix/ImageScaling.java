@@ -1,8 +1,8 @@
 package matrix;
 
 
-// import javafx.embed.swing.SwingFXUtils;
-// import javafx.scene.image.Image;
+ import javafx.embed.swing.SwingFXUtils;
+ import javafx.scene.image.Image;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -383,7 +383,7 @@ public class ImageScaling {
         final BufferedImage newImg = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB); // Declare as final
 
         // Initialize a thread pool
-        int numThreads = Runtime.getRuntime().availableProcessors();
+        int numThreads = (Runtime.getRuntime().availableProcessors())/2;
         ExecutorService executor = Executors.newFixedThreadPool(numThreads);
         List<Future<Void>> futures = new ArrayList<>();
 
