@@ -17,6 +17,7 @@ import javafx.scene.control.ComboBox;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.OpenOption;
 import java.util.List;
 import java.util.Arrays;
 import java.util.Objects;
@@ -350,5 +351,20 @@ public class BaseOpsController {
         operationLabel.setText("");
         subOperationComboBox.getItems().clear();
         subOperationComboBox.setDisable(true);
+    }
+
+    public void saveOutput() {
+        try {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Save Output");
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Files", new String[]{"*.txt"}));
+            File file = fileChooser.showSaveDialog(this.stage);
+            if (file != null) {
+                Files.write(file.toPath(), this.outputArea.getText().getBytes(), new OpenOption[0]);
+            }
+        } catch (IOException var3) {
+            IOException e = var3;
+            this.showAlert("File Save Error", "Error saving file: " + e.getMessage());
+    }
     }
 }

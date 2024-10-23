@@ -1,24 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox fx:id="main_box" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1024.0" styleClass="home" stylesheets="@css/home.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1">
+<HBox fx:id="main_box" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1024.0" styleClass="home" stylesheets="@css/home.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.matrixapp.ImageStretchingController">
     <VBox fx:id="dashboard_box" alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1024.0" stylesheets="@css/home.css" HBox.hgrow="ALWAYS">
-        <children>
-            <HBox fx:id="header_box" alignment="CENTER" prefHeight="200.0" prefWidth="200.0" styleClass="header_box" stylesheets="@css/home.css">
-                <children>
-                    <VBox alignment="CENTER" prefWidth="1024.0" HBox.hgrow="ALWAYS">
-                        <children>
-                            <Label alignment="CENTER" styleClass="title" stylesheets="@css/home.css" text="The Matrix Engine" />
-                            <Label alignment="TOP_CENTER" styleClass="subtitle" stylesheets="@css/home.css" text="Multipurpose Matrix Calculator" />
-                        </children></VBox>
-                </children>
-                <VBox.margin>
-                    <Insets />
-                </VBox.margin></HBox>
-        </children>
+        <HBox fx:id="header_box" alignment="CENTER" prefHeight="200.0" prefWidth="200.0" styleClass="header_box" stylesheets="@css/home.css">
+            <children>
+                <VBox alignment="CENTER" prefWidth="1024.0" HBox.hgrow="ALWAYS">
+                    <children>
+                        <Label fx:id="title" alignment="CENTER" styleClass="title" stylesheets="@css/home.css" text="Image Rescaling" />
+                        <Label fx:id="subtitle" alignment="TOP_CENTER" styleClass="subtitle" stylesheets="@css/home.css" text="Upscale &amp; Downscale" />
+                    </children></VBox>
+            </children>
+            <VBox.margin>
+                <Insets />
+            </VBox.margin></HBox>
+      <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" VBox.vgrow="ALWAYS">
+         <children>
+            <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label styleClass="title" stylesheets="@css/home.css" text="Before" />
+                  <Label fx:id="beforeSize" styleClass="subtitle" stylesheets="@css/home.css" />
+                  <ImageView fx:id="beforeImage" fitHeight="300.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true" />
+                  <Button fx:id="loadImageButton" mnemonicParsing="false" onAction="#handleReadFile" text="Load Image">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin></Button>
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <HBox prefWidth="200.0" spacing="20.0">
+                     <children>
+                         <TextField fx:id="widthField" promptText="Width (px)" />
+                        <TextField fx:id="heightField" promptText="Height (px)" />
+                     </children>
+                  </HBox>
+                  <Button fx:id="rescaleButton" mnemonicParsing="false" onAction="#handleCalculate" styleClass="calculate_button" stylesheets="@css/home.css" text="Rescale">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin></Button>
+                  <Button fx:id="backButton" mnemonicParsing="false" onAction="#onBackButtonClick" styleClass="back_button" stylesheets="@css/home.css" text="Back">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </Button>
+               </children>
+            </VBox>
+            <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label styleClass="title" stylesheets="@css/home.css" text="After" />
+                  <Label fx:id="afterSize" styleClass="subtitle" stylesheets="@css/home.css" />
+                  <ImageView fx:id="afterImage" fitHeight="300.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true" />
+                  <Button fx:id="saveImageButton" mnemonicParsing="false" onAction="#handleSaveFile" text="Save Image">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin></Button>
+               </children>
+            </VBox>
+         </children>
+         <VBox.margin>
+            <Insets bottom="30.0" left="30.0" right="30.0" top="10.0" />
+         </VBox.margin>
+      </HBox>
     </VBox>
 </HBox>
