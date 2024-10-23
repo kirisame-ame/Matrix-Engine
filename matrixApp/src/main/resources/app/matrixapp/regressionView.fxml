@@ -59,6 +59,7 @@
                                 <children>
                                     <Button fx:id="predCalcButton" mnemonicParsing="false" onAction="#handlePredict" styleClass="calculate_button" stylesheets="@css/home.css" text="Predict" />
                                     <Button fx:id="featureReadButton" mnemonicParsing="false" onAction="#handleReadFeatureFile" text="Read File" />
+                           <Button fx:id="saveFileButton" mnemonicParsing="false" onAction="#handleWriteFile" text="Save File" />
                                 </children>
                                 <opaqueInsets>
                                     <Insets />

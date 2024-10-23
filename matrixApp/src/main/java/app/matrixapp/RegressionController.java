@@ -28,6 +28,7 @@ import matrix.QuadraticRegressor;
 public class RegressionController {
     public TextArea predInput;
     public TextArea predOutput;
+    public Button saveFileButton;
     private Scene scene;
     private Stage stage;
     private Parent root;
@@ -231,6 +232,21 @@ public class RegressionController {
                 predInput.setText(String.join("\n", lines));
             } catch (IOException e) {
                 showAlert("File Read Error", "Error reading file: " + e.getMessage());
+            }
+        }
+    }
+    @FXML
+    private void handleWriteFile() {
+        FileChooser fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("txt files (*.txt)", "*.txt");
+        fileChooser.getExtensionFilters().add(extFilter);
+        File file = fileChooser.showSaveDialog(null);
+        String printOut = outputArea.getText().concat("\n").concat("Predicted value : \n").concat(predOutput.getText());
+        if (file != null) {
+            try {
+                Files.writeString(file.toPath(), printOut);
+            } catch (IOException e) {
+                showAlert("File Write Error", "Error writing file: " + e.getMessage());
             }
         }
     }
