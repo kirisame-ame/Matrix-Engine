@@ -15,6 +15,7 @@ import matrix.Interpolation;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.OpenOption;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -77,9 +78,17 @@ public class InterpolationController {
             StringBuilder result = new StringBuilder();
             result.append("Interpolation polynomial:\n");
             result.append("f(x) = ");
+            boolean first = true;
             for (int i = coefficients.length - 1; i >= 0; i--) {
+                if (coefficients[i] == 0) {
+                    continue;
+                }
                 if (i < coefficients.length - 1) {
-                    result.append(coefficients[i] >= 0 ? " + " : " - ");
+                    if (first) {
+                        first = false;
+                    } else {
+                        result.append(coefficients[i] >= 0 ? " + " : " - ");
+                    }
                 }
                 result.append(String.format("%.4f", Math.abs(coefficients[i])));
                 if (i > 0) {
@@ -123,5 +132,20 @@ public class InterpolationController {
     public void init() {
         inputArea.setText("");
         outputArea.setText("");
+    }
+
+    public void saveOutput() {
+        try {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Save Output");
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Files", new String[]{"*.txt"}));
+            File file = fileChooser.showSaveDialog(this.stage);
+            if (file != null) {
+                Files.write(file.toPath(), this.outputArea.getText().getBytes(), new OpenOption[0]);
+            }
+        } catch (IOException var3) {
+            IOException e = var3;
+            this.showAlert("File Save Error", "Error saving file: " + e.getMessage());
+        }
     }
 }

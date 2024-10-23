@@ -37,3 +37,4 @@ build/
 ### Mac OS ###
 .DS_Store
 controlsfx-11.2.0
+#.idea\Algeo01-23006.iml
