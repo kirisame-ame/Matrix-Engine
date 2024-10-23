@@ -199,7 +199,7 @@ public class ImageScaling {
     }
 
     // Code adjustments in stretch method
-    public BufferedImage stretch(File f, int newWidth, int newHeight) throws IOException {
+    public Image stretch(File f, int newWidth, int newHeight) throws IOException {
         BufferedImage img = null;
     
         // Read image
@@ -357,67 +357,69 @@ public class ImageScaling {
             }
         }
     
-        return newimg;
+        // return newimg;
+        return SwingFXUtils.toFXImage(newimg, null);
     }
     
-    public BufferedImage stretchMultithreaded(File f, int newWidth, int newHeight) throws IOException {
+    public Image stretchMultithreaded(File f, int newWidth, int newHeight) throws IOException {
         
         BufferedImage img; // Declare without final
-    // Read the image
-    try {
-        img = ImageIO.read(f);
-    } catch (IOException e) {
-        System.out.println(e);
-        return null; // Ensure we exit the method if the image can't be read
-    }
-
-    // Get image width and height
-    final int width = img.getWidth();  // Declare as final
-    final int height = img.getHeight();  // Declare as final
-
-    final double factorY = (double) newHeight / height;  // Declare as final
-    final double factorX = (double) newWidth / width;  // Declare as final
-
-    // Create an empty image
-    final BufferedImage newImg = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB); // Declare as final
-
-    // Initialize a thread pool
-    int numThreads = Runtime.getRuntime().availableProcessors();
-    ExecutorService executor = Executors.newFixedThreadPool(numThreads);
-    List<Future<Void>> futures = new ArrayList<>();
-
-    // Define the chunk size for each thread
-    int chunkHeight = newHeight / numThreads; // Split height into roughly equal chunks
-
-    // Loop over the number of threads, each handling a chunk of the image
-    for (int t = 0; t < numThreads; t++) {
-        final int yStart = t * chunkHeight; // Declare as final
-        final int yEnd = (t == numThreads - 1) ? newHeight : yStart + chunkHeight; // Declare as final
-
-        // Declare a final copy of img and newImg to be used in the lambda expression
-        final BufferedImage finalImg = img; // Declare final reference to img
-        final BufferedImage finalNewImg = newImg; // Declare final reference to newImg
-
-        Future<Void> future = executor.submit(() -> {
-            processImageChunk(finalImg, finalNewImg, width, height, newWidth, newHeight, factorX, factorY, yStart, yEnd);
-            return null;
-        });
-        futures.add(future);
-    }
-
-    // Wait for all threads to finish
-    for (Future<Void> future : futures) {
+        // Read the image
         try {
-            future.get(); // Wait for the thread to finish
-        } catch (Exception e) {
-            e.printStackTrace();
+            img = ImageIO.read(f);
+        } catch (IOException e) {
+            System.out.println(e);
+            return null; // Ensure we exit the method if the image can't be read
         }
-    }
 
-    // Shutdown the executor service
-    executor.shutdown();
+        // Get image width and height
+        final int width = img.getWidth();  // Declare as final
+        final int height = img.getHeight();  // Declare as final
 
-    return newImg;
+        final double factorY = (double) newHeight / height;  // Declare as final
+        final double factorX = (double) newWidth / width;  // Declare as final
+
+        // Create an empty image
+        final BufferedImage newImg = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB); // Declare as final
+
+        // Initialize a thread pool
+        int numThreads = Runtime.getRuntime().availableProcessors();
+        ExecutorService executor = Executors.newFixedThreadPool(numThreads);
+        List<Future<Void>> futures = new ArrayList<>();
+
+        // Define the chunk size for each thread
+        int chunkHeight = newHeight / numThreads; // Split height into roughly equal chunks
+
+        // Loop over the number of threads, each handling a chunk of the image
+        for (int t = 0; t < numThreads; t++) {
+            final int yStart = t * chunkHeight; // Declare as final
+            final int yEnd = (t == numThreads - 1) ? newHeight : yStart + chunkHeight; // Declare as final
+
+            // Declare a final copy of img and newImg to be used in the lambda expression
+            final BufferedImage finalImg = img; // Declare final reference to img
+            final BufferedImage finalNewImg = newImg; // Declare final reference to newImg
+
+            Future<Void> future = executor.submit(() -> {
+                processImageChunk(finalImg, finalNewImg, width, height, newWidth, newHeight, factorX, factorY, yStart, yEnd);
+                return null;
+            });
+            futures.add(future);
+        }
+
+        // Wait for all threads to finish
+        for (Future<Void> future : futures) {
+            try {
+                future.get(); // Wait for the thread to finish
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        // Shutdown the executor service
+        executor.shutdown();
+
+        // return newImg;
+        return SwingFXUtils.toFXImage(newImg, null);
     }
     
     // This method processes a chunk of the image in the given range
