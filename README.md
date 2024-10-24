@@ -12,12 +12,7 @@ Kontributor project ini adalah:
 
 ## Instalasi dan Konfigurasi Awal
 
-Download repositori ini dan jalankan pada compiler Anda yang dapat digunakan untuk Java.
-
-Anda dapat melakukannya dengan melakukan clone pada folder yang anda pilih
-```bash
-git clone https://github.com/Farhanabd05/Algeo01-23006
-```
+Pada bagian releases, unduh file .zip yang tersedia. File .zip tersebut berisi .exe installer. Jalankan installer tersebut dan aplikasi siap digunakan
 
 
 ## Fitur
@@ -32,7 +27,10 @@ git clone https://github.com/Farhanabd05/Algeo01-23006
 ## Bahasa yang Digunakan
 
 1. Java
-
+## Informasi Folder Repository
+1. matrixApp: semua kode dan resource yang digunakan aplikasi
+2. Docs: berisi dokumentasi dan video
+3. Test: berisi hasil testing
 ##  Kontak
 + William Andrian - 13523006@std.stei.itb.ac.id
 + Nathan Jovial Hartono - 13522032@std.stei.itb.ac.id
