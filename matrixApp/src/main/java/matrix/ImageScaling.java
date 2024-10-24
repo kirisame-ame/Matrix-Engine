@@ -419,8 +419,8 @@ public class ImageScaling {
         // Shutdown the executor service
         executor.shutdown();
 
-        return newImg;
-        // return SwingFXUtils.toFXImage(newImg, null);
+        // return newImg;
+        return SwingFXUtils.toFXImage(newImg, null);
     }
     
     // This method processes a chunk of the image in the given range
