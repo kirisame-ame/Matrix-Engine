@@ -17,16 +17,7 @@ public class Matrix {
         this.cols = cols;
         this.data = new double[rows][cols];
     }
-    //convert to matrix
-    public Matrix toMatrix(double[][] data) {
-        Matrix res = new Matrix(data.length, data[0].length);
-        for (int i = 0; i < data.length; i++) {
-            for (int j = 0; j < data[0].length; j++) {
-                res.setElmt(i, j, data[i][j]);
-            }
-        }
-        return res;
-    }
+
     //Input matriks dari user
     public void readMatrix(Scanner scanner) {
         for (int i = 0; i < rows; i++) {
@@ -76,15 +67,6 @@ public class Matrix {
             return data[row][col];
         } else {
             throw new IllegalArgumentException("Invalid index");
-        }
-    }
-
-    //get elemen diagonal matriks pada baris & kolom ke-i
-    public double getElmtDiagonal(int i) {
-        if (i >= 0 && i < Math.min(rows, cols)) {
-            return data[i][i];
-        } else {
-            throw new IllegalArgumentException("Invalid diagonal index");
         }
     }
 
@@ -149,16 +131,6 @@ public class Matrix {
     }
 
 
-    //get last row index
-    public int getLastRowIdx() {
-        return this.rows - 1;
-    }
-
-    //get last col index
-    public int getLastColIdx() {
-        return this.cols - 1;
-    }
-
     //get matrix data dalam 2d list
     public double[][] getData() {
         return this.data;
@@ -178,17 +150,6 @@ public class Matrix {
             data[row2] = temp;
         } else {
             throw new IllegalArgumentException("Invalid row indices");
-        }
-    }
-
-    //swap kolom col1 dan col2
-    public void swapCols(int col1, int col2) {
-        if (isColIdxValid(col1) && isColIdxValid(col2)) {
-            double[] temp = data[col1];
-            data[col1] = data[col2];
-            data[col2] = temp;
-        } else {
-            throw new IllegalArgumentException("Invalid column indices");
         }
     }
 
@@ -216,11 +177,6 @@ public class Matrix {
         return rows == cols;
     }
 
-    //check apakah matriks valid
-    public boolean isValid() {
-        return rows > 0 && cols > 0;
-    }
-
     //check apakah index baris valid
     public boolean isRowIdxValid(int row) {
         return row >= 0 && row < rows;
@@ -236,64 +192,7 @@ public class Matrix {
         return isRowIdxValid(row) && isColIdxValid(col);
     }
 
-    //check apakah matriks identitas
-    public boolean isMatrixIdentity() {
-        if (!isSquare())
-            return false;
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                if (i == j && data[i][j] != 1)
-                    return false;
-                if (i != j && data[i][j] != 0)
-                    return false;
-            }
-        }
-        return true;
-    }
-
-    //check apakah size matriks sama
-    public boolean isMatrixSizeEqual(Matrix m2) {
-        return this.rows == m2.rows && this.cols == m2.cols;
-    }
-
-    //cek apakah matriks sama dengan matriks m2
-    public boolean isMatrixEqual(Matrix m2) {
-        if (this.isMatrixSizeEqual(m2)) {
-            for (int i = 0; i < getRows(); i++) {
-                for (int j = 0; j < getCols(); j++) {
-                    if (this.data[i][j] != m2.data[i][j]) {
-                        return false;
-                    }
-                }
-            }
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    //cek apakah matriks ada inverse
-    public boolean isInvertible(Matrix m2) {
-        return m2.determinant() != 0;
-    }
-
     //----------------------ARITHMETIC APPLICATION----------------------
-
-    //tambah atau kurang matriks dengan matriks m2
-    //plus = true -> tambah, plus = false -> kurang
-    public Matrix addSubMatrix(Matrix m2, boolean plus) {
-        Matrix res = new Matrix(this.rows, this.cols);
-        if (!isMatrixSizeEqual(m2)) {
-            throw new UnsupportedOperationException(
-                    "Addition and subtraction only for matrices with the same dimensions");
-        }
-        for (int i = 0; i < getRows(); i++) {
-            for (int j = 0; j < getCols(); j++) {
-                res.data[i][j] = plus ? m2.data[i][j] + this.data[i][j] : this.data[i][j] - m2.data[i][j];
-            }
-        }
-        return res;
-    }
 
     //mengalikan matriks dengan konstanta
     public void multiplyMatrixConst(double constant) {
@@ -332,20 +231,6 @@ public class Matrix {
             } 
         }
         return transposed;
-    }
-
-    //get transpose matriks persegi, ukuran non-persegi tidak valid
-    public void transposeInPlace() {
-        if (rows != cols) {
-            throw new UnsupportedOperationException("In-place transpose only supported for square matrices");
-        }
-        for (int i = 0; i < rows; i++) {
-            for (int j = i + 1; j < cols; j++) {
-                double temp = data[i][j];
-                data[i][j] = data[j][i];
-                data[j][i] = temp;
-            }
-        }
     }
 
     //get matriks adjoint
@@ -632,15 +517,6 @@ public class Matrix {
                 if (Math.abs(data[i][j]) < EPSILON) data[i][j] = 0;
             }
         }
-    }
-
-    //get hasil jawaban SPL Gauss-Jordan [x1 .. xn]
-    public double[] resFromReducedEselon(Matrix m) {
-        double[] Y = new double[m.getRows()];
-        for (int i = 0; i < m.getRows(); i++) {
-            Y[i] = m.getElmt(i, m.getCols() - 1);
-        }
-        return Y;
     }
 
     //get hasil jawaban SPL Gauss [x1 .. xn]

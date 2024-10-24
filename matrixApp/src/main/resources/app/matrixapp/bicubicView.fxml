@@ -13,7 +13,7 @@
             <children>
                 <VBox alignment="CENTER" prefWidth="1024.0" HBox.hgrow="ALWAYS">
                     <children>
-                        <Label fx:id="title" alignment="CENTER" styleClass="title" stylesheets="@css/home.css" text="Bicubic Spline Interpolation" />
+                        <Label fx:id="title" alignment="CENTER" styleClass="title" stylesheets="@css/home.css" text="Bicubic Spline" />
                         <Label fx:id="subtitle" alignment="TOP_CENTER" styleClass="subtitle" stylesheets="@css/home.css" text="4x4 Matrix Input" />
                     </children>
                 </VBox>

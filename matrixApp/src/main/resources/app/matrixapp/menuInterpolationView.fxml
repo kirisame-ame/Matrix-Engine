@@ -25,9 +25,10 @@
                 <VBox.margin>
                     <Insets />
                 </VBox.margin></HBox>
-            <GridPane fx:id="options_grid" hgap="30.0" prefHeight="400.0" prefWidth="700.0" vgap="30.0" VBox.vgrow="ALWAYS">
+            <GridPane fx:id="options_grid" alignment="CENTER" hgap="30.0" prefHeight="400.0" prefWidth="700.0" vgap="30.0" VBox.vgrow="ALWAYS">
                 <columnConstraints>
                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               <ColumnConstraints halignment="CENTER" hgrow="NEVER" minWidth="10.0" prefWidth="100.0" />
                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 </columnConstraints>
                 <rowConstraints>
@@ -41,27 +42,28 @@
                                     <Image url="@images/resized_fuuka.png" />
                                 </image>
                             </ImageView>
-                            <Button fx:id="bicubicButton" mnemonicParsing="false" onAction="#onBaseOpsButtonClick" text="Bicubic Spline">
+                            <Button fx:id="bicubicButton" mnemonicParsing="false" onAction="#onBicubicButtonClick" text="Bicubic Spline">
                                 <VBox.margin>
                                     <Insets top="10.0" />
                                 </VBox.margin>
                             </Button>
                         </children>
                     </VBox>
-                    <VBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" styleClass="options_box_tr" stylesheets="@css/home.css" GridPane.columnIndex="1">
+                    <VBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" styleClass="options_box_tr" stylesheets="@css/home.css" GridPane.columnIndex="2">
                         <children>
                             <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" smooth="false">
                                 <image>
                                     <Image url="@images/resized_fuuka.png" />
                                 </image>
                             </ImageView>
-                            <Button fx:id="menuInterpolationButton" mnemonicParsing="false" onAction="#onMenuInterpolationButtonClick" text="Polynomial Interpolation">
+                            <Button fx:id="menuInterpolationButton" mnemonicParsing="false" onAction="#onInterpolationButtonClick" text="Polynomial Interpolation">
                                 <VBox.margin>
                                     <Insets top="10.0" />
                                 </VBox.margin>
                             </Button>
                         </children>
                     </VBox>
+               <Button alignment="CENTER" mnemonicParsing="false" onAction="#onBackButtonClick" stylesheets="@css/home.css" text="Back" GridPane.columnIndex="1" />
                 </children>
                 <VBox.margin>
                     <Insets bottom="30.0" left="30.0" right="30.0" />
