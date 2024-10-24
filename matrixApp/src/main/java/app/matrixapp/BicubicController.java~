@@ -120,6 +120,7 @@ public class BicubicController {
         inputArea.setText("");
         outputArea.setText("");
     }
+
     public void saveOutput() {
         try {
             FileChooser fileChooser = new FileChooser();
