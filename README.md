@@ -12,7 +12,7 @@ Kontributor project ini adalah:
 
 ## Instalasi dan Konfigurasi Awal
 
-Pada bagian releases, unduh file .zip yang tersedia. File .zip tersebut berisi .exe installer. Jalankan installer tersebut dan aplikasi siap digunakan
+Pada folder installer, terdapat sebuah file .exe installer. Jalankan installer tersebut dan aplikasi siap untuk digunakan
 
 
 ## Fitur
