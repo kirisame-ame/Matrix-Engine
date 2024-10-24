@@ -1,8 +1,8 @@
 # Matrix Calculator
-Solusi untuk Sistem Persamaan Linear, Determinan, Invers, dan Implementasi Matematika lainnya (Interpolasi, Regresi Berganda, Bicubic Spline, Image Stretching)
+Pemecahan untuk Sistem Persamaan Linear, Determinan, Invers, dan Implementasi Aljabar Linear lainnya (Interpolasi, Regresi Berganda, Bicubic Spline, Image Stretching)
 
 ## Informasi Umum
-Repositori ini berisi berbagai data yang dibutuhkan untuk Tugas Besar 1 IF2123 Aljabar Linear dan Geometri. Program ini berisi library dengan bahasa Java untuk menyelesaikan berbagai persoalan matriks.
+Tujuan dibuatnya repositori ini adalah untuk memenuhi Tugas Besar 1 IF2123 Aljabar Linear dan Geometri. Program ini berisi library dengan bahasa Java untuk menyelesaikan berbagai persoalan matriks.
 
 ##  Kontributor
 Kontributor project ini adalah:
@@ -12,9 +12,9 @@ Kontributor project ini adalah:
 
 ## Instalasi dan Konfigurasi Awal
 
-Unduh repositori ini dan jalankan pada compiler Anda yang dapat digunakan untuk Java. Jalankan program dan ikuti instruksi agar mendapat jawaban sesuai yang diharapkan
+Download repositori ini dan jalankan pada compiler Anda yang dapat digunakan untuk Java.
 
-Anda dapat melakukannya dengan melakukan _clone_ pada folder yang anda pilih
+Anda dapat melakukannya dengan melakukan clone pada folder yang anda pilih
 ```bash
 git clone https://github.com/Farhanabd05/Algeo01-23006
 ```
@@ -22,14 +22,14 @@ git clone https://github.com/Farhanabd05/Algeo01-23006
 
 ## Fitur
 1. Menyelesaikan sistem persamaan linear menggunakan Metode Eliminasi Gauss, Metode Eliminasi Gauss-Jordan, Metode Invers, dan Metode Cramer
-2. Menghasilkan invers matriks menggunakan Metode Reduksi Baris dan Metode Kofaktor
-3. Menghasilkan determinan matriks menggunakan Metode Ekspansi Kofaktor dan Reduksi Baris
+2. enghasilkan determinan matriks menggunakan Metode Ekspansi Kofaktor dan Reduksi Baris
+3. Menghasilkan invers matriks menggunakan Metode Reduksi Baris dan Metode Kofaktor
 4. Menyelesaikan masalah interpolasi polinomial
 5. Menyelesaikan masalah interpolasi bicubic
-6. Menyelesaikan masalah regresi linear ganda
+6. Menyelesaikan masalah regresi linear dan regresi kuadratik
 7. Dapat mengubah size image
 
-## Bahasa yang Digunakan Pada Program
+## Bahasa yang Digunakan
 
 1. Java
 
