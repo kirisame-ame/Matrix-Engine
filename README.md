@@ -29,8 +29,9 @@ Pada bagian releases, unduh file .zip yang tersedia. File .zip tersebut berisi .
 1. Java
 ## Informasi Folder Repository
 1. matrixApp: semua kode dan resource yang digunakan aplikasi
-2. Docs: berisi dokumentasi dan video
-3. Test: berisi hasil testing
+2. docs: berisi dokumentasi dan video
+3. test: berisi hasil testing
+4. src: berisi file .java yang sudah dicompile menjadi .class
 ##  Kontak
 + William Andrian - 13523006@std.stei.itb.ac.id
 + Nathan Jovial Hartono - 13522032@std.stei.itb.ac.id
