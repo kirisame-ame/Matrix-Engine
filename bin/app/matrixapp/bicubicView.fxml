@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<HBox fx:id="main_box" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1024.0" styleClass="home" stylesheets="@css/home.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.matrixapp.BicubicController">
+    <VBox fx:id="dashboard_box" alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1024.0" stylesheets="@css/home.css" HBox.hgrow="ALWAYS">
+        <HBox fx:id="header_box" alignment="CENTER" prefHeight="200.0" prefWidth="200.0" styleClass="header_box" stylesheets="@css/home.css">
+            <children>
+                <VBox alignment="CENTER" prefWidth="1024.0" HBox.hgrow="ALWAYS">
+                    <children>
+                        <Label fx:id="title" alignment="CENTER" styleClass="title" stylesheets="@css/home.css" text="Bicubic Spline" />
+                        <Label fx:id="subtitle" alignment="TOP_CENTER" styleClass="subtitle" stylesheets="@css/home.css" text="4x4 Matrix Input" />
+                    </children>
+                </VBox>
+            </children>
+            <VBox.margin>
+                <Insets />
+            </VBox.margin>
+        </HBox>
+        <VBox alignment="CENTER" spacing="10">
+            <TextArea fx:id="inputArea" promptText="Enter 4x4 matrix and a, b values here..." styleClass="input_box" stylesheets="@css/home.css" />
+            <HBox alignment="CENTER" spacing="10">
+                <Button onAction="#handleCalculate" text="Calculate" />
+                <Button onAction="#handleReadFile" text="Read from File" />
+                <Button fx:id="backButton" mnemonicParsing="false" onAction="#onBackButtonClick" text="Back" />
+                <Button fx:id="saveButton" mnemonicParsing="false" onAction="#saveOutput" stylesheets="@css/home.css" text="Save" />
+            </HBox>
+            <TextArea fx:id="outputArea" editable="false" promptText="Results will be displayed here..." styleClass="input_box" stylesheets="@css/home.css" />
+            <VBox.margin>
+                <Insets left="30.0" right="30.0" />
+            </VBox.margin>
+        </VBox>
+    </VBox>
+</HBox>
