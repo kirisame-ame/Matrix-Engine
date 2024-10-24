@@ -286,52 +286,53 @@ public class ImageScaling {
             Matrix fitB = new Matrix(16, 1);
     
             // Perform bicubic interpolation
-            for (double y = 0; y < newHeight; y += Math.max(1.0, factorY)) {
-                for (double x = 0; x < newWidth; x += Math.max(1.0, factorX)) {
+            for (double y = 0; y < newHeight; y += factorY) {
+                for (double x = 0; x < newWidth; x += factorX) {
                     int xorg = (int) (x / factorX);
                     int yorg = (int) (y / factorY);
-    
-                    if (x % factorX == 0 && y % factorY == 0) {
-                        Matrix I = new Matrix(4, 4);
-                        Matrix a = new Matrix(4, 4);
-                        Matrix r = new Matrix(4, 4);
-                        Matrix g = new Matrix(4, 4);
-                        Matrix b = new Matrix(4, 4);
-    
-                        // Get the 4x4 matrix (16 surrounding pixels)
-                        for (int j = yorg - 1; j < yorg + 3; j++) {
-                            for (int i = xorg - 1; i < xorg + 3; i++) {
-                                int p = 0;
-                                int clampedI = Math.max(0, Math.min(i, width - 1));
-                                int clampedJ = Math.max(0, Math.min(j, height - 1));
-                                p = img.getRGB(clampedI, clampedJ);
-    
-                                I.setElmt(i - xorg + 1, j - yorg + 1, p);
-                                int alpha = (p >> 24) & 0xff;
-                                int red = (p >> 16) & 0xff;
-                                int green = (p >> 8) & 0xff;
-                                int blue = p & 0xff;
-                                a.setElmt(i - xorg + 1, j - yorg + 1, alpha);
-                                r.setElmt(i - xorg + 1, j - yorg + 1, red);
-                                g.setElmt(i - xorg + 1, j - yorg + 1, green);
-                                b.setElmt(i - xorg + 1, j - yorg + 1, blue);
-                            }
+                    
+                    System.out.println("x: " + x + " y: " + y + " factorX: " + factorX + " factorY: " + factorY + " xorg: " + xorg + " yorg: " + yorg);
+
+                    Matrix I = new Matrix(4, 4);
+                    Matrix a = new Matrix(4, 4);
+                    Matrix r = new Matrix(4, 4);
+                    Matrix g = new Matrix(4, 4);
+                    Matrix b = new Matrix(4, 4);
+
+                    // Get the 4x4 matrix (16 surrounding pixels)
+                    for (int j = yorg - 1; j < yorg + 3; j++) {
+                        for (int i = xorg - 1; i < xorg + 3; i++) {
+                            int p = 0;
+                            int clampedI = Math.max(0, Math.min(i, width - 1));
+                            int clampedJ = Math.max(0, Math.min(j, height - 1));
+                            p = img.getRGB(clampedI, clampedJ);
+
+                            I.setElmt(i - xorg + 1, j - yorg + 1, p);
+                            int alpha = (p >> 24) & 0xff;
+                            int red = (p >> 16) & 0xff;
+                            int green = (p >> 8) & 0xff;
+                            int blue = p & 0xff;
+                            a.setElmt(i - xorg + 1, j - yorg + 1, alpha);
+                            r.setElmt(i - xorg + 1, j - yorg + 1, red);
+                            g.setElmt(i - xorg + 1, j - yorg + 1, green);
+                            b.setElmt(i - xorg + 1, j - yorg + 1, blue);
                         }
-    
-                        // Scale and interpolate
-                        Matrix Yi = scaleY(I);
-                        Matrix Ya = scaleY(a);
-                        Matrix Yr = scaleY(r);
-                        Matrix Yg = scaleY(g);
-                        Matrix Yb = scaleY(b);
-    
-                        // Fit matrices
-                        fitI = fit(Yi);
-                        fitA = fit(Ya);
-                        fitR = fit(Yr);
-                        fitG = fit(Yg);
-                        fitB = fit(Yb);
                     }
+
+                    // Scale and interpolate
+                    Matrix Yi = scaleY(I);
+                    Matrix Ya = scaleY(a);
+                    Matrix Yr = scaleY(r);
+                    Matrix Yg = scaleY(g);
+                    Matrix Yb = scaleY(b);
+
+                    // Fit matrices
+                    fitI = fit(Yi);
+                    fitA = fit(Ya);
+                    fitR = fit(Yr);
+                    fitG = fit(Yg);
+                    fitB = fit(Yb);
+                    
     
                     // Perform interpolation for fractional pixels
                     for (double by = 0; by < Math.max(1.0, factorY); by += 1.0) {
@@ -383,7 +384,7 @@ public class ImageScaling {
         final BufferedImage newImg = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB); // Declare as final
 
         // Initialize a thread pool
-        int numThreads = (Runtime.getRuntime().availableProcessors())/2;
+        int numThreads = (Runtime.getRuntime().availableProcessors())/4;
         ExecutorService executor = Executors.newFixedThreadPool(numThreads);
         List<Future<Void>> futures = new ArrayList<>();
 
@@ -418,8 +419,8 @@ public class ImageScaling {
         // Shutdown the executor service
         executor.shutdown();
 
-        // return newImg;
-        return SwingFXUtils.toFXImage(newImg, null);
+        return newImg;
+        // return SwingFXUtils.toFXImage(newImg, null);
     }
     
     // This method processes a chunk of the image in the given range
@@ -484,47 +485,47 @@ public class ImageScaling {
                     int xorg = (int) (x / factorX);
                     int yorg = (int) (y / factorY);
 
-                    if (x % factorX == 0 && y % factorY == 0) {
-                        Matrix I = new Matrix(4, 4);
-                        Matrix a = new Matrix(4, 4);
-                        Matrix r = new Matrix(4, 4);
-                        Matrix g = new Matrix(4, 4);
-                        Matrix b = new Matrix(4, 4);
+                    
+                    Matrix I = new Matrix(4, 4);
+                    Matrix a = new Matrix(4, 4);
+                    Matrix r = new Matrix(4, 4);
+                    Matrix g = new Matrix(4, 4);
+                    Matrix b = new Matrix(4, 4);
 
-                        // Get the 4x4 matrix (16 surrounding pixels)
-                        for (int j = yorg - 1; j < yorg + 3; j++) {
-                            for (int i = xorg - 1; i < xorg + 3; i++) {
-                                int p = 0;
-                                int clampedI = Math.max(0, Math.min(i, width - 1));
-                                int clampedJ = Math.max(0, Math.min(j, height - 1));
-                                p = img.getRGB(clampedI, clampedJ);
+                    // Get the 4x4 matrix (16 surrounding pixels)
+                    for (int j = yorg - 1; j < yorg + 3; j++) {
+                        for (int i = xorg - 1; i < xorg + 3; i++) {
+                            int p = 0;
+                            int clampedI = Math.max(0, Math.min(i, width - 1));
+                            int clampedJ = Math.max(0, Math.min(j, height - 1));
+                            p = img.getRGB(clampedI, clampedJ);
 
-                                I.setElmt(i - xorg + 1, j - yorg + 1, p);
-                                int alpha = (p >> 24) & 0xff;
-                                int red = (p >> 16) & 0xff;
-                                int green = (p >> 8) & 0xff;
-                                int blue = p & 0xff;
-                                a.setElmt(i - xorg + 1, j - yorg + 1, alpha);
-                                r.setElmt(i - xorg + 1, j - yorg + 1, red);
-                                g.setElmt(i - xorg + 1, j - yorg + 1, green);
-                                b.setElmt(i - xorg + 1, j - yorg + 1, blue);
-                            }
+                            I.setElmt(i - xorg + 1, j - yorg + 1, p);
+                            int alpha = (p >> 24) & 0xff;
+                            int red = (p >> 16) & 0xff;
+                            int green = (p >> 8) & 0xff;
+                            int blue = p & 0xff;
+                            a.setElmt(i - xorg + 1, j - yorg + 1, alpha);
+                            r.setElmt(i - xorg + 1, j - yorg + 1, red);
+                            g.setElmt(i - xorg + 1, j - yorg + 1, green);
+                            b.setElmt(i - xorg + 1, j - yorg + 1, blue);
                         }
-
-                        // Scale and interpolate
-                        Matrix Yi = scaleY(I);
-                        Matrix Ya = scaleY(a);
-                        Matrix Yr = scaleY(r);
-                        Matrix Yg = scaleY(g);
-                        Matrix Yb = scaleY(b);
-
-                        // Fit matrices
-                        fitI = fit(Yi);
-                        fitA = fit(Ya);
-                        fitR = fit(Yr);
-                        fitG = fit(Yg);
-                        fitB = fit(Yb);
                     }
+
+                    // Scale and interpolate
+                    Matrix Yi = scaleY(I);
+                    Matrix Ya = scaleY(a);
+                    Matrix Yr = scaleY(r);
+                    Matrix Yg = scaleY(g);
+                    Matrix Yb = scaleY(b);
+
+                    // Fit matrices
+                    fitI = fit(Yi);
+                    fitA = fit(Ya);
+                    fitR = fit(Yr);
+                    fitG = fit(Yg);
+                    fitB = fit(Yb);
+                    
 
                     // Perform interpolation for fractional pixels
                     for (double by = 0; by < Math.max(1.0, factorY); by += 1.0) {
