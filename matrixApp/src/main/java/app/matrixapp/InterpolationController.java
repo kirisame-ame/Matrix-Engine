@@ -79,27 +79,37 @@ public class InterpolationController {
             result.append("Interpolation polynomial:\n");
             result.append("f(x) = ");
             boolean first = true;
+            int cnt_for_enter_after_2_var = 0;
             for (int i = coefficients.length - 1; i >= 0; i--) {
                 if (coefficients[i] == 0) {
                     continue;
                 }
-                if (i < coefficients.length - 1) {
+                if (i <= coefficients.length - 1) {
                     if (first) {
                         first = false;
                     } else {
                         result.append(coefficients[i] >= 0 ? " + " : " - ");
                     }
                 }
-                result.append(String.format("%.4f", Math.abs(coefficients[i])));
+                if (coefficients[i] < 1e-4) {
+                    result.append(String.format("%.20f", Math.abs(coefficients[i])));
+                } else {
+                    result.append(String.format("%.4f", coefficients[i]));
+                }
                 if (i > 0) {
-                    result.append("x");
+                    result.append(" * x");
                     if (i > 1) {
                         result.append("^").append(i);
                     }
                 }
+                if (cnt_for_enter_after_2_var % 2 == 0 && i > 0) {
+                    result.append("\n");
+                    result.append("       ");
+                }
+                cnt_for_enter_after_2_var++;
             }
             result.append("\n\n");
-            result.append(String.format("f(%.2f) = %.4f", xToInterpolate, interpolatedValue));
+            result.append(String.format("f(%.3f) = %.4f", xToInterpolate, interpolatedValue));
 
             outputArea.setText(result.toString());
         } catch (Exception e) {

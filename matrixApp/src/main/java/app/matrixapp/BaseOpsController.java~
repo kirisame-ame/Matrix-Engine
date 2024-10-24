@@ -191,7 +191,7 @@ public class BaseOpsController {
                 continue;
             }
             if (solution[i] < 1e-4) {
-                result.append(String.format("x%d = %.10f\n", i + 1, solution[i]));
+                result.append(String.format("x%d = %.8f\n", i + 1, solution[i]));
             } else {
                 result.append(String.format("x%d = %.4f\n", i + 1, solution[i]));
             }

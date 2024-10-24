@@ -58,14 +58,17 @@ public class BicubicController {
             }
 
             Matrix ymatrix = new Matrix(4, 4);
+            // Perbaikan
+            int i = 0;  // indeks untuk baris
             for (String line : Arrays.copyOfRange(lines, 0, 4)) {
                 String[] values = line.trim().split("\\s+");
                 if (values.length != 4) {
                     throw new IllegalArgumentException("Each row of the matrix should contain 4 values.");
                 }
                 for (int j = 0; j < 4; j++) {
-                    ymatrix.setElmt(j, j, Double.parseDouble(values[j]));
+                    ymatrix.setElmt(i, j, Double.parseDouble(values[j]));  // menggunakan i untuk baris, j untuk kolom
                 }
+                i++;
             }
 
             String[] abValues = lines[4].trim().split("\\s+");
