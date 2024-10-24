@@ -79,12 +79,15 @@ public class QuadraticRegressor {
     }
     public String toStringModel() {
         StringBuilder sb = new StringBuilder();
-        sb.append(String.format("Model: %.2f",this.model.getElmt(0,0)));
+        sb.append("Model: \n");
+        if (this.model.getElmt(0, 0) != 0 && (this.model.getElmt(0, 0) != -0.0f)) {
+            sb.append(String.format("Constant = %.2f\n",this.model.getElmt(0,0)));
+        }
         for(int i = 1; i <= this.vars; i++) {
             if (this.model.getElmt(i, 0) > 0) {
-                sb.append(String.format(" + %.2fx_%d",this.model.getElmt(i,0),i));
+                sb.append(String.format("x%d = %.2f\n",i,this.model.getElmt(i,0)));
             } else if (this.model.getElmt(i, 0) < -0.0f) {
-                sb.append(String.format("  %.2fx_%d",this.model.getElmt(i,0),i));
+                sb.append(String.format("x%d = %.2f\n",i,this.model.getElmt(i,0)));
             }
         }
         int idx,pivot;
@@ -93,15 +96,15 @@ public class QuadraticRegressor {
         for (int j= this.vars+1; j < this.model.getRows(); j++) {
             if (idx==0 || idx == pivot){
                 if (this.model.getElmt(j, 0) > 0){
-                    sb.append(String.format(" + %.2fx_%d^2",this.model.getElmt(j,0),pivot+1));
+                    sb.append(String.format("x%d^2 = %.2f\n",pivot+1,this.model.getElmt(j,0)));
                 }else if(this.model.getElmt(j,0) < -0.0f) {
-                    sb.append(String.format(" %.2fx_%d^2",this.model.getElmt(j,0),pivot+1));
+                    sb.append(String.format("x%d^2 = %.2f\n",pivot+1,this.model.getElmt(j,0)));
                 }
             } else {
                 if (this.model.getElmt(j, 0) > 0) {
-                    sb.append(String.format(" + %.2fx_%dx_%d", this.model.getElmt(j, 0), pivot + 1, idx + 1));
+                    sb.append(String.format("x%d*x%d = %.2f\n",pivot + 1, idx + 1, this.model.getElmt(j, 0 )));
                 } else if (this.model.getElmt(j, 0) < -0.0f) {
-                    sb.append(String.format(" %.2fx_%dx_%d", this.model.getElmt(j, 0), pivot + 1, idx + 1));
+                    sb.append(String.format("x%d*x%d = %.2f\n",pivot + 1, idx + 1, this.model.getElmt(j, 0)));
                 }
             }
             idx++;

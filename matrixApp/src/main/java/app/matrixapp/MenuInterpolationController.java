@@ -15,18 +15,13 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class MenuInterpolationController {
+    public Button bicubicButton;
+    public Button interpolationButton;
     private Scene scene;
     private Stage stage;
     private Parent root;
 
-    @FXML
-    private Button baseOpsButton;
-    @FXML
-    private Button interpolationButton;
-    @FXML
-    private Button regressionButton;
-    @FXML
-    private Button imageStretchingButton;
+    
 
     @FXML
     protected void onBicubicButtonClick(ActionEvent event) throws IOException {

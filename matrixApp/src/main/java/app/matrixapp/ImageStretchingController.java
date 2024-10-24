@@ -46,7 +46,6 @@ public class ImageStretchingController {
     private Parent root;
     private File input;
     private Image result;
-
     @FXML
     public Button backButton;
     @FXML
@@ -62,7 +61,7 @@ public class ImageStretchingController {
         stage.show();
     }
     @FXML
-    private void handleCalculate() throws IOException {
+    private void handleCalculate() throws IOException, InterruptedException {
         if (input == null) {
             showAlert("Error", "Please load an image first");
             return;
@@ -76,7 +75,7 @@ public class ImageStretchingController {
         int width = Integer.parseInt(widthField.getText());
 
         ImageScaling imageScaling = new ImageScaling();
-        result = imageScaling.stretch(input, width, height);
+        result = imageScaling.stretchMultithreaded(input, width, height);
         afterImage.setImage(result);
         afterSize.setText(String.format("%dx%d", (int) result.getWidth(), (int) result.getHeight()));
     }
@@ -89,6 +88,7 @@ public class ImageStretchingController {
             Image inputImage = new Image(input.toURI().toString());
             beforeImage.setImage(inputImage);
             beforeSize.setText(String.format("%dx%d", (int) inputImage.getWidth(), (int) inputImage.getHeight()));
+            afterSize.setText("Please Wait");
         }
     }
     @FXML

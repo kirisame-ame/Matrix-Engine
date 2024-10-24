@@ -37,12 +37,15 @@ public class LinearRegressor {
     }
     public String toStringModel() {
         StringBuilder sb = new StringBuilder();
-        sb.append(String.format("Model: %.2f",this.model.getElmt(0,0)));
+        sb.append("Model: \n");
+        if (this.model.getElmt(0, 0) != 0 && (this.model.getElmt(0, 0) != -0.0f)) {
+            sb.append(String.format("Constant = %.2f\n",this.model.getElmt(0,0)));
+        }
         for(int i = 1; i < this.model.getRows(); i++) {
             if (this.model.getElmt(i,0) > 0){
-                sb.append(String.format(" + %.2fx_%d",this.model.getElmt(i,0),i));
+                sb.append(String.format("x%d = %.2f\n",i,this.model.getElmt(i,0)));
             }else if(this.model.getElmt(i,0) < -0.0f) {
-                sb.append(String.format(" %.2fx_%d", this.model.getElmt(i, 0), i));
+                sb.append(String.format("x%d = %.2f\n",i, this.model.getElmt(i, 0)));
             }
         }
         return sb.toString();
