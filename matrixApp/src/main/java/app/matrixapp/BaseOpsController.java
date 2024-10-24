@@ -337,7 +337,11 @@ public class BaseOpsController {
                     for(j = 0; j < elements.length; ++j) {
                         try {
                             if (!elements[j].isEmpty()) {
-                                matrix.setElmt(i, j, Double.parseDouble(elements[j]));
+                                if (elements[j].contains("/")) {
+                                    String[] fraction = elements[j].split("/");
+                                    matrix.setElmt(i, j, Double.parseDouble(fraction[0]) / Double.parseDouble(fraction[1]));
+                                } else
+                                    matrix.setElmt(i, j, Double.parseDouble(elements[j]));
                             }
                         } catch (NumberFormatException var9) {
                             matrix.setElmt(i, j, 0.0);
@@ -356,8 +360,8 @@ public class BaseOpsController {
         } catch (Exception var10) {
             Exception e = var10;
             throw new IllegalArgumentException("Error parsing matrix: " + e.getMessage());
+            }
         }
-    }
 
     private String matrixToString(Matrix matrix) {
         StringBuilder sb = new StringBuilder();
