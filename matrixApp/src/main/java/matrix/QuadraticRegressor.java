@@ -50,7 +50,7 @@ public class QuadraticRegressor {
         );
 
         this.model = new Matrix(x_matrix.getCols(), 1);
-        this.model.setCol(0, ls.gauss());
+        this.model.setCol(0, ls.quadraticGauss());
     }
     public Matrix getModel() {
         return this.model;

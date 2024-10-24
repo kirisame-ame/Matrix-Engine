@@ -105,4 +105,29 @@ public class LinearSystem extends Matrix {
             return "Parametrik";
         }
     }
+    public double[] quadraticGauss() {
+        Matrix augmented = augmentedMatrix(features, target);
+        augmented.toRowEchelonForm();
+        int rows = augmented.getRows();
+        int cols = augmented.getCols();
+        Matrix U = new Matrix(rows, cols - 1);
+        Matrix Y = new Matrix(rows, 1);
+
+        Matrix.splitAugmentedMatrix(augmented, U, Y);
+        boolean isParametric = quadraticCheck().equals("Parametrik");
+        return backwardSubstitution(U.getData(), Y.getCol(0), isParametric);
+    }
+    public String quadraticCheck() {
+        Matrix augmentedMatrix = augmentedMatrix(features, target);
+        int rank = features.computeRank();
+        int rankA = augmentedMatrix.computeRank();
+
+        if (rank < rankA) {
+            return "Tidak ada";
+        } else if (rank == rankA) {
+            return "Unik";
+        } else {
+            return "Parametrik";
+        }
+    }
 }
