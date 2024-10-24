@@ -599,9 +599,14 @@ public class Matrix {
             if (lead != -1) {
                 eliminateAbovePivot(r, lead);
             }
+            if (isRowAllZero(r)) {
+                swapRows(r, rows - 1);
+            }
         }
         roundToZero();
     }
+
+// ----------------------COLUMN ELEMENTARY OPERATIONS----------------------
     // Fungsi baru untuk mencari kolom pivot dalam suatu baris
     public int findPivotColumn(int row) {
         for (int j = 0; j < cols; j++) {
@@ -628,7 +633,7 @@ public class Matrix {
             }
         }
     }
-    
+
     //get hasil jawaban SPL Gauss-Jordan [x1 .. xn]
     public double[] resFromReducedEselon(Matrix m) {
         double[] Y = new double[m.getRows()];
@@ -639,8 +644,21 @@ public class Matrix {
     }
 
     //get hasil jawaban SPL Gauss [x1 .. xn]
-    public double[] backwardSubstitution(double[][] U, double[] Y) {
-        int N = Y.length;
+    public double[] backwardSubstitution(double[][] U, double[] Y, boolean isParametric) {
+        int N;
+        if (U[0].length > U.length + 1) {
+            N = U.length;
+        } else {
+            if (isParametric) {
+                N = U[0].length - 1;
+            } else {
+                if (U[0].length != U.length) {
+                    N = U[0].length;
+                } else {
+                    N = U.length;
+                }
+            }
+        }
         double[] X = new double[N];
 
         // Inisialisasi X dengan Y
@@ -666,8 +684,11 @@ public class Matrix {
 
         int rank = 0;
         for (int i = 0; i < rows; i++) {
-            if (gauss.getElmt(i, cols - 1) != 0) {// cukup cek kolom yang terakhir
-                rank++; // karena kalau kolom terakhir 0, semua kolom pada baris ini 0
+            for (int j = 0; j < cols; j++) {
+                if (Math.abs(gauss.getElmt(i, j)) > EPSILON) {
+                    rank++;
+                    break;
+                }
             }
         }
         return rank;
