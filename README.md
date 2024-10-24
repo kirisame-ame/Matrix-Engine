@@ -27,7 +27,7 @@ Pada bagian releases, unduh file .zip yang tersedia. File .zip tersebut berisi .
 ## Bahasa yang Digunakan
 
 1. Java
-## Informasi Repo
+## Informasi Folder Repository
 1. matrixApp: semua kode dan resource yang digunakan aplikasi
 2. Docs: berisi dokumentasi dan video
 3. Test: berisi hasil testing
