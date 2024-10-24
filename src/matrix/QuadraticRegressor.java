@@ -1,3 +1,4 @@
+// matrixApp/src/main/java/matrix/QuadraticRegressor.java
 package matrix;
 
 public class QuadraticRegressor {
@@ -49,7 +50,7 @@ public class QuadraticRegressor {
         );
 
         this.model = new Matrix(x_matrix.getCols(), 1);
-        this.model.setCol(0, ls.gauss());
+        this.model.setCol(0, ls.quadraticGauss());
     }
     public Matrix getModel() {
         return this.model;
@@ -66,7 +67,7 @@ public class QuadraticRegressor {
             if (idx==0){
                 System.out.printf(" + %.2fx_%d^2",this.model.getElmt(j,0),pivot+1);
             } else {
-                System.out.printf(" + %.2fx_%dx_%d",this.model.getElmt(j,0),pivot,idx);
+                System.out.printf(" + %.2fx_%dx_%d",this.model.getElmt(j,0),pivot+1,idx+1);
             }
             idx++;
             if (idx >= this.vars) {
@@ -75,6 +76,44 @@ public class QuadraticRegressor {
             }
         }
         System.out.println();
+    }
+    public String toStringModel() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Model: \n");
+        if (this.model.getElmt(0, 0) != 0 && (this.model.getElmt(0, 0) != -0.0f)) {
+            sb.append(String.format("Constant = %.2f\n",this.model.getElmt(0,0)));
+        }
+        for(int i = 1; i <= this.vars; i++) {
+            if (this.model.getElmt(i, 0) > 0) {
+                sb.append(String.format("x%d = %.2f\n",i,this.model.getElmt(i,0)));
+            } else if (this.model.getElmt(i, 0) < -0.0f) {
+                sb.append(String.format("x%d = %.2f\n",i,this.model.getElmt(i,0)));
+            }
+        }
+        int idx,pivot;
+        idx = 0;
+        pivot =0;
+        for (int j= this.vars+1; j < this.model.getRows(); j++) {
+            if (idx==0 || idx == pivot){
+                if (this.model.getElmt(j, 0) > 0){
+                    sb.append(String.format("x%d^2 = %.2f\n",pivot+1,this.model.getElmt(j,0)));
+                }else if(this.model.getElmt(j,0) < -0.0f) {
+                    sb.append(String.format("x%d^2 = %.2f\n",pivot+1,this.model.getElmt(j,0)));
+                }
+            } else {
+                if (this.model.getElmt(j, 0) > 0) {
+                    sb.append(String.format("x%d*x%d = %.2f\n",pivot + 1, idx + 1, this.model.getElmt(j, 0 )));
+                } else if (this.model.getElmt(j, 0) < -0.0f) {
+                    sb.append(String.format("x%d*x%d = %.2f\n",pivot + 1, idx + 1, this.model.getElmt(j, 0)));
+                }
+            }
+            idx++;
+            if (idx >= this.vars) {
+                pivot++;
+                idx = pivot;
+            }
+        }
+        return sb.toString();
     }
     public Matrix predict(Matrix features) {
         // Expands the matrix first before transforming
