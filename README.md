@@ -1,38 +1,33 @@
 # Matrix Calculator
-Pemecahan untuk Sistem Persamaan Linear, Determinan, Invers, dan Implementasi Aljabar Linear lainnya (Interpolasi, Regresi Berganda, Bicubic Spline, Image Stretching)
+A calculator to perform several matrix operations (Interpolation, Multiple Regression, Bicubic Spline, Image Stretching)
 
-## Informasi Umum
-Tujuan dibuatnya repositori ini adalah untuk memenuhi Tugas Besar 1 IF2123 Aljabar Linear dan Geometri. Program ini berisi library dengan bahasa Java untuk menyelesaikan berbagai persoalan matriks.
+## General Information
+This program was made as the course project for our Linear Algebra and Geometry course
 
-##  Kontributor
-Kontributor project ini adalah:
-1. William Andrian - 13523006
-2. Nathan Jovial Hartono - 13522032
-3. Abdullah Farhan - 13522042
+## Installation and Initial setup
 
-## Instalasi dan Konfigurasi Awal
-
-Pada folder installer, terdapat sebuah file .exe installer. Jalankan installer tersebut dan aplikasi siap untuk digunakan
+In the installer folder, there is a txt file containing a google drive link which has the installer executable
 
 
-## Fitur
-1. Menyelesaikan sistem persamaan linear menggunakan Metode Eliminasi Gauss, Metode Eliminasi Gauss-Jordan, Metode Invers, dan Metode Cramer
-2. enghasilkan determinan matriks menggunakan Metode Ekspansi Kofaktor dan Reduksi Baris
-3. Menghasilkan invers matriks menggunakan Metode Reduksi Baris dan Metode Kofaktor
-4. Menyelesaikan masalah interpolasi polinomial
-5. Menyelesaikan masalah interpolasi bicubic
-6. Menyelesaikan masalah regresi linear dan regresi kuadratik
-7. Dapat mengubah size image
+## Features
+1. Solving Linear Equation Systems with Gauss, Gauss-Jordan, Inverse, and Cramer method.
+2. Calculate the determinant of a matrix using Cofactor Expansion and Elementary Row Reduction
+3. Calculate the inverse of a matrix using Cofactor Expansion and Elementary Row Reduction
+4. Solves a polynomial interpolation operation
+5. Solves a bicubic interpolation operation
+6. Models a Multiple Linear Regression and Multiple Polynomial Regression with the ability to predict
+7. Image Resizing
 
-## Bahasa yang Digunakan
-
+## Languages Used
 1. Java
-## Informasi Folder Repository
-1. matrixApp: semua kode dan resource yang digunakan aplikasi
-2. docs: berisi dokumentasi dan video
-3. test: berisi hasil testing
-4. src: berisi file .java yang sudah dicompile menjadi .class
-##  Kontak
-+ William Andrian - 13523006@std.stei.itb.ac.id
+2. FXML
+3. CSS
+## Repository Directory Information
+1. matrixApp: code and resources used in the app
+2. docs: documentation
+3. test: Testing files
+4. src: compiled .java files
+##  Contacts
++ (Me) William Andrian - williamadt123@gmail.com / 13523006@std.stei.itb.ac.id
 + Nathan Jovial Hartono - 13522032@std.stei.itb.ac.id
 + Abdullah Farhan - 13522042@std.stei.itb.ac.id 
