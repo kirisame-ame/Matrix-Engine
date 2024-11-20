@@ -7,7 +7,7 @@ This program was made as the course project for our Linear Algebra and Geometry 
 ## Installation and Initial setup
 
 In the installer folder, there is a txt file containing a google drive link which has the installer executable
-
+If you would like to run manually, a JavaFX SDK is needed
 
 ## Features
 1. Solving Linear Equation Systems with Gauss, Gauss-Jordan, Inverse, and Cramer method.
@@ -18,10 +18,11 @@ In the installer folder, there is a txt file containing a google drive link whic
 6. Models a Multiple Linear Regression and Multiple Polynomial Regression with the ability to predict
 7. Image Resizing
 
-## Languages Used
+## Technologies Used
 1. Java
-2. FXML
-3. CSS
+2. JavaFX
+3. FXML
+4. CSS
 ## Repository Directory Information
 1. matrixApp: code and resources used in the app
 2. docs: documentation
