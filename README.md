@@ -7,6 +7,8 @@ This program was made as the course project for our Linear Algebra and Geometry 
 ## Installation and Initial setup
 
 In the installer folder, there is a txt file containing a google drive link which has the installer executable
+
+## Running from code
 If you would like to run manually, a JavaFX SDK is needed
 
 ## Features
